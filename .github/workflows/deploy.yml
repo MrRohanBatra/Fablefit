@@ -12,6 +12,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages   # ✅ REQUIRED for deploy-pages@v4
     steps:
       - uses: actions/checkout@v4
 
@@ -21,4 +23,5 @@ jobs:
           path: dist
 
       - name: Deploy
+        id: deployment
         uses: actions/deploy-pages@v4
