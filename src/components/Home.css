@@ -1,0 +1,43 @@
+.hero-section {
+  position: relative;
+  height: 60vh; 
+  background-size: cover;
+  background-position: center;
+  
+  /* Flexbox to center the content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* This creates the dark overlay for better text readability */
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+}
+
+/* Ensures the content appears above the overlay */
+.hero-content {
+  position: relative; 
+  z-index: 2;
+}
+
+/* Styles for the "Shop Now" button */
+.hero-content .btn-primary {
+    background-color: #1173d4; /* Using the primary color from the example */
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.hero-content .btn-primary:hover {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+}
+section{
+  scroll-margin-top: 80px
+}

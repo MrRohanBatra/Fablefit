@@ -1,0 +1,22 @@
+.products-section {
+  height: calc(100vh - 100px); /* adjust if navbar or header present */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.products-scroll {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 10px; /* for scrollbar spacing */
+  scroll-behavior: smooth;
+}
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
