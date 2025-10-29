@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import NavbarFinal from './components/navbar';
 import LoginPage from './components/login';
 
@@ -68,6 +68,10 @@ function App_home() {
           }
                 />
                 <Route
+          path="/profile/"
+          element={<Navigate to={"/profile/details"}></Navigate>}
+        />
+        <Route
           path="/profile/:page"
           element={
             <motion.div

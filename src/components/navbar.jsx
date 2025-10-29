@@ -159,13 +159,13 @@ function NavbarFinal() {
             <strong>{user.email}</strong>
           </Dropdown.Header>
           <Dropdown.Divider />
-          <Dropdown.Item as={Link} to="/profile">
+          <Dropdown.Item as={Link} to="/profile/details">
             <i className="bi-person-circle me-2"></i>My Profile
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/orders">
+          <Dropdown.Item as={Link} to="/profile/orders">
             <i className="bi-box-seam-fill me-2"></i>My Orders
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/wishlist">
+          <Dropdown.Item as={Link} to="/profile/wishlist">
             <i className="bi-heart-fill me-2"></i>Wishlist
           </Dropdown.Item>
           <Dropdown.Divider />
