@@ -126,10 +126,6 @@ function Search() {
     setCurrentPage(1);
   }, [selectedColor, selectedSort, selectedRange]);
 
-  // useEffect(() => {
-  //   handleFilterChange();
-  //   setCurrentPage(1);
-  // }, [selectedColor, selectedSort, selectedRange]);
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
 

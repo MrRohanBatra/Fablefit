@@ -1,22 +1,22 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, use } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Container, Row, Col, Nav, Form, Button, Card, InputGroup ,Modal,Spinner} from "react-bootstrap";
+import { Container, Row, Col, Nav, Form, Button, Card, InputGroup, Modal, Spinner, Toast, Image } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserContext } from "./FirebaseAuth";
-import { getPhoneNumber } from "../utils/util";
-import { updateProfile } from "firebase/auth";
+import { getAddress, getPhoneNumber } from "../utils/util";
+import { sendEmailVerification, updateProfile } from "firebase/auth";
 
 function Profile() {
   const { page } = useParams();
   const navigate = useNavigate();
   const [tab, setTab] = useState("details");
 
- 
+
   useEffect(() => {
     if (page) setTab(page);
   }, [page]);
 
- 
+
   const handleSelect = (key) => {
     setTab(key);
     // navigate(`/profile/${key}`);
@@ -73,27 +73,50 @@ function Profile() {
 }
 
 
-
 function ProfileDetails() {
   const [user, setUser, handleSignOut] = useContext(UserContext);
   const [editMode, setEditMode] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const handleAddAddress = () => {
+    // TODO: Open modal or navigate to address form
+    console.log("Add new address clicked");
+  };
+  const [editAddress,setEditAddress]=useState(false);
 
-  
+  const handleEditAddress = (index) => {
+    // TODO: Allow editing the address at given index
+    setEditAddress(true);
+    console.log("Edit address at index:", index);
+  };
+
+  // Toast state
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    variant: "info", // "info" | "success" | "danger"
+  });
+
+  // Initial name split
   const fullName = user?.displayName || "";
   const nameParts = fullName.trim().split(" ").filter(Boolean);
   const firstNameInit = nameParts[0] || "";
   const lastNameInit = nameParts.slice(1).join(" ") || "";
 
-
   const [firstName, setFirstName] = useState(firstNameInit);
   const [lastName, setLastName] = useState(lastNameInit);
-
+  const [addressList,setAddress]=useState([]);
+  
   useEffect(() => {
     setFirstName(firstNameInit);
     setLastName(lastNameInit);
   }, [user]);
+  useEffect(()=>{
+    getAddress(user).then((data)=>{setAddress(data)});
+  },[])
+  const showToast = (message, variant = "info", duration = 2500) => {
+    setToast({ show: true, message, variant });
+    setTimeout(() => setToast((prev) => ({ ...prev, show: false })), duration);
+  };
 
   const handleSave = async () => {
     const newFullName = `${firstName} ${lastName}`.trim();
@@ -105,41 +128,83 @@ function ProfileDetails() {
     }
 
     try {
-      setShowModal(true);
       setSaving(true);
+      showToast("Saving your changes...", "info", 4000);
+
       await updateProfile(user, { displayName: newFullName });
       setUser({ ...user, displayName: newFullName });
-      await new Promise((r) => setTimeout(r, 1000)); 
-      setSaving(false);
-      setShowModal(false);
-      alert("Profile updated successfully!");
+
+      await new Promise((r) => setTimeout(r, 1000));
+
+      showToast("Profile updated successfully!", "success");
     } catch (error) {
       console.error("Error updating profile:", error);
+      showToast("Failed to update profile. Please try again.", "danger");
+    } finally {
       setSaving(false);
-      setShowModal(false);
-      alert("Failed to update profile. Please try again.");
+      setEditMode(false);
     }
-
-    setEditMode(false);
   };
 
   return (
     <>
-      {/* MODAL WITH SPINNER */}
-      <Modal show={showModal} centered backdrop="static" keyboard={false}>
-        <Modal.Body className="text-center py-4">
-          {saving ? (
-            <>
-              <Spinner animation="border" role="status" variant="primary" />
-              <p className="mt-3 mb-0 fw-semibold">Saving your changes...</p>
-            </>
-          ) : (
-            <p className="mb-0">Done!</p>
+      {/* === ANIMATED TOAST === */}
+      <div className="position-fixed top-0 end-0 p-3" style={{ marginTop: "70px", zIndex: 1060 }}>
+        <AnimatePresence>
+          {toast.show && (
+            <motion.div
+              key="toast"
+              initial={{ opacity: 0, x: 50, y: -10 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              exit={{ opacity: 0, x: 50, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Toast
+                bg={
+                  toast.variant === "danger"
+                    ? "danger"
+                    : toast.variant === "success"
+                      ? "success"
+                      : "light"
+                }
+                onClose={() => setToast({ ...toast, show: false })}
+                className="shadow-lg rounded-3"
+              >
+                <Toast.Header className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center">
+                    <Image src="/react.svg" width={20} className="rounded me-2" />
+                    <strong className="me-auto">FableFit</strong>
+                  </div>
+                  {/* <Button
+                    variant="link"
+                    size="sm"
+                    className="p-0 text-muted"
+                    onClick={() => setToast({ ...toast, show: false })}
+                  >
+                    <XCircle></XCircle>
+                  </Button> */}
+                </Toast.Header>
+                <Toast.Body
+                  className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
+                    }`}
+                >
+                  {toast.message}
+                  {saving && toast.variant === "info" && (
+                    <Spinner
+                      animation="border"
+                      size="sm"
+                      variant="primary"
+                      className="ms-2"
+                    />
+                  )}
+                </Toast.Body>
+              </Toast>
+            </motion.div>
           )}
-        </Modal.Body>
-      </Modal>
+        </AnimatePresence>
+      </div>
 
-      {/* MAIN FORM */}
+      {/* === MAIN PROFILE FORM === */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -177,7 +242,24 @@ function ProfileDetails() {
               <Col md={12}>
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type="email" value={user?.email || ""} readOnly />
+                  <InputGroup>
+                    <Form.Control type="email" value={user?.email || ""} readOnly />
+                    {user?.emailVerified ? (
+                      <InputGroup.Text className="text-success">Verified</InputGroup.Text>
+                    ) : (
+                      <InputGroup.Text
+                        className="text-danger"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          sendEmailVerification(user).then(() =>
+                            showToast("Verification email sent!", "info")
+                          );
+                        }}
+                      >
+                        Not Verified
+                      </InputGroup.Text>
+                    )}
+                  </InputGroup>
                 </Form.Group>
               </Col>
 
@@ -185,7 +267,7 @@ function ProfileDetails() {
                 <Form.Group className="mb-3">
                   <Form.Label>Phone Number</Form.Label>
                   <InputGroup>
-                    <InputGroup.Text>{"+91"}</InputGroup.Text>
+                    <InputGroup.Text>+91</InputGroup.Text>
                     <Form.Control
                       type="number"
                       value={getPhoneNumber(user)}
@@ -197,14 +279,22 @@ function ProfileDetails() {
             </Row>
 
             <motion.div className="mt-3" layout>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: "inline-block" }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                style={{ display: "inline-block" }}
+              >
                 <Button variant="danger" onClick={handleSignOut}>
                   Sign Out
                 </Button>
               </motion.div>
 
               {!editMode ? (
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: "inline-block" }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{ display: "inline-block" }}
+                >
                   <Button
                     variant="primary"
                     className="ms-4"
@@ -214,17 +304,70 @@ function ProfileDetails() {
                   </Button>
                 </motion.div>
               ) : (
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} style={{ display: "inline-block" }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{ display: "inline-block" }}
+                >
                   <Button
                     variant="success"
                     className="ms-4"
                     onClick={handleSave}
+                    disabled={saving}
                   >
                     Save Changes
                   </Button>
                 </motion.div>
               )}
             </motion.div>
+
+            {/* === ADDRESS SECTION === */}
+            <Row className="mt-3">
+              {addressList.length > 0 ? (
+                addressList.map((addrObj, index) => {
+                  const [label, value] = Object.entries(addrObj)[0];
+                  return (
+                    <Col md={6} key={index}>
+                      <Card className="mb-3 shadow-sm rounded-4 border-0">
+                        <Card.Body>
+                          <div className="d-flex justify-content-between align-items-center mb-2">
+                            <strong className="text-capitalize">{label} Address</strong>
+                            <Button
+                              variant="outline-primary"
+                              size="sm"
+                              onClick={() => handleEditAddress(index)}
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                          <Form.Control
+                            as="textarea"
+                            rows={2}
+                            value={value}
+                            readOnly={!editAddress}
+                          />
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  );
+                })
+              ) : (
+                <Col>
+                  <p className="text-muted fst-italic">No addresses added yet.</p>
+                </Col>
+              )}
+
+              <Col xs={12}>
+                <Button
+                  variant="outline-success"
+                  className="rounded-pill mt-2"
+                  onClick={handleAddAddress}
+                >
+                  + Add New Address
+                </Button>
+              </Col>
+            </Row>
+
           </Form>
         </Container>
       </motion.div>
@@ -234,10 +377,11 @@ function ProfileDetails() {
 
 
 
-function updateUserDetails(user,dispName){
-   updateProfile(user,{
-    displayName:dispName,
-   })
+
+function updateUserDetails(user, dispName) {
+  updateProfile(user, {
+    displayName: dispName,
+  })
 }
 function ProfileCart() {
   return (
