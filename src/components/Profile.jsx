@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import { Container, Row, Col, Nav, Form, Button, Card, InputGroup, Modal, Spinner, Toast, Image } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserContext } from "./FirebaseAuth";
-import { getAddress, getPhoneNumber } from "../utils/util";
+import { getAddress, getPhoneNumber, updateAddress } from "../utils/util";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
 
 function Profile() {
@@ -77,19 +77,6 @@ function ProfileDetails() {
   const [user, setUser, handleSignOut] = useContext(UserContext);
   const [editMode, setEditMode] = useState(false);
   const [saving, setSaving] = useState(false);
-  const handleAddAddress = () => {
-    // TODO: Open modal or navigate to address form
-    console.log("Add new address clicked");
-  };
-  const [editAddress,setEditAddress]=useState(false);
-
-  const handleEditAddress = (index) => {
-    // TODO: Allow editing the address at given index
-    setEditAddress(true);
-    console.log("Edit address at index:", index);
-  };
-
-  // Toast state
   const [toast, setToast] = useState({
     show: false,
     message: "",
@@ -104,15 +91,15 @@ function ProfileDetails() {
 
   const [firstName, setFirstName] = useState(firstNameInit);
   const [lastName, setLastName] = useState(lastNameInit);
-  const [addressList,setAddress]=useState([]);
-  
+  const [addressList, setAddress] = useState([]);
+
   useEffect(() => {
     setFirstName(firstNameInit);
     setLastName(lastNameInit);
   }, [user]);
-  useEffect(()=>{
-    getAddress(user).then((data)=>{setAddress(data)});
-  },[])
+  useEffect(() => {
+    getAddress(user).then((data) => { setAddress(data) });
+  }, [])
   const showToast = (message, variant = "info", duration = 2500) => {
     setToast({ show: true, message, variant });
     setTimeout(() => setToast((prev) => ({ ...prev, show: false })), duration);
@@ -175,14 +162,6 @@ function ProfileDetails() {
                     <Image src="/react.svg" width={20} className="rounded me-2" />
                     <strong className="me-auto">FableFit</strong>
                   </div>
-                  {/* <Button
-                    variant="link"
-                    size="sm"
-                    className="p-0 text-muted"
-                    onClick={() => setToast({ ...toast, show: false })}
-                  >
-                    <XCircle></XCircle>
-                  </Button> */}
                 </Toast.Header>
                 <Toast.Body
                   className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
@@ -323,51 +302,17 @@ function ProfileDetails() {
 
             {/* === ADDRESS SECTION === */}
             <Row className="mt-3">
-              {addressList.length > 0 ? (
-                addressList.map((addrObj, index) => {
-                  const [label, value] = Object.entries(addrObj)[0];
-                  return (
-                    <Col md={6} key={index}>
-                      <Card className="mb-3 shadow-sm rounded-4 border-0">
-                        <Card.Body>
-                          <div className="d-flex justify-content-between align-items-center mb-2">
-                            <strong className="text-capitalize">{label} Address</strong>
-                            <Button
-                              variant="outline-primary"
-                              size="sm"
-                              onClick={() => handleEditAddress(index)}
-                            >
-                              Edit
-                            </Button>
-                          </div>
-                          <Form.Control
-                            as="textarea"
-                            rows={2}
-                            value={value}
-                            readOnly={!editAddress}
-                          />
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  );
-                })
-              ) : (
-                <Col>
-                  <p className="text-muted fst-italic">No addresses added yet.</p>
-                </Col>
+              {addressList.length > 0 && (
+                <>
+                  {addressList.map((obj, index) => {
+                    const [type, addr] = Object.entries(obj)[0];
+                    return (
+                      <AddressCard type={type} addr={addr} index={index} user={user} key={index} showToast={showToast}></AddressCard>
+                    );
+                  })}
+                </>
               )}
-
-              <Col xs={12}>
-                <Button
-                  variant="outline-success"
-                  className="rounded-pill mt-2"
-                  onClick={handleAddAddress}
-                >
-                  + Add New Address
-                </Button>
-              </Col>
             </Row>
-
           </Form>
         </Container>
       </motion.div>
@@ -377,7 +322,35 @@ function ProfileDetails() {
 
 
 
-
+function AddressCard({ type, addr,user,index,showToast }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [address, setAddress] = useState(addr);
+  return (
+    <Col md={6} key={index}>
+      <Card className="shadow-sm mb-3 rounded-4">
+        <Card.Body>
+          <Card.Title className="d-flex justify-content-between align-items-center">
+            <span className="text-capitalize fw-bold">{type} Address</span>
+            {!isEditing ? <Button
+              variant="outline-primary"
+              size="sm"
+              onClick={() => setIsEditing(!isEditing)}
+            >
+              Edit
+            </Button> : <Button
+              variant="outline-primary"
+              size="sm"
+              onClick={() => { showToast(`Updating ${type} Address`,"info",1500);updateAddress(user, type, address).then(()=>{ setIsEditing(!isEditing);showToast(`Updated ${type} Address`,"success",3000);}).catch((e)=>{showToast(`Error in Updating ${type}Address`,"danger",3000)}) }}
+            >
+              Save 
+            </Button>}
+          </Card.Title>
+          <Card.Text><Form.Control value={address} readOnly={!isEditing} onChange={(e) => { setAddress(e.target.value) }}></Form.Control></Card.Text>
+        </Card.Body>
+      </Card>
+    </Col>
+  );
+}
 function updateUserDetails(user, dispName) {
   updateProfile(user, {
     displayName: dispName,
