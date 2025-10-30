@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, use } from "react";
 import { cartContext, themeContext } from "../App";
 import { UserContext } from "./FirebaseAuth";
 import {
@@ -27,6 +27,7 @@ function Search() {
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSort, setSelectedSort] = useState("");
   const [selectedRange, setSelectedRange] = useState("");
+  const [selectedSize, setSelectedSize] = useState("");
 
   const [products, setProducts] = useState([]); // raw data
   const [loading, setLoading] = useState(true);
@@ -55,9 +56,9 @@ function Search() {
     setSelectedColor(param.get("color") || "");
     setSelectedSort(param.get("sort") || "");
     setSelectedRange(param.get("pricerange") || "");
+    setSelectedSize(param.get("size")||"");
   }, [location.search]);
 
-  // Filtering and sorting
   const filteredProducts = products
     .filter((p) => {
       if (
@@ -70,6 +71,7 @@ function Search() {
         if (min && p.price < min) return false;
         if (max && p.price > max) return false;
       }
+      if (selectedSize && !p.sizes.includes(selectedSize)) return false;
       if (
         query &&
         !(
@@ -111,6 +113,8 @@ function Search() {
 
     if (selectedRange) params.set("pricerange", selectedRange);
     else params.delete("pricerange");
+    if (selectedSize) params.set("size", selectedSize);
+    else params.delete("size");
 
     navigate(`/search?${params.toString()}`, { replace: true });
   };
@@ -124,7 +128,7 @@ function Search() {
 
     handleFilterChange();
     setCurrentPage(1);
-  }, [selectedColor, selectedSort, selectedRange]);
+  }, [selectedColor, selectedSort, selectedRange,selectedSize]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -181,6 +185,21 @@ function Search() {
               <option value="2000,">Above ₹2000</option>
             </Form.Select>
           </Form.Group>
+          <Form.Group controlId="sizeFilter" className="mb-3">
+            <Form.Label>Size</Form.Label>
+            <Form.Select
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)}
+            >
+              <option value="">All Sizes</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </Form.Select>
+          </Form.Group>
+
 
           <Form.Group controlId="sortFilter" className="mb-3">
             <Form.Label>Sort By</Form.Label>
@@ -201,6 +220,7 @@ function Search() {
                 setSelectedColor("");
                 setSelectedSort("");
                 setSelectedRange("");
+                setSelectedSize("")
                 navigate(`/search?s=${query}`);
               }}
             >
@@ -301,9 +321,9 @@ function Search() {
                   {filteredProducts.length === 0
                     ? "0"
                     : `${indexOfFirstProduct + 1}-${Math.min(
-                        indexOfLastProduct,
-                        filteredProducts.length
-                      )}`}{" "}
+                      indexOfLastProduct,
+                      filteredProducts.length
+                    )}`}{" "}
                   of {filteredProducts.length} products
                 </div>
               </>
