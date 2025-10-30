@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
+
 node_modules/*
 .idea
->>>>>>> 931d3b67 (fixed)
-=======
+
+
 # Logs
 logs
 *.log
@@ -30,4 +29,4 @@ dist-ssr
 *.sln
 *.sw?
 
->>>>>>> f2d9d4519ce1c2b87548402161f78d1ca0272d9b
+
