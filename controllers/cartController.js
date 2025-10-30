@@ -109,7 +109,7 @@
 import Cart from "../models/cartModel.js";
 import Product from "../models/productModel.js";
 
-// 🛒 Add item to cart
+// Add item to cart
 export const addToCart = async (req, res) => {
   try {
     const { userId, productId, size, color, quantity } = req.body;
@@ -121,7 +121,7 @@ export const addToCart = async (req, res) => {
     let cart = await Cart.findOne({ userId });
 
     if (!cart) {
-      // 🆕 Create new cart if user doesn't have one
+      //  Create new cart if user doesn't have one
       cart = new Cart({ userId, items: [], totalPrice: 0 });
     }
 
@@ -184,7 +184,7 @@ export const removeFromCart = async (req, res) => {
   }
 };
 
-// ✏️ Update item quantity
+// Update item quantity
 export const updateCartQuantity = async (req, res) => {
   try {
     const { userId, productId, size, quantity } = req.body;
@@ -215,7 +215,7 @@ export const updateCartQuantity = async (req, res) => {
   }
 };
 
-// 📦 Get user's cart
+// Get user's cart
 export const getCart = async (req, res) => {
   try {
     const { userId } = req.params;
