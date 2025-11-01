@@ -1,9 +1,12 @@
+import { number } from "framer-motion";
 import React, { useState } from "react";
 
 function Vton() {
   const [humanImage, setHumanImage] = useState(null);
   const [garmentImage, setGarmentImage] = useState(null);
-  const [category, setCategory] = useState("upper"); // default value
+  const [category, setCategory] = useState("upper_body"); // default value
+  const [steps, setSteps] = useState(30);
+  const [seed, setSeed] = useState(42);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -44,10 +47,10 @@ function Vton() {
   }
 
   return (
-    <div style={{ textAlign: "center", marginTop: "20px" }}>
+    <div className="d-flex flex-column mw-40 justift-content-center text-center">
       <h2>🧥 FableFit Try-On</h2>
 
-      <div>
+      <div className="d-flex gap-2">
         <p>Upload human image:</p>
         <input
           type="file"
@@ -56,7 +59,7 @@ function Vton() {
         />
       </div>
 
-      <div>
+      <div className="d-flex gap-2">
         <p>Upload garment image:</p>
         <input
           type="file"
@@ -64,9 +67,21 @@ function Vton() {
           onChange={(e) => setGarmentImage(e.target.files[0])}
         />
       </div>
+      <div className="d-flex gap-2">
+        <p>Denoising Steps:</p>
+              <input type="number" value={ steps} onChange={(e) => setSteps(e.target.value)} />
+          </div>
+          <div>
+        <p>seed:</p>
+              <input type="number" value={seed } onChange={(e) => setSeed(e.target.value)} ></input></div>
+      
+      
 
       {/* ✅ Category Dropdown */}
-      <div className="d-flex gap-2" style={{ marginTop: "10px", justifyContent: "center" }}>
+      <div
+        className="d-flex gap-2"
+        style={{ marginTop: "10px", justifyContent: "center" }}
+      >
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
