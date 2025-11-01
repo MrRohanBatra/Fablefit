@@ -245,6 +245,13 @@ function NavbarFinal() {
             >
               Kids
             </Nav.Link>
+            <Nav.Link
+              as={Link}
+              to="/vton"
+              className="fw-semibold text-uppercase "
+            >
+              VTON
+            </Nav.Link>
           </Nav>
           <Nav className="mx-auto d-none d-lg-flex">
             <marquee className="rounded-pill small">
