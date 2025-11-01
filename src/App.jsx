@@ -15,6 +15,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from "framer-motion";
 import ProductDisplay from './components/ProductDisplay';
 import Profile from './components/Profile';
+import Vton from './components/vton';
 function App_home() {
   const [theme, setTheme] = useState(document.documentElement.getAttribute('data-bs-theme'));
   const [user, setUser] = useState(null);
@@ -96,7 +97,8 @@ function App_home() {
               <Search />
             </motion.div>
           }
-        />
+                />
+                <Route path='/vton' element={<Vton></Vton>}></Route>
       </Routes>
     </AnimatePresence>
     </Appname.Provider>
