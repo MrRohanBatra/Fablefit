@@ -194,9 +194,7 @@ function Vton() {
       {/* Submit Button */}
       <button
         onClick={() => {
-          for (let i = 0; i < 10; i++){
-            handleSubmit()
-          }
+          handleSubmit()
         }}
         disabled={loading}
         style={{
