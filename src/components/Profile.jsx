@@ -440,13 +440,14 @@ function ProfileDetails() {
             onUploadComplete={(url) => {
               setVtonUrl(url);
             }}
+            user={user}
           ></UploadModal>
         </Container>
       </motion.div>
     </>
   );
 }
-function UploadModal({ show, onHide, onUploadComplete, showToast }) {
+function UploadModal({ show, onHide, onUploadComplete, showToast ,user}) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -459,18 +460,19 @@ function UploadModal({ show, onHide, onUploadComplete, showToast }) {
     setUploading(true);
     try {
       const formData = new FormData();
-      formData.append("vton_image", file);
-
-      // ✅ send to backend Flask endpoint
-      const response = await fetch("https://api.rohan.org.in/upload_vton", {
+      formData.append("image", file);
+      formData.append("uid", user.uid);
+      
+      const response = await fetch("http://localhost:5500/api/users/uploadimage", {
         method: "POST",
         body: formData,
       });
 
       if (response.ok) {
         const data = await response.json();
+        console.log(data);
         showToast("VTON image uploaded successfully!", "success");
-        onUploadComplete(data.url); // pass back uploaded URL
+        onUploadComplete(data.file); // pass back uploaded URL
         onHide();
       } else {
         showToast("Upload failed. Try again.", "danger");
