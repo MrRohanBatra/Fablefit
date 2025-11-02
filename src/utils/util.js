@@ -27,6 +27,17 @@ const updateAddress = (user, type, addr) => {
     }, 1000);
   });
 };
+const getVtonImageUrl = async (user) => {
+  const response = await fetch("/vton.json");
+  if (response.ok) {
+    const data = await response.json();
+    const { url } = data;
+    if (url) {
+      return url;
+    }
+  }
+  return null;
+}
 const loadCart = async (userID) => {
   const response = await fetch("/cart.json");
   const data = await response.json();
@@ -36,4 +47,4 @@ const loadCart = async (userID) => {
     return null;
   }
 };
-export { getPhoneNumber, getAddress, updateAddress, loadCart };
+export { getPhoneNumber, getAddress, updateAddress, loadCart,getVtonImageUrl };

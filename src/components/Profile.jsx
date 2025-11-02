@@ -1,9 +1,27 @@
 import { useState, useEffect, useContext, use } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Container, Row, Col, Nav, Form, Button, Card, InputGroup, Modal, Spinner, Toast, Image } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Nav,
+  Form,
+  Button,
+  Card,
+  InputGroup,
+  Modal,
+  Spinner,
+  Toast,
+  Image,
+} from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserContext } from "./FirebaseAuth";
-import { getAddress, getPhoneNumber, updateAddress } from "../utils/util";
+import {
+  getAddress,
+  getPhoneNumber,
+  getVtonImageUrl,
+  updateAddress,
+} from "../utils/util";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
 import { cartContext } from "../App";
 import { Cart } from "./Product/Cart";
@@ -13,11 +31,9 @@ function Profile() {
   const navigate = useNavigate();
   const [tab, setTab] = useState("details");
 
-
   useEffect(() => {
     if (page) setTab(page);
   }, [page]);
-
 
   const handleSelect = (key) => {
     setTab(key);
@@ -28,10 +44,21 @@ function Profile() {
     <Container className="mt-5 mb-5">
       <h2 className="fw-bold mb-4">My Account</h2>
 
-      <Nav variant="tabs" className="text-primary" activeKey={tab} onSelect={handleSelect}>
-        <Nav.Item><Nav.Link eventKey="details">Account Details</Nav.Link></Nav.Item>
-        <Nav.Item><Nav.Link eventKey="cart">Cart</Nav.Link></Nav.Item>
-        <Nav.Item><Nav.Link eventKey="orders">Orders</Nav.Link></Nav.Item>
+      <Nav
+        variant="tabs"
+        className="text-primary"
+        activeKey={tab}
+        onSelect={handleSelect}
+      >
+        <Nav.Item>
+          <Nav.Link eventKey="details">Account Details</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="cart">Cart</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="orders">Orders</Nav.Link>
+        </Nav.Item>
       </Nav>
 
       {/* Animate tab content */}
@@ -74,7 +101,6 @@ function Profile() {
   );
 }
 
-
 function ProfileDetails() {
   const [user, setUser, handleSignOut] = useContext(UserContext);
   const [editMode, setEditMode] = useState(false);
@@ -93,15 +119,32 @@ function ProfileDetails() {
 
   const [firstName, setFirstName] = useState(firstNameInit);
   const [lastName, setLastName] = useState(lastNameInit);
+  const [phoneNumber, setPhoneNumber] = useState("0");
   const [addressList, setAddress] = useState([]);
+  const [vtonUrl, setVtonUrl] = useState(null);
+  const [loadingVton, setLoadingVton] = useState(true);
+  const [showUploadModal, setShowUploadModal] = useState(false);
 
   useEffect(() => {
     setFirstName(firstNameInit);
     setLastName(lastNameInit);
+    setPhoneNumber(getPhoneNumber(user));
   }, [user]);
   useEffect(() => {
-    getAddress(user).then((data) => { setAddress(data) });
-  }, [])
+    getAddress(user).then((data) => {
+      setAddress(data);
+    });
+  }, []);
+  useEffect(() => {
+    const fetchVton = async () => {
+      setLoadingVton(true);
+      const url = await getVtonImageUrl(user?.uid);
+      setVtonUrl(url);
+      setLoadingVton(false);
+    };
+    if (user) fetchVton();
+  }, [user]);
+
   const showToast = (message, variant = "info", duration = 2500) => {
     setToast({ show: true, message, variant });
     setTimeout(() => setToast((prev) => ({ ...prev, show: false })), duration);
@@ -138,7 +181,10 @@ function ProfileDetails() {
   return (
     <>
       {/* === ANIMATED TOAST === */}
-      <div className="position-fixed top-0 end-0 p-3" style={{ marginTop: "70px", zIndex: 1060 }}>
+      <div
+        className="position-fixed top-0 end-0 p-3"
+        style={{ marginTop: "70px", zIndex: 1060 }}
+      >
         <AnimatePresence>
           {toast.show && (
             <motion.div
@@ -153,21 +199,26 @@ function ProfileDetails() {
                   toast.variant === "danger"
                     ? "danger"
                     : toast.variant === "success"
-                      ? "success"
-                      : "light"
+                    ? "success"
+                    : "light"
                 }
                 onClose={() => setToast({ ...toast, show: false })}
                 className="shadow-lg rounded-3"
               >
                 <Toast.Header className="d-flex justify-content-between align-items-center">
                   <div className="d-flex align-items-center">
-                    <Image src="/react.svg" width={20} className="rounded me-2" />
+                    <Image
+                      src="/react.svg"
+                      width={20}
+                      className="rounded me-2"
+                    />
                     <strong className="me-auto">FableFit</strong>
                   </div>
                 </Toast.Header>
                 <Toast.Body
-                  className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
-                    }`}
+                  className={`fw-semibold ${
+                    toast.variant === "danger" ? "text-white" : ""
+                  }`}
                 >
                   {toast.message}
                   {saving && toast.variant === "info" && (
@@ -224,9 +275,15 @@ function ProfileDetails() {
                 <Form.Group className="mb-3">
                   <Form.Label>Email</Form.Label>
                   <InputGroup>
-                    <Form.Control type="email" value={user?.email || ""} readOnly />
+                    <Form.Control
+                      type="email"
+                      value={user?.email || ""}
+                      readOnly
+                    />
                     {user?.emailVerified ? (
-                      <InputGroup.Text className="text-success">Verified</InputGroup.Text>
+                      <InputGroup.Text className="text-success">
+                        Verified
+                      </InputGroup.Text>
                     ) : (
                       <InputGroup.Text
                         className="text-danger"
@@ -251,11 +308,64 @@ function ProfileDetails() {
                     <InputGroup.Text>+91</InputGroup.Text>
                     <Form.Control
                       type="number"
-                      value={getPhoneNumber(user)}
-                      readOnly
+                      value={phoneNumber}
+                      onChange={(e)=>{setPhoneNumber(e.target.value)}}
+                      readOnly={!editMode}
                     />
                   </InputGroup>
                 </Form.Group>
+              </Col>
+            </Row>
+            {/* === VTON STATUS SECTION === */}
+            <Row className="mt-4">
+              <Col md={12}>
+                <Card className="shadow-sm border-0 rounded-3 p-3">
+                  <Card.Body>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h6 className="mb-1">Virtual Try-On Image</h6>
+                        {loadingVton ? (
+                          <Spinner animation="border" size="sm" />
+                        ) : vtonUrl ? (
+                          <small
+                            className="text-success fw-semibold"
+                            onClick={() => {
+                              window.location.href = vtonUrl;
+                            }}
+                          >
+                            ✅ Your VTON image is uploaded.
+                          </small>
+                        ) : (
+                          <small className="text-danger fw-semibold">
+                            ⚠️ No VTON image found.
+                          </small>
+                        )}
+                      </div>
+
+                      <div>
+                        {vtonUrl ? (
+                          <Button
+                            variant="outline-primary"
+                            onClick={() => {
+                              setShowUploadModal(true);
+                            }}
+                          >
+                            Re-Upload
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              setShowUploadModal(true);
+                            }}
+                          >
+                            Upload
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
               </Col>
             </Row>
 
@@ -279,7 +389,7 @@ function ProfileDetails() {
                   <Button
                     variant="primary"
                     className="ms-4"
-                    onClick={() => setEditMode(true)}
+                    onClick={() => { setEditMode(true);showToast("Email cannot be changed","info",3000) }}
                   >
                     Edit Details
                   </Button>
@@ -309,22 +419,114 @@ function ProfileDetails() {
                   {addressList.map((obj, index) => {
                     const [type, addr] = Object.entries(obj)[0];
                     return (
-                      <AddressCard type={type} addr={addr} index={index} user={user} key={index} showToast={showToast}></AddressCard>
+                      <AddressCard
+                        type={type}
+                        addr={addr}
+                        index={index}
+                        user={user}
+                        key={index}
+                        showToast={showToast}
+                      ></AddressCard>
                     );
                   })}
                 </>
               )}
             </Row>
           </Form>
+          <UploadModal
+            show={showUploadModal}
+            showToast={showToast}
+            onHide={() => setShowUploadModal(false)}
+            onUploadComplete={(url) => {
+              setVtonUrl(url);
+            }}
+          ></UploadModal>
         </Container>
       </motion.div>
     </>
   );
 }
+function UploadModal({ show, onHide, onUploadComplete, showToast }) {
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
+  const handleUpload = async () => {
+    if (!file) {
+      showToast("Please select an image first", "danger");
+      return;
+    }
 
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("vton_image", file);
 
-function AddressCard({ type, addr,user,index,showToast }) {
+      // ✅ send to backend Flask endpoint
+      const response = await fetch("https://api.rohan.org.in/upload_vton", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        showToast("VTON image uploaded successfully!", "success");
+        onUploadComplete(data.url); // pass back uploaded URL
+        onHide();
+      } else {
+        showToast("Upload failed. Try again.", "danger");
+      }
+    } catch (error) {
+      console.error(error);
+      showToast("Error during upload.", "danger");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Upload Virtual Try-On Image</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>Select an image (JPG, PNG)</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+        </Form.Group>
+
+        {file && (
+          <p className="text-muted small mb-0">
+            Selected: <strong>{file.name}</strong>
+          </p>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide} disabled={uploading}>
+          Cancel
+        </Button>
+        <Button
+          variant="primary"
+          onClick={handleUpload}
+          disabled={!file || uploading}
+        >
+          {uploading ? (
+            <>
+              <Spinner animation="border" size="sm" /> Uploading...
+            </>
+          ) : (
+            "Upload"
+          )}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function AddressCard({ type, addr, user, index, showToast }) {
   const [isEditing, setIsEditing] = useState(false);
   const [address, setAddress] = useState(addr);
   return (
@@ -333,21 +535,47 @@ function AddressCard({ type, addr,user,index,showToast }) {
         <Card.Body>
           <Card.Title className="d-flex justify-content-between align-items-center">
             <span className="text-capitalize fw-bold">{type} Address</span>
-            {!isEditing ? <Button
-              variant="outline-primary"
-              size="sm"
-              onClick={() => setIsEditing(!isEditing)}
-            >
-              Edit
-            </Button> : <Button
-              variant="outline-primary"
-              size="sm"
-              onClick={() => { showToast(`Updating ${type} Address`,"info",1500);updateAddress(user, type, address).then(()=>{ setIsEditing(!isEditing);showToast(`Updated ${type} Address`,"success",3000);}).catch((e)=>{showToast(`Error in Updating ${type}Address`,"danger",3000)}) }}
-            >
-              Save 
-            </Button>}
+            {!isEditing ? (
+              <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                Edit
+              </Button>
+            ) : (
+              <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={() => {
+                  showToast(`Updating ${type} Address`, "info", 1500);
+                  updateAddress(user, type, address)
+                    .then(() => {
+                      setIsEditing(!isEditing);
+                      showToast(`Updated ${type} Address`, "success", 3000);
+                    })
+                    .catch((e) => {
+                      showToast(
+                        `Error in Updating ${type}Address`,
+                        "danger",
+                        3000
+                      );
+                    });
+                }}
+              >
+                Save
+              </Button>
+            )}
           </Card.Title>
-          <Card.Text><Form.Control value={address} readOnly={!isEditing} onChange={(e) => { setAddress(e.target.value) }}></Form.Control></Card.Text>
+          <Card.Text>
+            <Form.Control
+              value={address}
+              readOnly={!isEditing}
+              onChange={(e) => {
+                setAddress(e.target.value);
+              }}
+            ></Form.Control>
+          </Card.Text>
         </Card.Body>
       </Card>
     </Col>
@@ -356,7 +584,7 @@ function AddressCard({ type, addr,user,index,showToast }) {
 function updateUserDetails(user, dispName) {
   updateProfile(user, {
     displayName: dispName,
-  })
+  });
 }
 function ProfileCart() {
   const [cart, setCart] = useContext(cartContext);
@@ -395,7 +623,10 @@ function ProfileCart() {
 
       <Card className="p-3 mt-3">
         {cart.items.map((item, index) => (
-          <Row key={index} className="align-items-center mb-3 border-bottom pb-3">
+          <Row
+            key={index}
+            className="align-items-center mb-3 border-bottom pb-3"
+          >
             <Col xs={3} md={2}>
               <Image
                 src={item.product.images?.[0] || "/placeholder.png"}
@@ -419,7 +650,12 @@ function ProfileCart() {
                 size="sm"
                 value={item.quantity}
                 onChange={(e) =>
-                  handleQuantityChange(item.product._id, item.size, item.color, e.target.value)
+                  handleQuantityChange(
+                    item.product._id,
+                    item.size,
+                    item.color,
+                    e.target.value
+                  )
                 }
               >
                 {[...Array(10).keys()].map((n) => (
@@ -440,7 +676,9 @@ function ProfileCart() {
               <Button
                 variant="outline-danger"
                 size="sm"
-                onClick={() => handleRemove(item.product._id, item.size, item.color)}
+                onClick={() =>
+                  handleRemove(item.product._id, item.size, item.color)
+                }
               >
                 Remove
               </Button>

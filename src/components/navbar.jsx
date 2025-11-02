@@ -142,7 +142,7 @@ function NavbarFinal() {
           className="d-flex align-items-center"
         >
           <Image
-            src={"/pp.png"/*`https://avatar.iran.liara.run/username?username=${user.displayName}`*/}
+            src={user?.photoURL?user.photoURL:"/pp.png"/*"/pp.png"`https://avatar.iran.liara.run/username?username=${user.displayName}`*/}
             alt={user.displayName}
             roundedCircle
             width="32"
