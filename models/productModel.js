@@ -19,17 +19,17 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Product price"],
     },
-    // sizes: {
-    //   type: [String],    // ["S", "M", "L", "XL"]
-    //   default:[],
-    //   required: true,
+    sizes: {
+      type: [String],    // ["S", "M", "L", "XL"]
+      default:[],
+      required: true,
 
-    // },
+    },
 
-    size: {
-          type: String,
-          required: true, // 👈 this makes 'size' mandatory
-        },
+    // size: {
+    //       type: String,
+    //       required: true, // 👈 this makes 'size' mandatory
+    //     },
     color: {
       type: String,
       default:[],
