@@ -16,10 +16,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import ProductDisplay from './components/ProductDisplay';
 import Profile from './components/Profile';
 import Vton from './components/vton';
+import { loadCart } from './utils/util';
+import Cart from './components/Product/Cart';
 function App_home() {
   const [theme, setTheme] = useState(document.documentElement.getAttribute('data-bs-theme'));
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(new Cart(null));
   const [name, setName] = useState("FableFit")
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -32,6 +34,22 @@ function App_home() {
     signOut(auth)
     setUser(null);
   }
+  useEffect(() => {
+    if (user) {
+      loadCart(user?.uid).then((data) => {
+        if (data) {
+          setCart(data);
+        }
+        else {
+          setCart(new Cart(user.uid, []));
+        }
+        console.log(data);
+      })
+    }
+    else {
+      setCart(new Cart(null, []));
+    }
+  },[user])
   const location = useLocation();
   return (
     

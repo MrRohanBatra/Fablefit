@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { UserContext } from "./FirebaseAuth";
 import { getAddress, getPhoneNumber, updateAddress } from "../utils/util";
 import { sendEmailVerification, updateProfile } from "firebase/auth";
+import { cartContext } from "../App";
+import { Cart } from "./Product/Cart";
 
 function Profile() {
   const { page } = useParams();
@@ -357,16 +359,105 @@ function updateUserDetails(user, dispName) {
   })
 }
 function ProfileCart() {
+  const [cart, setCart] = useContext(cartContext);
+
+  const handleRemove = (productId, size, color) => {
+    setCart((prev) => {
+      prev.removeProduct(productId, size, color);
+      return new Cart(prev.userId, [...prev.items], prev.totalPrice);
+    });
+  };
+
+  const handleQuantityChange = (productId, size, color, newQty) => {
+    const quantity = parseInt(newQty, 10);
+    if (quantity > 0) {
+      setCart((prev) => {
+        prev.updateQuantity(productId, size, color, quantity);
+        return new Cart(prev.userId, [...prev.items], prev.totalPrice);
+      });
+    }
+  };
+
+  if (cart.length() === 0) {
+    return (
+      <Container className="mt-4">
+        <h4>Your Cart</h4>
+        <Card className="p-3 mt-3 text-center">
+          <p className="text-muted mb-0">🛒 No items in your cart yet.</p>
+        </Card>
+      </Container>
+    );
+  }
+
   return (
     <Container className="mt-4">
-      <h4>Your Cart</h4>
+      <h4 className="fw-bold">Your Cart</h4>
+
       <Card className="p-3 mt-3">
-        <p>No items in your cart yet.</p>
+        {cart.items.map((item, index) => (
+          <Row key={index} className="align-items-center mb-3 border-bottom pb-3">
+            <Col xs={3} md={2}>
+              <Image
+                src={item.product.images?.[0] || "/placeholder.png"}
+                alt={item.product.name}
+                fluid
+                rounded
+              />
+            </Col>
+
+            <Col xs={9} md={4}>
+              <h6 className="mb-1">{item.product.name}</h6>
+              <small className="text-muted">{item.product.companyName}</small>
+              <br />
+              <small>
+                Size: <b>{item.size}</b> | Color: <b>{item.color}</b>
+              </small>
+            </Col>
+
+            <Col xs={12} md={3} className="mt-2 mt-md-0">
+              <Form.Select
+                size="sm"
+                value={item.quantity}
+                onChange={(e) =>
+                  handleQuantityChange(item.product._id, item.size, item.color, e.target.value)
+                }
+              >
+                {[...Array(10).keys()].map((n) => (
+                  <option key={n + 1} value={n + 1}>
+                    {n + 1}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
+
+            <Col xs={12} md={2} className="text-md-end mt-2 mt-md-0">
+              <p className="mb-1 fw-semibold">
+                ₹{(item.product.price * item.quantity).toFixed(2)}
+              </p>
+            </Col>
+
+            <Col xs={12} md={1} className="text-md-end mt-2 mt-md-0">
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={() => handleRemove(item.product._id, item.size, item.color)}
+              >
+                Remove
+              </Button>
+            </Col>
+          </Row>
+        ))}
+
+        <div className="text-end mt-3">
+          <h5>Total: ₹{cart.totalPrice.toFixed(2)}</h5>
+          <Button variant="success" className="mt-2">
+            Proceed to Checkout
+          </Button>
+        </div>
       </Card>
     </Container>
   );
 }
-
 function ProfileOrders() {
   return (
     <Container className="mt-4">

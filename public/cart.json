@@ -1,0 +1,51 @@
+{
+  "_id": "cart_0001",
+  "userId": "x2T2vCT1xkTVmCmUsY3gBFllXKG3",
+  "items": [
+    {
+      "_id": "item_001",
+      "product": {
+        "_id": "prod_0001",
+        "name": "Vintage Hoodie",
+        "price": 167,
+        "color": "Blue",
+        "companyName": "UrbanThreads",
+        "images": ["/blur.jpg", "/place.png", "/random.png"]
+      },
+      "size": "M",
+      "color": "Blue",
+      "quantity": 2
+    },
+    {
+      "_id": "item_002",
+      "product": {
+        "_id": "prod_0002",
+        "name": "Graphic Jeans",
+        "price": 184,
+        "color": "Green",
+        "companyName": "EcoWear",
+        "images": ["/blur.jpg", "/place.png", "/random.png"]
+      },
+      "size": "L",
+      "color": "Green",
+      "quantity": 1
+    },
+    {
+      "_id": "item_003",
+      "product": {
+        "_id": "prod_0004",
+        "name": "Oversized Hat",
+        "price": 218,
+        "color": "White",
+        "companyName": "UrbanThreads",
+        "images": ["/blur.jpg", "/place.png", "/random.png"]
+      },
+      "size": "One Size",
+      "color": "White",
+      "quantity": 1
+    }
+  ],
+  "totalPrice": 736,
+  "createdAt": "2025-11-02T12:30:00.000Z",
+  "updatedAt": "2025-11-02T12:35:00.000Z"
+}

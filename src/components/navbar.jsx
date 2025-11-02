@@ -98,7 +98,7 @@ function NavbarFinal() {
   const [showSearchCanvas, setSearchCanvas] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [cart, setCart] = useContext(cartContext);
-  const [cartItemCount, setCartItemCount] = useState(cart.length);
+  const [cartItemCount, setCartItemCount] = useState(cart.length());
   const loadTheme = () => {
     const data = localStorage.getItem("theme") || "light";
     setTheme(data);
@@ -111,7 +111,7 @@ function NavbarFinal() {
     document.documentElement.setAttribute("data-bs-theme", th);
   };
   useEffect(() => {
-    setCartItemCount(cart.length);
+    setCartItemCount(cart.length());
   }, [cart]);
   useEffect(() => {
     loadTheme();
@@ -287,7 +287,7 @@ function NavbarFinal() {
             {/* 3. Account and Cart Icons */}
             <Nav.Link
               as={Link}
-              to="/#cart"
+              to="/profile/cart"
               className="position-relative"
               title="Shopping Cart"
             >

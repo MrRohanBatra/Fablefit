@@ -15,6 +15,7 @@ import {
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import Product from "./Product/Product";
 import "../CSS/products-scroll.css";
+import Cart from "./Product/Cart";
 function Search() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,7 +57,7 @@ function Search() {
     setSelectedColor(param.get("color") || "");
     setSelectedSort(param.get("sort") || "");
     setSelectedRange(param.get("pricerange") || "");
-    setSelectedSize(param.get("size")||"");
+    setSelectedSize(param.get("size") || "");
   }, [location.search]);
 
   const filteredProducts = products
@@ -128,7 +129,7 @@ function Search() {
 
     handleFilterChange();
     setCurrentPage(1);
-  }, [selectedColor, selectedSort, selectedRange,selectedSize]);
+  }, [selectedColor, selectedSort, selectedRange, selectedSize]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -200,7 +201,6 @@ function Search() {
             </Form.Select>
           </Form.Group>
 
-
           <Form.Group controlId="sortFilter" className="mb-3">
             <Form.Label>Sort By</Form.Label>
             <Form.Select
@@ -220,7 +220,7 @@ function Search() {
                 setSelectedColor("");
                 setSelectedSort("");
                 setSelectedRange("");
-                setSelectedSize("")
+                setSelectedSize("");
                 navigate(`/search?s=${query}`);
               }}
             >
@@ -274,7 +274,19 @@ function Search() {
                               variant="primary"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setCart([...cart, product]);
+                                setCart((prev) => {
+                                  prev.addProduct(
+                                    product,
+                                    "M",
+                                    product.color,
+                                    1
+                                  ); // ✅ use addProduct()
+                                  return new Cart(
+                                    prev.userId,
+                                    [...prev.items],
+                                    prev.totalPrice
+                                  ); // ✅ new reference
+                                });
                               }}
                             >
                               Add to Cart
@@ -321,9 +333,9 @@ function Search() {
                   {filteredProducts.length === 0
                     ? "0"
                     : `${indexOfFirstProduct + 1}-${Math.min(
-                      indexOfLastProduct,
-                      filteredProducts.length
-                    )}`}{" "}
+                        indexOfLastProduct,
+                        filteredProducts.length
+                      )}`}{" "}
                   of {filteredProducts.length} products
                 </div>
               </>
