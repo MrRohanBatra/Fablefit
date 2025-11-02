@@ -1,0 +1,37 @@
+import mongoose from "mongoose";
+
+const userSchema = new mongoose.Schema(
+  {
+    uid: {
+      type: String,
+      required: true,
+      unique: true, // Firebase UID
+    },
+    phone: {
+      type: String,
+      default: null,
+    },
+    address: {
+      home: {
+        type: String,
+        default: null,
+      },
+      work: {
+        type: String,
+        default: null,
+      },
+    },
+    vton_image: {
+      type: String,
+      default: null, // URL or file path
+    },
+    type: {
+      type: String,
+      enum: ["normal", "seller"],
+      default: "normal",
+    },
+  },
+  { timestamps: true } // adds createdAt and updatedAt
+);
+const User=mongoose.model("User", userSchema);
+export default User;
