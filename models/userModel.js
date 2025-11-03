@@ -11,15 +11,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    // address: {
+    //   home: {
+    //     type: String,
+    //     default: null,
+    //   },
+    //   work: {
+    //     type: String,
+    //     default: null,
+    //   },
+    // },
     address: {
-      home: {
-        type: String,
-        default: null,
-      },
-      work: {
-        type: String,
-        default: null,
-      },
+      type: [mongoose.Schema.Types.Mixed],
+      default: [],
     },
     vton_image: {
       type: String,
@@ -31,7 +35,7 @@ const userSchema = new mongoose.Schema(
       default: "normal",
     },
   },
-  { timestamps: true } // adds createdAt and updatedAt
+  { timestamps: true }
 );
-const User=mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 export default User;

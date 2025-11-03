@@ -2,52 +2,44 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-//import productRoutes from "./routes/productRoutes.js";
-//import productRoutes from "./routes/productRoutes.js";
-import productRoutes from "./routes/poductRoutes.js"
-//import connectDB from "./db";
-import connectDB from "./db.js"
+import fileUpload from "express-fileupload";
+// import productRoutes from "./routes/productRoutes.js"; // ✅ fixed typo
+import connectDB from "./db.js";
 import cartRoutes from "./routes/cartRoutes.js";
-//dotenv.config();
+import orderRouter from "./routes/orderRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+
+dotenv.config(); // ✅ load .env variables
+
 const app = express();
 
+// --- Middleware ---
 app.use(express.json());
-app.use(cors());
-
-
-
-//const express=require('express');
-//const app=express();
-//const connectDB=require('./db');
-
-//const PORT=3000;
-//app.use(express.json());
-
+app.use(
+  cors({
+    origin: "*", // ✅ allow all origins (good for dev)
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+app.use(fileUpload(
+  {
+    useTempFiles: false,
+    createParentPath: true,
+  }
+))
+// --- Connect to MongoDB ---
 connectDB();
 
-// MongoDB Connection
-// mongoose
-//   .connect(process.env.MONGO_URI)
-//   .then(() => console.log("MongoDB Connected"))
-//   .catch((err) => console.log(" Error:", err));
-
-
-
-
-
-app.use("/api/cart", cartRoutes);
-
-
-
-
-
-// Base route
+// --- Root Route ---
 app.get("/", (req, res) => {
-  res.send("E-commerce backend is running");
+  res.status(200).send({ message:"Running"});
 });
 
-// Product routes
-app.use("/api/products", productRoutes);
-
+// --- API Routes ---
+// app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/orders", orderRouter);
+app.use("/api/users/", userRouter);
+// --- Start Server ---
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
