@@ -56,7 +56,10 @@ export const addUser = async (req, res) => {
 
       if (phone) user.phone = phone;
       if (type) user.type = type;
-      if (vton_image) user.vton_image = vton_image;
+      if (vton_image) {
+        console.log("🖼️ Updating vton_image:", vton_image);
+        user.vton_image = vton_image;
+      }
 
       if (address) {
         console.log("🏠 Updating address:", address);
