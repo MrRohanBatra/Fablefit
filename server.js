@@ -19,6 +19,7 @@ app.use(
   cors({
     origin: "*", // ✅ allow all origins (good for dev)
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
 app.use(fileUpload(
