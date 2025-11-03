@@ -10,10 +10,7 @@ import orderRouter from "./routes/orderRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
-<<<<<<< HEAD
-=======
 import productRouter from "./routes/poductRoutes.js";
->>>>>>> 8e9313f6 (okay)
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -67,11 +64,8 @@ app.get("/", (req, res) => {
   res.status(200).send({ message:"Running"});
 });
 app.use("/images", express.static(path.join(__dirname, "images")));
-<<<<<<< HEAD
 
-=======
 app.use("/product_images", express.static(path.join(__dirname, "product_images")));
->>>>>>> 8e9313f6 (okay)
 // --- API Routes ---
 // app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
