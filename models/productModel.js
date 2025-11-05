@@ -38,11 +38,6 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    companyId: {
-      type: mongoose.Schema.Types.ObjectId,
-      default: () => new mongoose.Types.ObjectId(),
-      ref: "Company"
-    },
     companyName: {
       type: String,
       required: true,
@@ -52,7 +47,7 @@ const productSchema = new mongoose.Schema(
       type: [String], 
       default: [],
     },
-    model_3d_url: {
+    vton_category: {
       type: String, // URL for virtual try-on
     },
   },
