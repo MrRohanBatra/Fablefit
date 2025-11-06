@@ -28,7 +28,7 @@ function ProductDisplay() {
   const navigate = useNavigate();
 
   async function getProductWithID(pid) {
-    const response = await fetch("/product.json");
+    const response = await fetch("http://localhost:5500/api/products/");
     const data = await response.json();
     const products = data.map((p) => new Product(p));
     const product = products.find((el) => el._id == pid);
@@ -74,15 +74,33 @@ function ProductDisplay() {
     }
   };
 
-  const handleAddToCart = () => {
-    if (!selectedSize) {
-      alert("Please select a size first.");
-      return;
-    }
-    const item = { ...product, size: selectedSize, quantity };
-    setCart((prev) => [...prev, item]);
-    alert(`${quantity} item(s) added to cart!`);
-  };
+  const handleAddToCart = async () => {
+  if (!selectedSize) {
+    alert("Please select a size first.");
+    return;
+  }
+
+  try {
+    const color = product.color || "Default";
+    const quantityToAdd = quantity || 1;
+
+    // 🧾 Call your Cart class method — it syncs with backend automatically
+    const updatedCart = await cart.addProduct(
+      product,
+      selectedSize,
+      color,
+      quantityToAdd
+    );
+
+    setCart(updatedCart); // ✅ replace old cart with new one
+
+    alert(`${quantityToAdd} item(s) added to cart!`);
+  } catch (err) {
+    console.error("❌ Failed to add to cart:", err);
+    alert("Failed to add item to cart. Please try again.");
+  }
+};
+
 
   if (loading) {
     return (

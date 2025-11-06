@@ -1,86 +1,116 @@
+import Product from "./Product.js";
+
 class Cart {
-    constructor(userId, items = [], totalPrice = 0) {
-        this.userId = userId;
-        this.items = items;
-        this.totalPrice = totalPrice;
-    }
+  constructor(data = {}) {
+    this._id = data._id || null;
+    this.uid = data.uid || null;
 
-    static fromJson(data) {
-        return new Cart(
-            data.userId,
-            data.items || [],
-            data.totalPrice || 0
-        );
-    }
+    // ✅ Keep items intact but normalized
+    this.items = Array.isArray(data.items)
+      ? data.items.map((item) => ({
+          product: item.product || null, // may be string (id) or object
+          size: item.size || null,
+          color: item.color || null,
+          quantity: item.quantity || 1,
+        }))
+      : [];
 
- 
-    addProduct(product, size, color, quantity = 1) {
-        const existingItem = this.items.find(
-            (item) =>
-                item.product._id === product._id &&
-                item.size === size &&
-                item.color === color
-        );
+    this.totalPrice = data.totalPrice || 0;
+    this.createdAt = data.createdAt || null;
+    this.updatedAt = data.updatedAt || null;
+  }
 
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            this.items.push({ product, size, color, quantity });
-        }
+  /** 🧾 Convert to backend format */
+  toJSON() {
+    return {
+      uid: this.uid,
+      totalPrice: this.totalPrice,
+      items: this.items.map((item) => ({
+        product:
+          typeof item.product === "object"
+            ? item.product._id
+            : item.product, // keep ID if already string
+        size: item.size,
+        color: item.color,
+        quantity: item.quantity,
+      })),
+    };
+  }
 
-        this.updateTotalPrice();
-    }
+  /** 💰 Local total recalculation */
+  recalcTotal() {
+    this.totalPrice = this.items.reduce((sum, item) => {
+      const price =
+        typeof item.product === "object" ? item.product.price || 0 : 0;
+      return sum + price * item.quantity;
+    }, 0);
+  }
 
-    updateTotalPrice() {
-        this.totalPrice = this.items.reduce(
-            (sum, item) => sum + item.product.price * item.quantity,
-            0
-        );
-    }
+  /** 🛒 Add a product (and sync to backend) */
+  async addProduct(product, size, color, quantity = 1) {
+    const payload = {
+      uid: this.uid,
+      productId:
+        typeof product === "object" ? product._id : product, // allow passing id or object
+      size,
+      color,
+      quantity,
+    };
 
-    removeProduct(productId, size, color) {
-        this.items = this.items.filter(
-            (item) =>
-                !(
-                    item.product._id === productId &&
-                    item.size === size &&
-                    item.color === color
-                )
-        );
+    const res = await fetch("http://localhost:5500/api/cart/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-        this.updateTotalPrice();
-    }
+    if (!res.ok) throw new Error("Failed to add to cart");
+    const data = await res.json();
+    return new Cart(data.cart);
+  }
 
-    updateQuantity(productId, size, color, quantity) {
-        const item = this.items.find(
-            (i) =>
-                i.product._id === productId &&
-                i.size === size &&
-                i.color === color
-        );
+  /** ❌ Remove an item */
+  async removeProduct(productId, size, color) {
+    const res = await fetch("http://localhost:5500/api/cart/remove", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uid: this.uid, productId, size, color }),
+    });
 
-        if (item) {
-            item.quantity = quantity;
-            this.updateTotalPrice();
-        }
-    }
-    toJSON() {
-        return {
-            userId: this.userId,
-            totalPrice: this.totalPrice,
-            items: this.items.map((item) => ({
-                product: item.product._id, // only send the ID
-                size: item.size,
-                color: item.color,
-                quantity: item.quantity
-            }))
-        };
-    }
-    length() {
-        return this.items.length;
-    }
+    if (!res.ok) throw new Error("Failed to remove from cart");
+    const data = await res.json();
+    return new Cart(data.cart);
+  }
+
+  /** 🔢 Update quantity */
+  async updateQuantity(productId, size, color, quantity) {
+    const res = await fetch("http://localhost:5500/api/cart/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uid: this.uid, productId, size, color, quantity }),
+    });
+
+    if (!res.ok) throw new Error("Failed to update quantity");
+    const data = await res.json();
+    return new Cart(data.cart);
+  }
+
+  /** 🔄 Load cart for a user */
+  static async fetchForUser(uid) {
+    const res = await fetch(`http://localhost:5500/api/cart/${uid}`);
+    if (!res.ok) throw new Error("Failed to load cart");
+    const data = await res.json();
+    return new Cart(data);
+  }
+
+  /** 🧮 Get total items count */
+  get itemCount() {
+    return this.items.reduce((sum, i) => sum + i.quantity, 0);
+  }
+
+  length() {
+    return this.itemCount;
+  }
 }
-export default Cart
-export {
-    Cart,
-}
+
+export { Cart };
+export default Cart;

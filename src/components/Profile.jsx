@@ -26,7 +26,7 @@ import { sendEmailVerification, updateProfile } from "firebase/auth";
 import { cartContext } from "../App";
 import { Cart } from "./Product/Cart";
 import { User } from "./User/user";
-
+import Product from "./Product/Product";
 function Profile() {
   const { page } = useParams();
   const navigate = useNavigate();
@@ -828,25 +828,88 @@ function updateUserDetails(user, dispName) {
 }
 function ProfileCart() {
   const [cart, setCart] = useContext(cartContext);
+  const [detailedItems, setDetailedItems] = useState([]); // holds { item, product }
 
-  const handleRemove = (productId, size, color) => {
-    setCart((prev) => {
-      prev.removeProduct(productId, size, color);
-      return new Cart(prev.userId, [...prev.items], prev.totalPrice);
-    });
-  };
+  // 🧠 Fetch product details for each cart item
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        console.log("🧾 Cart items:", cart.items);
+        if (!cart?.items?.length) {
+          setDetailedItems([]);
+          return;
+        }
 
-  const handleQuantityChange = (productId, size, color, newQty) => {
-    const quantity = parseInt(newQty, 10);
-    if (quantity > 0) {
-      setCart((prev) => {
-        prev.updateQuantity(productId, size, color, quantity);
-        return new Cart(prev.userId, [...prev.items], prev.totalPrice);
-      });
+        // Fetch all product details in parallel
+        const productFetches = await Promise.all(
+          cart.items.map(async (item) => {
+            try {
+              // Get product ID (could be string or object)
+              const productId =
+                typeof item.product === "object"
+                  ? item.product._id
+                  : item.product;
+
+              if (!productId) throw new Error("Missing product ID");
+
+              const res = await fetch(
+                `http://localhost:5500/api/products/id/${productId}`
+              );
+
+              if (!res.ok) throw new Error(`Product ${productId} not found`);
+              const data = await res.json();
+
+              // Wrap as Product instance for uniformity
+              const product = new Product(data);
+              return { item, product };
+            } catch (err) {
+              console.warn("⚠️ Failed to load product:", item, err);
+              // fallback empty product
+              return { item, product: new Product({}) };
+            }
+          })
+        );
+
+        setDetailedItems(productFetches);
+      } catch (err) {
+        console.error("❌ Error loading cart product details:", err);
+        setDetailedItems([]);
+      }
+    };
+
+    loadProducts();
+  }, [cart]);
+
+  // 🗑️ Remove an item
+  const handleRemove = async (productId, size, color) => {
+    try {
+      const updated = await cart.removeProduct(productId, size, color);
+      setCart(updated);
+    } catch (err) {
+      console.error("❌ Failed to remove product:", err);
     }
   };
 
-  if (cart.length() === 0) {
+  // 🔢 Update item quantity
+  const handleQuantityChange = async (productId, size, color, newQty) => {
+    const quantity = parseInt(newQty, 10);
+    if (quantity > 0) {
+      try {
+        const updated = await cart.updateQuantity(
+          productId,
+          size,
+          color,
+          quantity
+        );
+        setCart(updated);
+      } catch (err) {
+        console.error("❌ Failed to update quantity:", err);
+      }
+    }
+  };
+
+  // ⛔ Empty cart
+  if (!cart || cart.items.length === 0) {
     return (
       <Container className="mt-4">
         <h4>Your Cart</h4>
@@ -857,28 +920,35 @@ function ProfileCart() {
     );
   }
 
+  // ⏳ Waiting for product details
+  if (detailedItems.length === 0) {
+    return (
+      <Container className="mt-4 d-flex justify-content-center align-items-center p-5">
+        <Spinner animation="border" variant="primary" />
+      </Container>
+    );
+  }
+
+  // ✅ Display loaded cart
   return (
     <Container className="mt-4">
       <h4 className="fw-bold">Your Cart</h4>
 
       <Card className="p-3 mt-3">
-        {cart.items.map((item, index) => (
-          <Row
-            key={index}
-            className="align-items-center mb-3 border-bottom pb-3"
-          >
+        {detailedItems.map(({ item, product }, index) => (
+          <Row key={index} className="align-items-center mb-3 border-bottom pb-3">
             <Col xs={3} md={2}>
               <Image
-                src={item.product.images?.[0] || "/placeholder.png"}
-                alt={item.product.name}
+                src={product.firstImage()}
+                alt={product.name}
                 fluid
                 rounded
               />
             </Col>
 
             <Col xs={9} md={4}>
-              <h6 className="mb-1">{item.product.name}</h6>
-              <small className="text-muted">{item.product.companyName}</small>
+              <h6 className="mb-1">{product.name}</h6>
+              <small className="text-muted">{product.companyName}</small>
               <br />
               <small>
                 Size: <b>{item.size}</b> | Color: <b>{item.color}</b>
@@ -891,7 +961,7 @@ function ProfileCart() {
                 value={item.quantity}
                 onChange={(e) =>
                   handleQuantityChange(
-                    item.product._id,
+                    product._id,
                     item.size,
                     item.color,
                     e.target.value
@@ -908,7 +978,7 @@ function ProfileCart() {
 
             <Col xs={12} md={2} className="text-md-end mt-2 mt-md-0">
               <p className="mb-1 fw-semibold">
-                ₹{(item.product.price * item.quantity).toFixed(2)}
+                ₹{(product.price * item.quantity).toFixed(2)}
               </p>
             </Col>
 
@@ -917,7 +987,7 @@ function ProfileCart() {
                 variant="outline-danger"
                 size="sm"
                 onClick={() =>
-                  handleRemove(item.product._id, item.size, item.color)
+                  handleRemove(product._id, item.size, item.color)
                 }
               >
                 Remove

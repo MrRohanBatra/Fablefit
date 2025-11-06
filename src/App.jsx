@@ -25,7 +25,7 @@ function App_home() {
     document.documentElement.getAttribute("data-bs-theme")
   );
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState(new Cart(null));
+  const [cart, setCart] = useState(null);
   const [name, setName] = useState("FableFit");
   // useEffect(() => {
   //   const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -87,6 +87,7 @@ function App_home() {
 
         // 🔄 Save to React context
         setUser(appUser);
+
       } catch (error) {
         console.error("❌ Error initializing user:", error);
       }
@@ -108,12 +109,12 @@ function App_home() {
         if (data) {
           setCart(data);
         } else {
-          setCart(new Cart(user.uid, []));
+          setCart(new Cart({uid:user?.firebaseUser.uid,items:[]}));
         }
         console.log(data);
       });
     } else {
-      setCart(new Cart(null, []));
+      setCart(new Cart({uid:user?.firebaseUser.uid,items:[]}));
     }
   }, [user]);
   const location = useLocation();

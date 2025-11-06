@@ -38,13 +38,15 @@ const getVtonImageUrl = async (user) => {
   }
   return null;
 }
-const loadCart = async (userID) => {
-  const response = await fetch("/cart.json");
-  const data = await response.json();
-  if (data.userId == userID) {
-    return Cart.fromJson(data);
-  } else {
-    return null;
+const loadCart = async (uid) => {
+  try {
+    if (!uid) return new Cart({ uid: null, items: [] });
+    const cart = await Cart.fetchForUser(uid);
+    return cart;
+  } catch (err) {
+    console.error("❌ Error loading cart:", err);
+    return new Cart({ uid, items: [] });
   }
 };
+
 export { getPhoneNumber, getAddress, updateAddress, loadCart,getVtonImageUrl };

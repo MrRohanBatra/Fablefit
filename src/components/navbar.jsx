@@ -98,7 +98,7 @@ function NavbarFinal() {
   const [showSearchCanvas, setSearchCanvas] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [cart, setCart] = useContext(cartContext);
-  const [cartItemCount, setCartItemCount] = useState(cart.length());
+  const [cartItemCount, setCartItemCount] = useState(cart?.itemCount && 0);
   const loadTheme = () => {
     const data = localStorage.getItem("theme") || "light";
     setTheme(data);
@@ -111,7 +111,7 @@ function NavbarFinal() {
     document.documentElement.setAttribute("data-bs-theme", th);
   };
   useEffect(() => {
-    setCartItemCount(cart.length());
+    setCartItemCount(cart?.itemCount);
   }, [cart]);
   useEffect(() => {
     loadTheme();
