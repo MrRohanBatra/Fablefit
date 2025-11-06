@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 function Vton() {
   const [humanImage, setHumanImage] = useState(null);
@@ -9,8 +10,9 @@ function Vton() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
-
-
+  const [vtonAccepted, setVtonAccepted] = useState(false);
+  const [estTime, setEstTime] = useState(0); // in seconds
+  const [progress, setProgress] = useState(0);
   const apiURL = "https://api.rohan.org.in";
 
   async function handleSubmit() {
@@ -31,57 +33,6 @@ function Vton() {
     formData.append("seed", seed);
     formData.append("category", category);
 
-    // try {
-    //   const response = await fetch(`${apiURL}/tryon`, {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-
-    //   if (!response.ok) throw new Error("Failed to start task");
-    //   const data = await response.json();
-
-    //   const { task_id, position } = data;
-    //   console.log("Task created:", data);
-    //   setStatus(`Task queued (position #${position})...`);
-
-    //   let currentStatus = "queued";
-    //   let resultUrl = null;
-
-    //   while (true) {
-    //     await new Promise((res) => setTimeout(res, 3000)); // wait 3 sec
-    //     const res = await fetch(`${apiURL}/task_status/${task_id}`);
-    //     const statusData = await res.json();
-
-    //     if (statusData.error) throw new Error(statusData.error);
-
-    //     currentStatus = statusData.status;
-    //     resultUrl = statusData.result_url;
-
-    //     if (currentStatus === "queued") {
-    //       setStatus(`Waiting in queue (#${position})...`);
-    //     } else if (currentStatus === "processing") {
-    //       setStatus("Processing...");
-    //     } else if (currentStatus === "done") {
-    //       setStatus("✅ Done!");
-    //       break; // ✅ exit loop
-    //     } else if (currentStatus === "error") {
-    //       throw new Error(statusData.error || "Processing failed");
-    //     }
-    //   }
-
-    //   // 3️⃣ Display result
-    //   if (resultUrl) {
-    //     setResult(resultUrl);
-    //   } else {
-    //     throw new Error("No result URL received");
-    //   }
-    // } catch (e) {
-    //   console.error(e);
-    //   alert("Error: " + e.message);
-    //   setStatus("❌ Error occurred");
-    // } finally {
-    //   setLoading(false);
-    // }
     try {
       const response = await fetch(`${apiURL}/tryon`, {
         method: "POST",
@@ -89,48 +40,65 @@ function Vton() {
       });
 
       if (!response.ok) throw new Error("Failed to start task");
-
       const data = await response.json();
-      const { task_id ,position_in_queue} = data;
 
+      const { task_id, position_in_queue } = data;
       console.log("Task created:", data);
-      setStatus(`Task queued #${position_in_queue}...`);
+      setVtonAccepted(true);
+      setStatus(`Task queued at position #${position_in_queue}`);
+      const estimatedSeconds = position_in_queue * 10; // assume 10 sec/image
+      setEstTime(estimatedSeconds);
 
-      const intervalId = setInterval(async () => {
-        try {
-          const res = await fetch(`${apiURL}/status/${task_id}`);
-          const statusData = await res.json();
+      // Start progress bar countdown
+      let elapsed = 0;
+      const progressTimer = setInterval(() => {
+        elapsed += 1;
+        setProgress(Math.min((elapsed / estimatedSeconds) * 100, 100));
+      }, 1000);
 
-          const { status, error, result_path,mask_path } = statusData;
-
-          if (error) {
-            throw new Error(error);
-          }
-
-          if (status === "queued") {
-            setStatus("Waiting in queue...");
-          } else if (status === "processing") {
-            setStatus("Processing...");
-          } else if (status === "done") {
-            setStatus("✅ Done!");
-            setResult(`${apiURL}/result/${task_id}`);
-            clearInterval(intervalId);
-          } else if (status === "error") {
-            setStatus("❌ Error during processing");
-            clearInterval(intervalId);
-          }
-        } catch (err) {
-          console.error("Polling error:", err);
-          setStatus("❌ Error fetching status");
-          clearInterval(intervalId);
-        }
-      }, 3000); 
+      // Wait for estimated time before starting polling
+      setTimeout(() => {
+        clearInterval(progressTimer);
+        setProgress(100);
+        pollStatus(task_id);
+      }, estimatedSeconds * 1000);
     } catch (error) {
       console.error("Error:", error);
       setStatus("❌ Failed to start task");
     } finally {
       setLoading(false);
     }
+  }
+
+  async function pollStatus(task_id) {
+    setStatus("Checking status...");
+    const intervalId = setInterval(async () => {
+      try {
+        const res = await fetch(`${apiURL}/status/${task_id}`);
+        const statusData = await res.json();
+        const { status, error } = statusData;
+
+        if (error) throw new Error(error);
+
+        if (status === "queued") {
+          setStatus("Still in queue...");
+        } else if (status === "processing") {
+          setStatus("Processing...");
+        } else if (status === "done") {
+          setStatus("✅ Done!");
+          setResult(`${apiURL}/result/${task_id}`);
+          clearInterval(intervalId);
+        } else if (status === "error") {
+          setStatus("❌ Error during processing");
+          clearInterval(intervalId);
+        }
+        setVtonAccepted(false);
+      } catch (err) {
+        console.error("Polling error:", err);
+        setStatus("❌ Error fetching status");
+        clearInterval(intervalId);
+      }
+    }, 3000);
   }
 
   return (
@@ -192,26 +160,42 @@ function Vton() {
       </div>
 
       {/* Submit Button */}
-      <button
-        onClick={() => {
-          handleSubmit()
-        }}
-        disabled={loading}
-        style={{
-          marginTop: "15px",
-          padding: "10px 20px",
-          background: loading ? "gray" : "black",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer",
-        }}
-      >
-        {loading ? "Processing..." : "Generate Try-On"}
-      </button>
+      {!vtonAccepted ? (
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          style={{
+            marginTop: "15px",
+            padding: "10px 20px",
+            background: loading ? "gray" : "black",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            cursor: "pointer",
+          }}
+        >
+          {loading ? "Processing..." : "Generate Try-On"}
+        </button>
+      ) : null}
 
       {/* Status */}
       {status && <p style={{ marginTop: "15px" }}>{status}</p>}
+
+      {/* Progress Bar */}
+      {vtonAccepted && estTime > 0 && (
+        <div className="mt-3 px-4">
+          <p>
+            Estimated time: <b>{estTime}s</b>
+          </p>
+          <ProgressBar
+            now={progress}
+            label={`${Math.round(progress)}%`}
+            animated
+            striped
+            variant="info"
+          />
+        </div>
+      )}
 
       {/* Result */}
       {result && (
@@ -227,7 +211,6 @@ function Vton() {
             }}
           />
         </div>
-        
       )}
     </div>
   );

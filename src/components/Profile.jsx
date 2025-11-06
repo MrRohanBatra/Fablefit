@@ -25,6 +25,7 @@ import {
 import { sendEmailVerification, updateProfile } from "firebase/auth";
 import { cartContext } from "../App";
 import { Cart } from "./Product/Cart";
+import { User } from "./User/user";
 
 function Profile() {
   const { page } = useParams();
@@ -100,50 +101,84 @@ function Profile() {
     </Container>
   );
 }
-
 function ProfileDetails() {
   const [user, setUser, handleSignOut] = useContext(UserContext);
+
+  // ✅ Hooks always at top
+  const [showAddAdressModal, setAddAddressModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState({
     show: false,
     message: "",
-    variant: "info", // "info" | "success" | "danger"
+    variant: "info",
   });
 
-  // Initial name split
-  const fullName = user?.displayName || "";
+  // ✅ Safe optional chaining
+  const fullName = user?.firebaseUser?.displayName || "";
   const nameParts = fullName.trim().split(" ").filter(Boolean);
   const firstNameInit = nameParts[0] || "";
   const lastNameInit = nameParts.slice(1).join(" ") || "";
 
   const [firstName, setFirstName] = useState(firstNameInit);
   const [lastName, setLastName] = useState(lastNameInit);
-  const [phoneNumber, setPhoneNumber] = useState("0");
-  const [addressList, setAddress] = useState([]);
-  const [vtonUrl, setVtonUrl] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(
+    user?.getPhoneNumber?.() || ""
+  );
+  const [addressList, setAddressList] = useState([]);
+  const [editAdress, setEditAdress] = useState(false);
+  const [homeAddress, setHomeAddress] = useState("");
+  const [workAddress, setWorkAddress] = useState("");
+  const [vtonUrl, setVtonUrl] = useState(user?.getVtonImageUrl() || "");
   const [loadingVton, setLoadingVton] = useState(true);
   const [showUploadModal, setShowUploadModal] = useState(false);
 
+  // ✅ Effects always safe
   useEffect(() => {
-    setFirstName(firstNameInit);
-    setLastName(lastNameInit);
-    setPhoneNumber(getPhoneNumber(user));
+    if (!user) return;
+    const fullName = user?.firebaseUser?.displayName || "";
+    const parts = fullName.trim().split(" ").filter(Boolean);
+    setFirstName(parts[0] || "");
+    setLastName(parts.slice(1).join(" ") || "");
+    setPhoneNumber(user?.getPhoneNumber?.() || "");
   }, [user]);
+
   useEffect(() => {
-    getAddress(user).then((data) => {
-      setAddress(data);
-    });
-  }, []);
-  useEffect(() => {
-    const fetchVton = async () => {
-      setLoadingVton(true);
-      const url = await getVtonImageUrl(user?.uid);
-      setVtonUrl(url);
-      setLoadingVton(false);
-    };
-    if (user) fetchVton();
+    if (!user) return;
+    const userAddresses = user.address || [];
+    setAddressList(userAddresses);
+
+    if (userAddresses.length > 0) {
+      const home = userAddresses.find((a) => a.home)?.home || "";
+      const work = userAddresses.find((a) => a.work)?.work || "";
+
+      setHomeAddress(home);
+      setWorkAddress(work);
+    }
   }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    console.log(user);
+    setLoadingVton(true);
+    const url = user.vton_image;
+    console.log(url);
+    setVtonUrl(url);
+    console.log(vtonUrl);
+    setLoadingVton(false);
+  }, [user]);
+
+  // ✅ Keep all hooks above this line
+  if (!user || !user.firebaseUser) {
+    return (
+      <Container className="m-4 text-center">
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+        <p className="mt-2">Loading user data...</p>
+      </Container>
+    );
+  }
 
   const showToast = (message, variant = "info", duration = 2500) => {
     setToast({ show: true, message, variant });
@@ -152,9 +187,10 @@ function ProfileDetails() {
 
   const handleSave = async () => {
     const newFullName = `${firstName} ${lastName}`.trim();
-    const oldFullName = user.displayName || "";
-
-    if (newFullName === oldFullName) {
+    const oldFullName = user.firebaseUser.displayName || "";
+    const oldPhoneNumber = user.getPhoneNumber() || "";
+    const newPhoneNumber = phoneNumber;
+    if (newFullName === oldFullName && oldPhoneNumber===newPhoneNumber) {
       setEditMode(false);
       return;
     }
@@ -163,11 +199,10 @@ function ProfileDetails() {
       setSaving(true);
       showToast("Saving your changes...", "info", 4000);
 
-      await updateProfile(user, { displayName: newFullName });
-      setUser({ ...user, displayName: newFullName });
-
-      await new Promise((r) => setTimeout(r, 1000));
-
+      await updateProfile(user.firebaseUser, { displayName: newFullName });
+      await user.updatePhoneNumber(newPhoneNumber);
+      const updatedUser = User.refreshUser(user);
+      setUser(updatedUser);
       showToast("Profile updated successfully!", "success");
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -277,10 +312,10 @@ function ProfileDetails() {
                   <InputGroup>
                     <Form.Control
                       type="email"
-                      value={user?.email || ""}
+                      value={user?.firebaseUser.email || ""}
                       readOnly
                     />
-                    {user?.emailVerified ? (
+                    {user?.firebaseUser.emailVerified ? (
                       <InputGroup.Text className="text-success">
                         Verified
                       </InputGroup.Text>
@@ -309,7 +344,9 @@ function ProfileDetails() {
                     <Form.Control
                       type="number"
                       value={phoneNumber}
-                      onChange={(e)=>{setPhoneNumber(e.target.value)}}
+                      onChange={(e) => {
+                        setPhoneNumber(e.target.value);
+                      }}
                       readOnly={!editMode}
                     />
                   </InputGroup>
@@ -389,7 +426,10 @@ function ProfileDetails() {
                   <Button
                     variant="primary"
                     className="ms-4"
-                    onClick={() => { setEditMode(true);showToast("Email cannot be changed","info",3000) }}
+                    onClick={() => {
+                      setEditMode(true);
+                      showToast("Email cannot be changed", "info", 3000);
+                    }}
                   >
                     Edit Details
                   </Button>
@@ -412,7 +452,7 @@ function ProfileDetails() {
               )}
             </motion.div>
 
-            {/* === ADDRESS SECTION === */}
+            {/* === ADDRESS SECTION ===
             <Row className="mt-3">
               {addressList.length > 0 && (
                 <>
@@ -431,23 +471,106 @@ function ProfileDetails() {
                   })}
                 </>
               )}
+            </Row> */}
+            {/* === ADDRESS SECTION === */}
+            <Row className="mt-3">
+              {addressList.length > 0 ? (
+                <>
+                  {/* {addressList.map((obj, index) => {
+                    const [type, addr] = Object.entries(obj)[0];
+                    return (
+                      <AddressCard
+                        type={type}
+                        addr={addr}
+                        index={index}
+                        user={user}
+                        key={index}
+                        showToast={showToast}
+                      />
+                    );
+                  })} */}
+                  <AddressCard
+                    type={"home"}
+                    address={homeAddress}
+                    onAddressChange={setHomeAddress}
+                    isEditing={editAdress}
+                  ></AddressCard>
+                  <AddressCard
+                    type={"work"}
+                    address={workAddress}
+                    onAddressChange={setWorkAddress}
+                    isEditing={editAdress}
+                  ></AddressCard>
+                </>
+              ) : (
+                <Col md={12}>
+                  <Card className="shadow-sm border-0 rounded-3 p-3 text-center">
+                    <Card.Body>
+                      <h6 className="text-muted mb-0">No address found.</h6>
+                      <p className="text-secondary small mb-3">
+                        Add a delivery address to complete your profile.
+                      </p>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => {
+                          // example: open address add modal if you have one
+                          setAddAddressModal(true);
+                        }}
+                      >
+                        Add Address
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              )}
             </Row>
+            {addressList.length < 2 ? (
+              <Button
+                onClick={() => {
+                  setAddAddressModal(true);
+                }}
+              >
+                Add Address
+              </Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  setAddAddressModal(true);
+                }}
+              >
+                Edit Address
+              </Button>
+            )}
           </Form>
           <UploadModal
             show={showUploadModal}
             showToast={showToast}
             onHide={() => setShowUploadModal(false)}
-            onUploadComplete={(url) => {
+            onUploadComplete={async(url) => {
               setVtonUrl(url);
+              const success = await user.updateVtonImage(url);
+              if (success) {
+                const refresdUser = User.refreshUser(user);
+                setUser(refresdUser);
+              }
             }}
             user={user}
           ></UploadModal>
+          <AddAddressModal
+            show={showAddAdressModal}
+            user={user}
+            setUser={setUser}
+            showToast={showToast}
+            onHide={() => {
+              setAddAddressModal(false);
+            }}
+          ></AddAddressModal>
         </Container>
       </motion.div>
     </>
   );
 }
-function UploadModal({ show, onHide, onUploadComplete, showToast ,user}) {
+function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
@@ -461,18 +584,21 @@ function UploadModal({ show, onHide, onUploadComplete, showToast ,user}) {
     try {
       const formData = new FormData();
       formData.append("image", file);
-      formData.append("uid", user.uid);
-      
-      const response = await fetch("http://localhost:5500/api/users/uploadimage", {
-        method: "POST",
-        body: formData,
-      });
+      formData.append("uid", user.firebaseUser.uid);
+
+      const response = await fetch(
+        "http://localhost:5500/api/users/uploadimage",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         console.log(data);
         showToast("VTON image uploaded successfully!", "success");
-        onUploadComplete(data.file); // pass back uploaded URL
+        onUploadComplete(`http://localhost:5500${data.file}`); 
         onHide();
       } else {
         showToast("Upload failed. Try again.", "danger");
@@ -528,59 +654,171 @@ function UploadModal({ show, onHide, onUploadComplete, showToast ,user}) {
   );
 }
 
-function AddressCard({ type, addr, user, index, showToast }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [address, setAddress] = useState(addr);
+function AddressCard({ type, address, onAddressChange, isEditing }) {
+  if (address == "") {
+    return <></>;
+  }
   return (
-    <Col md={6} key={index}>
+    <Col md={6}>
       <Card className="shadow-sm mb-3 rounded-4">
         <Card.Body>
           <Card.Title className="d-flex justify-content-between align-items-center">
             <span className="text-capitalize fw-bold">{type} Address</span>
-            {!isEditing ? (
-              <Button
-                variant="outline-primary"
-                size="sm"
-                onClick={() => setIsEditing(!isEditing)}
-              >
-                Edit
-              </Button>
-            ) : (
-              <Button
-                variant="outline-primary"
-                size="sm"
-                onClick={() => {
-                  showToast(`Updating ${type} Address`, "info", 1500);
-                  updateAddress(user, type, address)
-                    .then(() => {
-                      setIsEditing(!isEditing);
-                      showToast(`Updated ${type} Address`, "success", 3000);
-                    })
-                    .catch((e) => {
-                      showToast(
-                        `Error in Updating ${type}Address`,
-                        "danger",
-                        3000
-                      );
-                    });
-                }}
-              >
-                Save
-              </Button>
-            )}
           </Card.Title>
           <Card.Text>
             <Form.Control
               value={address}
               readOnly={!isEditing}
-              onChange={(e) => {
-                setAddress(e.target.value);
-              }}
-            ></Form.Control>
+              onChange={(e) => onAddressChange(e.target.value)}
+              as={isEditing ? "input" : "textarea"}
+              rows={3}
+            />
           </Card.Text>
         </Card.Body>
       </Card>
     </Col>
+  );
+}
+// function AddressCard({ type, addr, user, index, showToast }) {
+//   const [isEditing, setIsEditing] = useState(false);
+//   const [address, setAddress] = useState(addr);
+//   return (
+//     <Col md={6} key={index}>
+//       <Card className="shadow-sm mb-3 rounded-4">
+//         <Card.Body>
+//           <Card.Title className="d-flex justify-content-between align-items-center">
+//             <span className="text-capitalize fw-bold">{type} Address</span>
+//             {!isEditing ? (
+//               <Button
+//                 variant="outline-primary"
+//                 size="sm"
+//                 onClick={() => setIsEditing(!isEditing)}
+//               >
+//                 Edit
+//               </Button>
+//             ) : (
+//               <Button
+//                 variant="outline-primary"
+//                 size="sm"
+//                 onClick={() => {
+//                   showToast(`Updating ${type} Address`, "info", 1500);
+//                   updateAddress(user, type, address)
+//                     .then(() => {
+//                       setIsEditing(!isEditing);
+//                       showToast(`Updated ${type} Address`, "success", 3000);
+//                     })
+//                     .catch((e) => {
+//                       showToast(
+//                         `Error in Updating ${type}Address`,
+//                         "danger",
+//                         3000
+//                       );
+//                     });
+//                 }}
+//               >
+//                 Save
+//               </Button>
+//             )}
+//           </Card.Title>
+//           <Card.Text>
+//             <Form.Control
+//               value={address}
+//               readOnly={!isEditing}
+//               onChange={(e) => {
+//                 setAddress(e.target.value);
+//               }}
+//             ></Form.Control>
+//           </Card.Text>
+//         </Card.Body>
+//       </Card>
+//     </Col>
+//   );
+// }
+function AddAddressModal({ show, onHide, user, setUser, showToast }) {
+  const [addressType, setAddressType] = useState("home");
+  const [addressValue, setAddressValue] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSave = async () => {
+    if (!addressValue.trim()) {
+      showToast("Please enter a valid address.", "danger");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const existingAddresses = Array.isArray(user.address)
+        ? [...user.address]
+        : [];
+
+      // Update or add address
+      const updatedAddresses = [...existingAddresses];
+      const index = updatedAddresses.findIndex((a) => a[addressType]);
+
+      if (index !== -1) {
+        updatedAddresses[index][addressType] = addressValue;
+      } else {
+        updatedAddresses.push({ [addressType]: addressValue });
+      }
+
+      const success = await user.updateAddress(updatedAddresses);
+
+      if (success) {
+        const refreshed = User.refreshUser(user);
+        setUser(refreshed);
+        showToast("Address saved successfully!", "success");
+        onHide();
+      } else {
+        showToast("Failed to save address. Try again.", "danger");
+      }
+    } catch (err) {
+      console.error(err);
+      showToast("Something went wrong!", "danger");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Modal show={show} onHide={onHide} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add / Update Address</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label>Address Type</Form.Label>
+            <Form.Select
+              value={addressType}
+              onChange={(e) => setAddressType(e.target.value)}
+            >
+              <option value="home">Home</option>
+              <option value="work">Work</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter full address"
+              value={addressValue}
+              onChange={(e) => setAddressValue(e.target.value)}
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={onHide}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleSave} disabled={loading}>
+          {loading ? "Saving..." : "Save"}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 function updateUserDetails(user, dispName) {

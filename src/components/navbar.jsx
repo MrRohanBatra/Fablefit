@@ -142,8 +142,8 @@ function NavbarFinal() {
           className="d-flex align-items-center"
         >
           <Image
-            src={user?.photoURL?user.photoURL:"/pp.png"/*"/pp.png"`https://avatar.iran.liara.run/username?username=${user.displayName}`*/}
-            alt={user.displayName}
+            src={user?.firebaseUser?.photoURL || "/pp.png"/*"/pp.png"`https://avatar.iran.liara.run/username?username=${user.displayName}`*/}
+            alt={user?.firebaseUser?.displayName || ""}
             roundedCircle
             width="32"
             height="32"
@@ -156,7 +156,7 @@ function NavbarFinal() {
           <Dropdown.Header>
             Signed in as
             <br />
-            <strong>{user.email}</strong>
+            <strong>{user?.firebaseUser?.email || "example@mail.com"}</strong>
           </Dropdown.Header>
           <Dropdown.Divider />
           <Dropdown.Item as={Link} to="/profile/details">
