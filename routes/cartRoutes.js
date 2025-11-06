@@ -28,9 +28,9 @@ import {
 const router = express.Router();
 
 router.post("/add", addToCart);
-router.delete("/remove", removeFromCart);
-router.put("/update", updateCartQuantity);
-router.get("/:userId", getCart);
+router.post("/remove", removeFromCart);
+router.post("/update", updateCartQuantity);
+router.get("/:uid", getCart);
 
 export default router;
 
