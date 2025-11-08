@@ -38,10 +38,20 @@ function Search() {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
+    useEffect(() => {
+    const param = new URLSearchParams(location.search);
+    setQuery(param.get("s") || "");
+    setSelectedColor(param.get("color") || "");
+    setSelectedSort(param.get("sort") || "");
+    setSelectedRange(param.get("pricerange") || "");
+    setSelectedSize(param.get("size") || "");
+  }, [location.search]);
+
   useEffect(() => {
-    const loadProducts = async () => {
+    if (query != "") {
+      const loadProducts = async () => {
       try {
-        const response = await fetch("http://localhost:5500/api/products/");
+        const response = await fetch(`http://localhost:5500/api/products/search?s=${encodeURIComponent(query)}`);
         const data = await response.json();
         const wrapped = data.map((p) => new Product(p));
         setProducts(wrapped);
@@ -52,48 +62,80 @@ function Search() {
       }
     };
     loadProducts();
-  }, []);
+    }
 
-  useEffect(() => {
-    const param = new URLSearchParams(location.search);
-    setQuery(param.get("s") || "");
-    setSelectedColor(param.get("color") || "");
-    setSelectedSort(param.get("sort") || "");
-    setSelectedRange(param.get("pricerange") || "");
-    setSelectedSize(param.get("size") || "");
-  }, [location.search]);
+    
+  }, [query]);
 
+
+  // const filteredProducts = products
+  //   .filter((p) => {
+  //     if (
+  //       selectedColor &&
+  //       p.color.toLowerCase() !== selectedColor.toLowerCase()
+  //     )
+  //       return false;
+  //     if (selectedRange) {
+  //       const [min, max] = selectedRange.split(",").map(Number);
+  //       if (min && p.price < min) return false;
+  //       if (max && p.price > max) return false;
+  //     }
+  //     if (selectedSize && !p.sizes.includes(selectedSize)) return false;
+  //     if (
+  //       query &&
+  //       !(
+  //         p.name.toLowerCase().includes(query.toLowerCase()) ||
+  //         p.description?.toLowerCase().includes(query.toLowerCase()) ||
+  //         new RegExp(`\\b${query.toLowerCase()}\\b`).test(
+  //           p.category?.toLowerCase() || ""
+  //         )
+  //       )
+  //     )
+  //       return false;
+  //     return true;
+  //   })
+  //   .sort((a, b) => {
+  //     if (selectedSort === "lowtohigh") return a.price - b.price;
+  //     if (selectedSort === "hightolow") return b.price - a.price;
+  //     return 0;
+  //   });
   const filteredProducts = products
-    .filter((p) => {
-      if (
-        selectedColor &&
-        p.color.toLowerCase() !== selectedColor.toLowerCase()
-      )
-        return false;
-      if (selectedRange) {
-        const [min, max] = selectedRange.split(",").map(Number);
-        if (min && p.price < min) return false;
-        if (max && p.price > max) return false;
-      }
-      if (selectedSize && !p.sizes.includes(selectedSize)) return false;
-      if (
-        query &&
-        !(
-          p.name.toLowerCase().includes(query.toLowerCase()) ||
-          p.description?.toLowerCase().includes(query.toLowerCase()) ||
-          new RegExp(`\\b${query.toLowerCase()}\\b`).test(
-            p.category?.toLowerCase() || ""
-          )
-        )
-      )
-        return false;
-      return true;
-    })
-    .sort((a, b) => {
-      if (selectedSort === "lowtohigh") return a.price - b.price;
-      if (selectedSort === "hightolow") return b.price - a.price;
-      return 0;
-    });
+  .filter((p) => {
+    if (
+      selectedColor &&
+      p.color.toLowerCase() !== selectedColor.toLowerCase()
+    )
+      return false;
+
+    if (selectedRange) {
+      const [min, max] = selectedRange.split(",").map(Number);
+      if (min && p.price < min) return false;
+      if (max && p.price > max) return false;
+    }
+
+    if (selectedSize && !p.sizes.includes(selectedSize)) return false;
+
+    if (query) {
+      // Split query into individual words (e.g. "mens genz tshirt" → ["mens", "genz", "tshirt"])
+      const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+
+      // Combine searchable fields into one string
+      const text =
+        `${p.name} ${p.description || ""} ${p.category || ""}`.toLowerCase();
+
+      // Require all words to appear at least once
+      const allWordsMatch = words.every((word) => text.includes(word));
+      if (!allWordsMatch) return false;
+    }
+
+    return true;
+  })
+  .sort((a, b) => {
+    if (selectedSort === "lowtohigh") return a.price - b.price;
+    if (selectedSort === "hightolow") return b.price - a.price;
+    return 0;
+  });
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
@@ -330,7 +372,9 @@ function Search() {
                               style={{ height: "200px" }}
                             />
                             <Card.Body>
-                              <Card.Title>{product.name}</Card.Title>
+                              <Card.Title>{product.name}
+                                
+                              </Card.Title>
                               <Card.Text>
                                 <small className="text-muted">
                                   {product.companyName}
