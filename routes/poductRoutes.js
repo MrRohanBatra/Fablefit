@@ -44,7 +44,7 @@ import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
 import Product from "../models/productModel.js"; // ✅ make sure filename casing matches exactly
-
+import Fuse from "fuse.js";
 const productRouter = express.Router();
 
 
@@ -129,5 +129,62 @@ productRouter.get("/id/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
+productRouter.get("/search", async (req, res) => {
+  try {
+    const query = req.query.s?.trim();
+    if (!query) return res.status(400).json({ message: "Missing search query" });
+    
+    const products = await Product.find();
+    
+    // 🧩 Add simple synonym expansion
+    const synonyms = {
+      men: ["man", "mens", "male", "guys", "boy"],
+      women: ["woman", "ladies", "female", "girls"],
+      kids: ["child", "children", "boy", "girl", "kidswear"]
+    };
+    
+    function expandQuery(q) {
+      const words = q.toLowerCase().split(/\s+/);
+      const expanded = new Set();
+      for (const word of words) {
+        expanded.add(word);
+        if (synonyms[word]) synonyms[word].forEach(s => expanded.add(s));
+      }
+      return [...expanded].join(" ");
+    }
+    
+    const expandedQuery = expandQuery(query);
+    
+    const fuse = new Fuse(products, {
+      includeScore: true,
+      threshold: 0.5, // slightly fuzzy, good balance
+      keys: [
+        { name: "name", weight: 0.5 },
+        { name: "description", weight: 0.3 },
+        { name: "category", weight: 0.1 },
+        { name: "color", weight: 0.1 }
+      ]
+    });
+    
+    let results = fuse.search(expandedQuery);
+    
+    // 🧩 Optional fallback for partial includes
+    if (results.length === 0) {
+      const qWords = expandedQuery.split(" ");
+      results = products
+      .filter(p => {
+        const text = `${p.name} ${p.description} ${p.category}`.toLowerCase();
+        return qWords.some(word => text.includes(word));
+      })
+      .map(p => ({ item: p }));
+    }
+    
+    const matched = results.map(r => r.item);
+    console.log(`Searched for ${query} TOTAL: ${matched.length}`);
+    res.status(200).json(matched);
+  } catch (error) {
+    console.error("Search error:", error);
+    res.status(500).json({ message: error.message });
+  }
+});
 export default productRouter;
