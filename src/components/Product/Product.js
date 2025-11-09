@@ -2,6 +2,7 @@
 
 export default class Product {
   constructor(data = {}) {
+    console.log(data);
     this._id = data._id;
     this.name = data.name || "";
     this.description = data.description || "";
@@ -13,7 +14,7 @@ export default class Product {
     this.companyId = data.companyId || null;
     this.companyName = data.companyName || "";
     this.images = data.images || [];
-    this.vtonCategory = data.model_3d_url || "";
+    this.vtonCategory = data.vton_category || "";
     this.createdAt = data.createdAt || null;
     this.updatedAt = data.updatedAt || null;
   }
