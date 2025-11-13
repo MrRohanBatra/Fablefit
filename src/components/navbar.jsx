@@ -247,10 +247,10 @@ function NavbarFinal() {
             </Nav.Link>
             <Nav.Link
               as={Link}
-              to="/vton"
+              to="/seller"
               className="fw-semibold text-uppercase "
             >
-              VTON
+              Seller
             </Nav.Link>
           </Nav>
           <Nav className="mx-auto d-none d-lg-flex">
