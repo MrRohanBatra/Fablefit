@@ -14,7 +14,7 @@ export default class Product {
     this.companyId = data.companyId || null;
     this.companyName = data.companyName || "";
     this.images = data.images || [];
-    this.vtonCategory = data.vton_category || "";
+    this.vton_category = data.vton_category || "";
     this.createdAt = data.createdAt || null;
     this.updatedAt = data.updatedAt || null;
   }

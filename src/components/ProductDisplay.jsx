@@ -355,12 +355,12 @@ function ProductDisplay() {
     setVtonStatus("Starting...");
 
     try {
-      console.log(`Server Product VTON Category: ${product.vtonCategory}`)
+      console.log(`Server Product VTON Category: ${product.vton_category}`)
       const resultUrl = await runVtonProcess({
         apiURL: "https://api.rohan.org.in",
         humanImageUrl: user?.getVtonImageUrl() || "",// replace with actual user image
         garmentImageUrl: product.images[0],
-        category: filterCategory(product.vtonCategory || "upper_body"),
+        category: filterCategory(product.vton_category || "upper_body"),
         onProgress: setVtonProgress,
         onStatus: setVtonStatus,
       });
