@@ -190,7 +190,7 @@ function ProfileDetails() {
     const oldFullName = user.firebaseUser.displayName || "";
     const oldPhoneNumber = user.getPhoneNumber() || "";
     const newPhoneNumber = phoneNumber;
-    if (newFullName === oldFullName && oldPhoneNumber===newPhoneNumber) {
+    if (newFullName === oldFullName && oldPhoneNumber === newPhoneNumber) {
       setEditMode(false);
       return;
     }
@@ -234,8 +234,8 @@ function ProfileDetails() {
                   toast.variant === "danger"
                     ? "danger"
                     : toast.variant === "success"
-                    ? "success"
-                    : "light"
+                      ? "success"
+                      : "light"
                 }
                 onClose={() => setToast({ ...toast, show: false })}
                 className="shadow-lg rounded-3"
@@ -251,9 +251,8 @@ function ProfileDetails() {
                   </div>
                 </Toast.Header>
                 <Toast.Body
-                  className={`fw-semibold ${
-                    toast.variant === "danger" ? "text-white" : ""
-                  }`}
+                  className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
+                    }`}
                 >
                   {toast.message}
                   {saving && toast.variant === "info" && (
@@ -366,12 +365,12 @@ function ProfileDetails() {
                         ) : vtonUrl ? (
                           <small
                             className="text-success fw-semibold"
-                            onClick={() => {
-                              window.location.href = vtonUrl;
-                            }}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => window.open(vtonUrl, "_blank")}
                           >
                             ✅ Your VTON image is uploaded.
                           </small>
+
                         ) : (
                           <small className="text-danger fw-semibold">
                             ⚠️ No VTON image found.
@@ -546,7 +545,7 @@ function ProfileDetails() {
             show={showUploadModal}
             showToast={showToast}
             onHide={() => setShowUploadModal(false)}
-            onUploadComplete={async(url) => {
+            onUploadComplete={async (url) => {
               setVtonUrl(url);
               const success = await user.updateVtonImage(url);
               if (success) {
@@ -598,7 +597,7 @@ function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
         const data = await response.json();
         console.log(data);
         showToast("VTON image uploaded successfully!", "success");
-        onUploadComplete(`http://localhost:5500${data.file}`); 
+        onUploadComplete(`http://localhost:5500${data.file}`);
         onHide();
       } else {
         showToast("Upload failed. Try again.", "danger");
@@ -829,7 +828,7 @@ function updateUserDetails(user, dispName) {
 function ProfileCart() {
   const [cart, setCart] = useContext(cartContext);
   const [detailedItems, setDetailedItems] = useState([]); // holds { item, product }
-
+  const navigate = useNavigate();
   // 🧠 Fetch product details for each cart item
   useEffect(() => {
     const loadProducts = async () => {
@@ -943,10 +942,12 @@ function ProfileCart() {
                 alt={product.name}
                 fluid
                 rounded
+                style={{ "cursor": "pointer" }}
+                onClick={() => { navigate(`/product/${product._id}`) }}
               />
             </Col>
 
-            <Col xs={9} md={4}>
+            <Col xs={9} md={4} >
               <h6 className="mb-1">{product.name}</h6>
               <small className="text-muted">{product.companyName}</small>
               <br />

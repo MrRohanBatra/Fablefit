@@ -141,14 +141,31 @@ function NavbarFinal() {
           id="dropdown-profile"
           className="d-flex align-items-center"
         >
-          <Image
-            src={user?.firebaseUser?.photoURL || "/pp.png"/*"/pp.png"`https://avatar.iran.liara.run/username?username=${user.displayName}`*/}
+          {/* <Image
+            src={user?.firebaseUser?.photoURL || "/pp.png"}
             alt={user?.firebaseUser?.displayName || ""}
             roundedCircle
             width="32"
             height="32"
             className="me-2"
+          /> */}
+          <Image
+            src={user?.firebaseUser?.photoURL || "/pp.png"}
+            alt={user?.firebaseUser?.displayName || ""}
+            roundedCircle
+            width="32"
+            height="32"
+            className="me-2"
+            style={{ objectFit: "cover" }}
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/pp.png"; // fallback image
+            }}
           />
+
+
 
           {/*<span className="d-none d-lg-inline">{user.displayName}</span> */}
         </Dropdown.Toggle>

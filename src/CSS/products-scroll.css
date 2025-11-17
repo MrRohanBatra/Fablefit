@@ -1,5 +1,5 @@
-.products-section {
-  height: calc(100vh - 100px); /* adjust if navbar or header present */
+/* .products-section {
+  height: calc(100vh - 100px); 
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -8,9 +8,31 @@
 .products-scroll {
   overflow-y: auto;
   flex: 1;
-  padding-right: 10px; /* for scrollbar spacing */
+  padding-right: 10px; 
   scroll-behavior: smooth;
+} */
+.products-section {
+  height: calc(100vh - 100px); /* adjust for navbar height */
+  overflow: hidden;            /* prevent OUTER scrolling */
+  display: flex;
+  flex-direction: column;
 }
+
+.products-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  padding-right: 10px;
+  scroll-behavior: smooth;
+
+  /* HIDE SCROLLBAR (Chrome, Edge, Safari) */
+  scrollbar-width: none; /* Firefox */
+}
+
+.products-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
 .card-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

@@ -219,9 +219,9 @@ export default function AddProduct() {
                   onChange={handleChange}
                 >
                   <option value="">Select Category</option>
-                  <option value="upper">Upper</option>
-                  <option value="lower">Lower</option>
-                  <option value="dress">Dress</option>
+                  <option value="upper_body">Upper</option>
+                  <option value="lower_body">Lower</option>
+                  <option value="dresses">Dress</option>
                 </Form.Select>
               </Form.Group>
 
