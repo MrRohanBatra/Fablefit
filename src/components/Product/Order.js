@@ -54,7 +54,7 @@ class Order {
   switch (this.status) {
     case "placed": return 25;
     case "shipped": return 50;
-    case "out_for_delivery": return 75;
+    case "out-for-delivery": return 75;
     case "delivered": return 100;
     default: return 0;
   }
@@ -64,7 +64,7 @@ statusLabel() {
   switch (this.status) {
     case "placed": return "Order Placed";
     case "shipped": return "Shipped";
-    case "out_for_delivery": return "Out for Delivery";
+    case "out-for-delivery": return "Out for Delivery";
     case "delivered": return "Delivered";
     default: return "Processing";
   }

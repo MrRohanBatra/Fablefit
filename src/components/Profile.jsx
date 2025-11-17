@@ -1155,6 +1155,7 @@ function ProfileOrders() {
             now={order.statusProgress()}
             label={order.statusLabel()}
             className="my-3"
+            animated
           />
 
           <p className="mb-0">
