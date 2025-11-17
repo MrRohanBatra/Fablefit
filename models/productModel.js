@@ -48,7 +48,7 @@ const productSchema = new mongoose.Schema(
       default: [],
     },
     vton_category: {
-      type: String, // URL for virtual try-on
+      type: String, 
     },
   },
   { timestamps: true } // automatically adds createdAt & updatedAt

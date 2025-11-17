@@ -91,7 +91,9 @@ productRouter.post("/upload", async (req, res) => {
 // ----------------------
 productRouter.post("/add", async (req, res) => {
   try {
+    console.log(req.body)
     const newProduct = new Product(req.body);
+    // console.log(newProduct);
     await newProduct.save();
     res.status(201).json({
       success: true,
