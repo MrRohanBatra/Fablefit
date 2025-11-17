@@ -1,96 +1,5 @@
 [
   {
-    "_id": "691068d88eebba4336edba51",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Blue.",
-    "category": "Women",
-    "price": 167,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Blue",
-    "stock": 13,
-    "companyName": "UrbanThreads",
-    "images": [
-      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/blue_hoodie.jpg"
-    ],
-    "createdAt": "2025-07-20T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z",
-    "companyId": "691068d88eebba4336edba52",
-    "__v": 0
-  },
-  {
-    "_id": "691068d88eebba4336edba53",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Green.",
-    "category": "Unisex",
-    "price": 184,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Green",
-    "stock": 26,
-    "companyName": "EcoWear",
-    "images": [
-      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/green_jeans.jpg"
-    ],
-    "createdAt": "2025-07-21T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z",
-    "companyId": "691068d88eebba4336edba54",
-    "__v": 0
-  },
-  {
-    "_id": "691068d88eebba4336edba55",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Black.",
-    "category": "Kids",
-    "price": 201,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Black",
-    "stock": 39,
-    "companyName": "StyleSync",
-    "images": [
-      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/black_jacket.jpg"
-    ],
-    "createdAt": "2025-07-22T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z",
-    "companyId": "691068d88eebba4336edba56",
-    "__v": 0
-  },
-  {
-    "_id": "691068d88eebba4336edba57",
-    "name": "Oversized Shirt",
-    "description": "A high-quality Oversized Shirt in White.",
-    "category": "Men",
-    "price": 218,
-    "sizes": [
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "White",
-    "stock": 2,
-    "companyName": "UrbanThreads",
-    "images": [
-      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/white_shirt.jpg"
-    ],
-    "createdAt": "2025-07-23T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z",
-    "companyId": "691068d88eebba4336edba58",
-    "__v": 0
-  },
-  {
     "_id": "691068d88eebba4336edba59",
     "name": "Running lower",
     "description": "A high-quality Running lower in Gray.",
@@ -102,15 +11,16 @@
       "L"
     ],
     "color": "Gray",
-    "stock": 15,
+    "stock": 0,
     "companyName": "EcoWear",
     "images": [
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/lower.jpg"
     ],
     "createdAt": "2025-07-24T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z",
+    "updatedAt": "2025-11-17T16:45:42.693Z",
     "companyId": "691068d88eebba4336edba5a",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "691068d88eebba4336edba5b",
@@ -131,32 +41,33 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/women_sweater.jpg"
     ],
     "createdAt": "2025-07-25T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.881Z",
     "companyId": "691068d88eebba4336edba5c",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
-    "_id": "691068d88eebba4336edba5d",
-    "name": "Leather Jacket",
-    "description": "A high-quality Leather Jacket in Black.",
+    "_id": "691068d88eebba4336edba57",
+    "name": "Oversized Shirt",
+    "description": "A high-quality Oversized Shirt in White.",
     "category": "Men",
-    "price": 269,
+    "price": 218,
     "sizes": [
+      "S",
       "M",
-      "L",
-      "XL",
-      "XXL"
+      "L"
     ],
-    "color": "Black",
-    "stock": 41,
+    "color": "White",
+    "stock": 0,
     "companyName": "UrbanThreads",
     "images": [
-      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/leather_jacket.jpg"
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/white_shirt.jpg"
     ],
-    "createdAt": "2025-07-26T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z",
-    "companyId": "691068d88eebba4336edba5e",
-    "__v": 0
+    "createdAt": "2025-07-23T17:28:43.344Z",
+    "updatedAt": "2025-11-17T15:23:37.922Z",
+    "companyId": "691068d88eebba4336edba58",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "691068d88eebba4336edba5f",
@@ -177,32 +88,58 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/woolen_sweaterjpg.jpg"
     ],
     "createdAt": "2025-07-27T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.948Z",
     "companyId": "691068d88eebba4336edba60",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
-    "_id": "691068d88eebba4336edba61",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Black.",
+    "_id": "691068d88eebba4336edba51",
+    "name": "Vintage Hoodie",
+    "description": "A high-quality Vintage Hoodie in Blue.",
     "category": "Women",
-    "price": 303,
+    "price": 167,
     "sizes": [
       "S",
       "M",
       "L",
       "XL"
     ],
-    "color": "Black",
-    "stock": 17,
-    "companyName": "StyleSync",
+    "color": "Blue",
+    "stock": 12,
+    "companyName": "UrbanThreads",
     "images": [
-      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/skirt.jpg"
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/blue_hoodie.jpg"
     ],
-    "createdAt": "2025-07-28T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z",
-    "companyId": "691068d88eebba4336edba62",
-    "__v": 0
+    "createdAt": "2025-07-20T17:28:43.344Z",
+    "updatedAt": "2025-11-17T17:12:41.524Z",
+    "companyId": "691068d88eebba4336edba52",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba53",
+    "name": "Graphic Jeans",
+    "description": "A high-quality Graphic Jeans in Green.",
+    "category": "Unisex",
+    "price": 184,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Green",
+    "stock": 26,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/green_jeans.jpg"
+    ],
+    "createdAt": "2025-07-21T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.731Z",
+    "companyId": "691068d88eebba4336edba54",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "691068d88eebba4336edba63",
@@ -223,9 +160,82 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/orange_tshirt.jpg"
     ],
     "createdAt": "2025-07-29T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.025Z",
     "companyId": "691068d88eebba4336edba64",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba55",
+    "name": "Slim-Fit Jacket",
+    "description": "A high-quality Slim-Fit Jacket in Black.",
+    "category": "Kids",
+    "price": 201,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "Black",
+    "stock": 39,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/black_jacket.jpg"
+    ],
+    "createdAt": "2025-07-22T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.768Z",
+    "companyId": "691068d88eebba4336edba56",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba5d",
+    "name": "Leather Jacket",
+    "description": "A high-quality Leather Jacket in Black.",
+    "category": "Men",
+    "price": 269,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Black",
+    "stock": 31,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/leather_jacket.jpg"
+    ],
+    "createdAt": "2025-07-26T17:28:43.344Z",
+    "updatedAt": "2025-11-17T17:42:06.411Z",
+    "companyId": "691068d88eebba4336edba5e",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba61",
+    "name": "Cotton Skirt",
+    "description": "A high-quality Cotton Skirt in Black.",
+    "category": "Women",
+    "price": 303,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 17,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/skirt.jpg"
+    ],
+    "createdAt": "2025-07-28T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.989Z",
+    "companyId": "691068d88eebba4336edba62",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6910d0227045b3e44314b9ff",
@@ -246,9 +256,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/red_hoodie.jpg"
     ],
     "createdAt": "2025-07-30T17:28:43.344Z",
-    "updatedAt": "2025-07-30T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.060Z",
     "companyId": "6910d0227045b3e44314ba00",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6910d0227045b3e44314ba03",
@@ -269,9 +280,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/blue_jeans.jpg"
     ],
     "createdAt": "2025-07-31T17:28:43.344Z",
-    "updatedAt": "2025-07-31T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.099Z",
     "companyId": "6910d0227045b3e44314ba04",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6910d0227045b3e44314ba07",
@@ -292,9 +304,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/green_jacket.jpg"
     ],
     "createdAt": "2025-08-01T17:28:43.344Z",
-    "updatedAt": "2025-08-01T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.133Z",
     "companyId": "6910d0227045b3e44314ba08",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6910d0227045b3e44314ba0b",
@@ -315,9 +328,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/black_shirt.jpg"
     ],
     "createdAt": "2025-08-02T17:28:43.344Z",
-    "updatedAt": "2025-08-02T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.168Z",
     "companyId": "6910d0227045b3e44314ba0c",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6910d0227045b3e44314ba0f",
@@ -338,9 +352,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/trouser.jpg"
     ],
     "createdAt": "2025-08-03T17:28:43.344Z",
-    "updatedAt": "2025-08-03T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.204Z",
     "companyId": "6910d0227045b3e44314ba10",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6910d40f19b9eaf0ee69fdf9",
@@ -361,9 +376,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/cardigon.jpg"
     ],
     "createdAt": "2025-08-04T17:28:43.344Z",
-    "updatedAt": "2025-08-04T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.249Z",
     "companyId": "6910d40f19b9eaf0ee69fdfa",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6910d40f19b9eaf0ee69fdfd",
@@ -384,9 +400,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/leth2.jpg"
     ],
     "createdAt": "2025-08-05T17:28:43.344Z",
-    "updatedAt": "2025-08-05T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.318Z",
     "companyId": "6910d40f19b9eaf0ee69fdfe",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6910d40f19b9eaf0ee69fe01",
@@ -407,9 +424,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/yellow_lower.jpg"
     ],
     "createdAt": "2025-08-06T17:28:43.344Z",
-    "updatedAt": "2025-08-06T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.357Z",
     "companyId": "6910d40f19b9eaf0ee69fe02",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6910d40f19b9eaf0ee69fe09",
@@ -430,9 +448,10 @@
       "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/purple_tshirt.jpg"
     ],
     "createdAt": "2025-08-08T17:28:43.344Z",
-    "updatedAt": "2025-08-08T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.400Z",
     "companyId": "6910d40f19b9eaf0ee69fe0a",
-    "__v": 0
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6910dccd47de625c5d55351a",
@@ -452,9 +471,9 @@
     "images": [
       "http://localhost:5500/product_images/1762712781133-ArmorHoodieBlack_01.webp"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-09T18:26:21.150Z",
-    "updatedAt": "2025-11-09T18:26:21.150Z",
+    "updatedAt": "2025-11-17T11:49:39.436Z",
     "__v": 0
   },
   {
@@ -475,9 +494,9 @@
     "images": [
       "http://localhost:5500/product_images/1763199064850-4da9c895fc66752e317bc1111c13b2d529cd3992.avif"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T09:31:04.890Z",
-    "updatedAt": "2025-11-15T09:31:04.890Z",
+    "updatedAt": "2025-11-17T11:49:39.468Z",
     "__v": 0
   },
   {
@@ -498,9 +517,9 @@
     "images": [
       "http://localhost:5500/product_images/1763221411230-160dac302eb74cf3a03b241b182b2849ecb786bd2abdc4db745be62e.jpg"
     ],
-    "vton_category": "dress",
+    "vton_category": "dresses",
     "createdAt": "2025-11-15T15:43:31.263Z",
-    "updatedAt": "2025-11-15T15:43:31.263Z",
+    "updatedAt": "2025-11-17T11:49:39.501Z",
     "__v": 0
   },
   {
@@ -521,9 +540,9 @@
     "images": [
       "http://localhost:5500/product_images/1763236250184-81a47bbc636cab560fbc9b46ec8bbce98b73ddf41a9cd577318af43f.jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T19:50:50.213Z",
-    "updatedAt": "2025-11-15T19:50:50.213Z",
+    "updatedAt": "2025-11-17T11:49:39.536Z",
     "__v": 0
   },
   {
@@ -544,9 +563,9 @@
     "images": [
       "http://localhost:5500/product_images/1763236436879-7c4df934b4889f514ffe2974ce0e70a4c82c49f417ecd634ea9a802b.jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T19:53:56.890Z",
-    "updatedAt": "2025-11-15T19:53:56.890Z",
+    "updatedAt": "2025-11-17T11:49:39.574Z",
     "__v": 0
   },
   {
@@ -566,8 +585,9 @@
     "companyName": "H&M",
     "images": [],
     "createdAt": "2025-11-15T19:56:07.157Z",
-    "updatedAt": "2025-11-15T19:56:07.157Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.624Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918db4a09ec25b79632afb3",
@@ -588,8 +608,9 @@
       "http://localhost:5500/product_images/1763236682906-399f41b1c4588f5600a25fe768bf95eb2fc8751faee38c549bb25abb.jpg"
     ],
     "createdAt": "2025-11-15T19:58:02.921Z",
-    "updatedAt": "2025-11-15T19:58:02.921Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.660Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918dbc809ec25b79632afb5",
@@ -610,8 +631,9 @@
       "http://localhost:5500/product_images/1763236808374-8d3e597fbe025def989c47671406d93dc9b05c66d53c0730ce4b1b18.jpg"
     ],
     "createdAt": "2025-11-15T20:00:08.387Z",
-    "updatedAt": "2025-11-15T20:00:08.387Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.692Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918dc7f09ec25b79632afba",
@@ -631,9 +653,9 @@
     "images": [
       "http://localhost:5500/product_images/1763236991736-7c0b660a06659e18c34ca20755c2e35936829c7e.jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T20:03:11.751Z",
-    "updatedAt": "2025-11-15T20:03:11.751Z",
+    "updatedAt": "2025-11-17T11:49:39.725Z",
     "__v": 0
   },
   {
@@ -654,9 +676,9 @@
     "images": [
       "http://localhost:5500/product_images/1763237168524-converted (1).jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T20:06:08.535Z",
-    "updatedAt": "2025-11-15T20:06:08.535Z",
+    "updatedAt": "2025-11-17T11:49:39.757Z",
     "__v": 0
   },
   {
@@ -678,8 +700,9 @@
       "http://localhost:5500/product_images/1763237269994-08e5d2ce2118f698ec87e2079da39a866b7c7d234c403111813dd25e.jpg"
     ],
     "createdAt": "2025-11-15T20:07:50.008Z",
-    "updatedAt": "2025-11-15T20:07:50.008Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.804Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918de0f09ec25b79632afc7",
@@ -700,8 +723,9 @@
       "http://localhost:5500/product_images/1763237391619-6fcc5570c4230f90347b4b280a3e1b532610f251efc17e874b4b973d.jpg"
     ],
     "createdAt": "2025-11-15T20:09:51.647Z",
-    "updatedAt": "2025-11-15T20:09:51.647Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.841Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918dece09ec25b79632afc9",
@@ -722,8 +746,9 @@
       "http://localhost:5500/product_images/1763237582905-487f0ef22f8e33d720e399701ec51f725bd99dd06ed371add05c950f.jpg"
     ],
     "createdAt": "2025-11-15T20:13:02.920Z",
-    "updatedAt": "2025-11-15T20:13:02.920Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.872Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918df3909ec25b79632afcb",
@@ -744,8 +769,9 @@
       "http://localhost:5500/product_images/1763237689019-de4a68cf15e724627670e19dfdba76745347e0543e99fc2f199b5ec3.jpg"
     ],
     "createdAt": "2025-11-15T20:14:49.033Z",
-    "updatedAt": "2025-11-15T20:14:49.033Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.902Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918dfa209ec25b79632afcd",
@@ -766,8 +792,9 @@
       "http://localhost:5500/product_images/1763237794163-8f515f073b5c7e8a5ebd7c2c2824950667a43f628e381d90fefe1a54.jpg"
     ],
     "createdAt": "2025-11-15T20:16:34.175Z",
-    "updatedAt": "2025-11-15T20:16:34.175Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.936Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e00c09ec25b79632afcf",
@@ -788,8 +815,9 @@
       "http://localhost:5500/product_images/1763237900606-d5006051142c9d2a0027c0d52714f105082f0791b72ca5ac725374ab.jpg"
     ],
     "createdAt": "2025-11-15T20:18:20.621Z",
-    "updatedAt": "2025-11-15T20:18:20.621Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.969Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e07609ec25b79632afd1",
@@ -810,8 +838,9 @@
       "http://localhost:5500/product_images/1763238006134-70317e89c29e91cc7713af0ac47b4167835a90eefc1508e9ffac4731.jpg"
     ],
     "createdAt": "2025-11-15T20:20:06.148Z",
-    "updatedAt": "2025-11-15T20:20:06.148Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:39.999Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e0dc09ec25b79632afd3",
@@ -832,8 +861,9 @@
       "http://localhost:5500/product_images/1763238108372-8a46fe83659ccdfedc3fd1894aea5e77dde94b64f21e7b85307a0f6e.jpg"
     ],
     "createdAt": "2025-11-15T20:21:48.386Z",
-    "updatedAt": "2025-11-15T20:21:48.386Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.031Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e15b09ec25b79632afd5",
@@ -854,8 +884,9 @@
       "http://localhost:5500/product_images/1763238235661-06092808fa862995dd10824e7d9776c12011728ce62dbe9259448a2e.jpg"
     ],
     "createdAt": "2025-11-15T20:23:55.674Z",
-    "updatedAt": "2025-11-15T20:23:55.674Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.063Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e1c209ec25b79632afd7",
@@ -876,8 +907,9 @@
       "http://localhost:5500/product_images/1763238338327-16fc1b78ec5361a582ba4da3a0b1dcdb286e5544105b63f17cd11d0b.jpg"
     ],
     "createdAt": "2025-11-15T20:25:38.344Z",
-    "updatedAt": "2025-11-15T20:25:38.344Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.095Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e2f509ec25b79632afda",
@@ -896,8 +928,9 @@
     "companyName": "Zara",
     "images": [],
     "createdAt": "2025-11-15T20:30:45.329Z",
-    "updatedAt": "2025-11-15T20:30:45.329Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.130Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e33409ec25b79632afdc",
@@ -917,9 +950,9 @@
     "images": [
       "http://localhost:5500/product_images/1763238708287-8495aefe2c94668bf89791b290c8f7f8fd2d9a03ad216c2b872b483c.jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T20:31:48.302Z",
-    "updatedAt": "2025-11-15T20:31:48.302Z",
+    "updatedAt": "2025-11-17T11:49:40.162Z",
     "__v": 0
   },
   {
@@ -941,8 +974,9 @@
       "http://localhost:5500/product_images/1763238813040-993fbb0d143cc82947d8f970274e9e3e80fcbcd8e52d317f3f8bf513.jpg"
     ],
     "createdAt": "2025-11-15T20:33:33.052Z",
-    "updatedAt": "2025-11-15T20:33:33.052Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.194Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e41309ec25b79632afe0",
@@ -963,8 +997,9 @@
       "http://localhost:5500/product_images/1763238931556-10eb3de8ae1f4c5077a52cba62e13d291787943d9a40694be598135c.jpg"
     ],
     "createdAt": "2025-11-15T20:35:31.571Z",
-    "updatedAt": "2025-11-15T20:35:31.571Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.226Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e47209ec25b79632afe2",
@@ -985,8 +1020,9 @@
       "http://localhost:5500/product_images/1763239026016-39e135308fad0b924708b5f8436f531b7022ca459941957bd47ab831.jpg"
     ],
     "createdAt": "2025-11-15T20:37:06.031Z",
-    "updatedAt": "2025-11-15T20:37:06.031Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.260Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e4c909ec25b79632afe5",
@@ -1006,9 +1042,9 @@
     "images": [
       "http://localhost:5500/product_images/1763239113766-0c0517dbfd71cad93e93b00a00d63f330447bc174df240258d31adc3.jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T20:38:33.780Z",
-    "updatedAt": "2025-11-15T20:38:33.780Z",
+    "updatedAt": "2025-11-17T11:49:40.292Z",
     "__v": 0
   },
   {
@@ -1030,8 +1066,9 @@
       "http://localhost:5500/product_images/1763239200609-74b23697aabd224c77b7071d4e211e312c9cdf760e0cd9f724a1a49c.jpg"
     ],
     "createdAt": "2025-11-15T20:40:00.622Z",
-    "updatedAt": "2025-11-15T20:40:00.622Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.323Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e59e09ec25b79632afe9",
@@ -1052,8 +1089,9 @@
       "http://localhost:5500/product_images/1763239326491-37d4f83bedfd018006ee045c93a6a34714fe1b157522c1b160411c70.jpg"
     ],
     "createdAt": "2025-11-15T20:42:06.506Z",
-    "updatedAt": "2025-11-15T20:42:06.506Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.360Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e5fe09ec25b79632afeb",
@@ -1074,8 +1112,9 @@
       "http://localhost:5500/product_images/1763239422563-e891636750f58af065ed188cdf6a57ca55c2008806d803d8ad2d1d7a.jpg"
     ],
     "createdAt": "2025-11-15T20:43:42.578Z",
-    "updatedAt": "2025-11-15T20:43:42.578Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.392Z",
+    "__v": 0,
+    "vton_category": "upper_body"
   },
   {
     "_id": "6918e6ed09ec25b79632afee",
@@ -1095,9 +1134,9 @@
     "images": [
       "http://localhost:5500/product_images/1763239661774-0d92b30a0aa9375c5f49489d530e46c0bec43cb7e239d86c5fed970f.jpg"
     ],
-    "vton_category": "upper",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-15T20:47:41.790Z",
-    "updatedAt": "2025-11-15T20:47:41.790Z",
+    "updatedAt": "2025-11-17T11:49:40.424Z",
     "__v": 0
   },
   {
@@ -1118,9 +1157,9 @@
     "images": [
       "http://localhost:5500/product_images/1763239822747-88aca5c180911cafd0c989933a58fff1cb09f14306065d01dc1ea244.jpg"
     ],
-    "vton_category": "lower",
+    "vton_category": "lower_body",
     "createdAt": "2025-11-15T20:50:22.762Z",
-    "updatedAt": "2025-11-15T20:50:22.762Z",
+    "updatedAt": "2025-11-17T11:49:40.454Z",
     "__v": 0
   },
   {
@@ -1142,8 +1181,9 @@
       "http://localhost:5500/product_images/1763239914773-06700e29bff49656534e6c7a5a5fe28c662db5dc652e2c8e9e228c6f.jpg"
     ],
     "createdAt": "2025-11-15T20:51:54.786Z",
-    "updatedAt": "2025-11-15T20:51:54.786Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.485Z",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6918e84709ec25b79632aff4",
@@ -1164,8 +1204,9 @@
       "http://localhost:5500/product_images/1763240007027-afa55ffdb90ec25d211140bea18729a42d8cd50555e8a92c7ba7a77e.jpg"
     ],
     "createdAt": "2025-11-15T20:53:27.038Z",
-    "updatedAt": "2025-11-15T20:53:27.038Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.518Z",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6918e8ac09ec25b79632aff6",
@@ -1181,8 +1222,9 @@
       "http://localhost:5500/product_images/1763240108561-8ccd2ffe0bd6f358361b2f9e32fbf31f4308f0dc9d31db3f38a19415.jpg"
     ],
     "createdAt": "2025-11-15T20:55:08.578Z",
-    "updatedAt": "2025-11-15T20:55:08.578Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.551Z",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6918e94a09ec25b79632aff8",
@@ -1198,8 +1240,9 @@
       "http://localhost:5500/product_images/1763240266622-acbc32e881963d08c003a3fb660cbb8f87dc67e0a61781f718044ffe.jpg"
     ],
     "createdAt": "2025-11-15T20:57:46.636Z",
-    "updatedAt": "2025-11-15T20:57:46.636Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.584Z",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "6918e9af09ec25b79632affb",
@@ -1219,9 +1262,9 @@
     "images": [
       "http://localhost:5500/product_images/1763240367340-30ca45f364c3177ced7128031491602ab5e3a3aa5b8da0e1d53e5811.jpg"
     ],
-    "vton_category": "lower",
+    "vton_category": "lower_body",
     "createdAt": "2025-11-15T20:59:27.352Z",
-    "updatedAt": "2025-11-15T20:59:27.352Z",
+    "updatedAt": "2025-11-17T11:49:40.615Z",
     "__v": 0
   },
   {
@@ -1243,8 +1286,9 @@
       "http://localhost:5500/product_images/1763240472491-6c0f5e37ba199db3eebaa48e5cf1ecb9ce9b8add1e5a50c324ab12f2.jpg"
     ],
     "createdAt": "2025-11-15T21:01:12.503Z",
-    "updatedAt": "2025-11-15T21:01:12.503Z",
-    "__v": 0
+    "updatedAt": "2025-11-17T11:49:40.645Z",
+    "__v": 0,
+    "vton_category": "lower_body"
   },
   {
     "_id": "691af524ef1884c0aef1dc3c",
@@ -1259,9 +1303,9 @@
     "stock": 9,
     "companyName": "wertyu",
     "images": [],
-    "vton_category": "lower",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-17T10:12:52.925Z",
-    "updatedAt": "2025-11-17T10:12:52.925Z",
+    "updatedAt": "2025-11-17T11:49:40.678Z",
     "__v": 0
   },
   {
@@ -1277,9 +1321,29 @@
     "stock": 100,
     "companyName": "sdftyui",
     "images": [],
-    "vton_category": "lower",
+    "vton_category": "upper_body",
     "createdAt": "2025-11-17T10:14:50.178Z",
-    "updatedAt": "2025-11-17T10:14:50.178Z",
+    "updatedAt": "2025-11-17T11:49:40.713Z",
+    "__v": 0
+  },
+  {
+    "_id": "691b4dc52f21bc0769757e89",
+    "name": "rohan batra",
+    "description": "ujff",
+    "category": "Men",
+    "price": 631,
+    "sizes": [
+      "S"
+    ],
+    "color": "Black",
+    "stock": 152,
+    "companyName": "jhgf",
+    "images": [
+      "http://localhost:5500/product_images/1763397061313-09166_00.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-17T16:31:01.325Z",
+    "updatedAt": "2025-11-17T16:31:01.325Z",
     "__v": 0
   }
 ]
