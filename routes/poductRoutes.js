@@ -201,7 +201,7 @@ productRouter.get("/search", async (req, res) => {
     const query = req.query.s?.trim();
     if (!query) return res.status(400).json({ message: "Missing search query" });
 
-    const products = await Product.find();
+    const products = await Product.find({ stock: { $gt: 0 } });
 
     // ----------------------------
     // 1️⃣ GENDER DETECTION

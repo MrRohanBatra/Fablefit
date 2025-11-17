@@ -14,11 +14,12 @@ const orderItemSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema(
   {
+    // 🔥 FIX: Firebase UID is a string, NOT ObjectId
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
+
     items: [orderItemSchema],
 
     totalPrice: {
@@ -39,8 +40,8 @@ const orderSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["placed", "shipped", "delivered", "cancelled"],
-      default: "pending",
+      enum: ["placed", "shipped", "delivered", "cancelled","out-for-delivery"],
+      default: "placed",
     },
 
     isPaid: {
@@ -52,11 +53,10 @@ const orderSchema = new mongoose.Schema(
       type: Date,
     },
 
-    
     deliveryDate: {
       type: Date,
       default: function () {
-        return new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+        return new Date(Date.now() + 8 * 24 * 60 * 60 * 1000);
       },
     },
   },

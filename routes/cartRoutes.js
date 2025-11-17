@@ -23,6 +23,7 @@ import {
   removeFromCart,
   updateCartQuantity,
   getCart,
+  getall
 } from "../controllers/cartController.js";
 
 const router = express.Router();
@@ -30,6 +31,7 @@ const router = express.Router();
 router.post("/add", addToCart);
 router.post("/remove", removeFromCart);
 router.post("/update", updateCartQuantity);
+router.get("/getall", getall);    
 router.get("/:uid", getCart);
 
 export default router;

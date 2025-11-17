@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema(
     },
     sizes: {
       type: [String],    // ["S", "M", "L", "XL"]
-      default:[],
+      default: [],
       required: true,
 
     },
@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema(
     //     },
     color: {
       type: String,
-      default:[],
+      default: "unknown"
     },
     stock: {
       type: Number,
@@ -44,11 +44,11 @@ const productSchema = new mongoose.Schema(
     },
 
     images: {
-      type: [String], 
+      type: [String],
       default: [],
     },
     vton_category: {
-      type: String, 
+      type: String,
     },
   },
   { timestamps: true } // automatically adds createdAt & updatedAt
