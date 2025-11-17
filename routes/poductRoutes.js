@@ -116,7 +116,14 @@ productRouter.get("/", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
+productRouter.get("/all", async (req, res) => {
+  try {
+    const products = await Product.find();  
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 // ----------------------
 // 4️⃣ Get Product by ID
 // ----------------------
@@ -131,35 +138,119 @@ productRouter.get("/id/:id", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+// productRouter.get("/search", async (req, res) => {
+//   try {
+//     const query = req.query.s?.trim();
+//     if (!query) return res.status(400).json({ message: "Missing search query" });
+    
+//     const products = await Product.find();
+    
+//     // 🧩 Add simple synonym expansion
+//     const synonyms = {
+//       men: ["man", "mens", "male", "guys", "boy"],
+//       women: ["woman", "ladies", "female", "girls"],
+//       kids: ["child", "children", "boy", "girl", "kidswear"]
+//     };
+    
+//     function expandQuery(q) {
+//       const words = q.toLowerCase().split(/\s+/);
+//       const expanded = new Set();
+//       for (const word of words) {
+//         expanded.add(word);
+//         if (synonyms[word]) synonyms[word].forEach(s => expanded.add(s));
+//       }
+//       return [...expanded].join(" ");
+//     }
+    
+//     const expandedQuery = expandQuery(query);
+    
+//     const fuse = new Fuse(products, {
+//       includeScore: true,
+//       threshold: 0.5, // slightly fuzzy, good balance
+//       keys: [
+//         { name: "name", weight: 0.5 },
+//         { name: "description", weight: 0.3 },
+//         { name: "category", weight: 0.1 },
+//         { name: "color", weight: 0.1 }
+//       ]
+//     });
+    
+//     let results = fuse.search(expandedQuery);
+    
+//     // 🧩 Optional fallback for partial includes
+//     if (results.length === 0) {
+//       const qWords = expandedQuery.split(" ");
+//       results = products
+//       .filter(p => {
+//         const text = `${p.name} ${p.description} ${p.category}`.toLowerCase();
+//         return qWords.some(word => text.includes(word));
+//       })
+//       .map(p => ({ item: p }));
+//     }
+    
+//     const matched = results.map(r => r.item);
+//     console.log(`Searched for ${query} TOTAL: ${matched.length}`);
+//     res.status(200).json(matched);
+//   } catch (error) {
+//     console.error("Search error:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 productRouter.get("/search", async (req, res) => {
   try {
     const query = req.query.s?.trim();
     if (!query) return res.status(400).json({ message: "Missing search query" });
-    
+
     const products = await Product.find();
-    
-    // 🧩 Add simple synonym expansion
+
+    // ----------------------------
+    // 1️⃣ GENDER DETECTION
+    // ----------------------------
+    function detectGender(q) {
+      const words = q.toLowerCase().split(/\s+/);
+
+      const menWords = ["men", "man", "mens", "male", "guy"];
+      const womenWords = ["women", "woman", "ladies", "female", "girl"];
+      const kidsWords = ["kids", "child", "children", "kid"];
+
+      if (words.some(w => menWords.includes(w))) return "men";
+      if (words.some(w => womenWords.includes(w))) return "women";
+      if (words.some(w => kidsWords.includes(w))) return "kids";
+      return null;
+    }
+
+    const gender = detectGender(query);
+
+    // ----------------------------
+    // 2️⃣ SAFE SYNONYMS
+    // ----------------------------
     const synonyms = {
-      men: ["man", "mens", "male", "guys", "boy"],
-      women: ["woman", "ladies", "female", "girls"],
-      kids: ["child", "children", "boy", "girl", "kidswear"]
+      men: ["man", "mens", "male"],
+      women: ["woman", "ladies", "female"],
+      kids: ["child", "children", "kid"]
     };
-    
+
     function expandQuery(q) {
       const words = q.toLowerCase().split(/\s+/);
       const expanded = new Set();
+
       for (const word of words) {
         expanded.add(word);
-        if (synonyms[word]) synonyms[word].forEach(s => expanded.add(s));
+        if (synonyms[word]) {
+          synonyms[word].forEach(s => expanded.add(s));
+        }
       }
       return [...expanded].join(" ");
     }
-    
+
     const expandedQuery = expandQuery(query);
-    
+
+    // ----------------------------
+    // 3️⃣ FUSE SEARCH
+    // ----------------------------
     const fuse = new Fuse(products, {
       includeScore: true,
-      threshold: 0.5, // slightly fuzzy, good balance
+      threshold: 0.5,
       keys: [
         { name: "name", weight: 0.5 },
         { name: "description", weight: 0.3 },
@@ -167,26 +258,55 @@ productRouter.get("/search", async (req, res) => {
         { name: "color", weight: 0.1 }
       ]
     });
-    
+
     let results = fuse.search(expandedQuery);
-    
-    // 🧩 Optional fallback for partial includes
-    if (results.length === 0) {
-      const qWords = expandedQuery.split(" ");
-      results = products
-      .filter(p => {
-        const text = `${p.name} ${p.description} ${p.category}`.toLowerCase();
-        return qWords.some(word => text.includes(word));
-      })
-      .map(p => ({ item: p }));
+    let matched = results.map(r => r.item);
+
+    // ----------------------------
+    // 4️⃣ APPLY GENDER FILTER
+    // ----------------------------
+    if (gender) {
+      matched = matched.filter(p =>
+        p.category?.toLowerCase().includes(gender) ||
+        p.description?.toLowerCase().includes(gender) ||
+        p.name?.toLowerCase().includes(gender)
+      );
     }
-    
-    const matched = results.map(r => r.item);
-    console.log(`Searched for ${query} TOTAL: ${matched.length}`);
+
+    // ----------------------------
+    // 5️⃣ FALLBACK SEARCH (WORD-BOUNDARY SAFE)
+    // ----------------------------
+    if (matched.length === 0) {
+      const qWords = expandedQuery.split(" ");
+
+      matched = products.filter(p => {
+        const text = `${p.name} ${p.description} ${p.category}`.toLowerCase();
+
+        return qWords.some(word => {
+          const w = word.trim();
+          if (!w) return false;
+          const regex = new RegExp(`\\b${w}\\b`, "i");
+          return regex.test(text);
+        });
+      });
+
+      // Apply gender again in fallback
+      if (gender) {
+        matched = matched.filter(p =>
+          p.category?.toLowerCase().includes(gender) ||
+          p.description?.toLowerCase().includes(gender) ||
+          p.name?.toLowerCase().includes(gender)
+        );
+      }
+    }
+
+    console.log(`Searched for "${query}" → ${matched.length} results`);
     res.status(200).json(matched);
+
   } catch (error) {
     console.error("Search error:", error);
     res.status(500).json({ message: error.message });
   }
 });
+
 export default productRouter;
