@@ -13,6 +13,7 @@ import {
   Spinner,
   Toast,
   Image,
+  ProgressBar
 } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserContext } from "./FirebaseAuth";
@@ -27,6 +28,7 @@ import { cartContext } from "../App";
 import { Cart } from "./Product/Cart";
 import { User } from "./User/user";
 import Product from "./Product/Product";
+import Order from "./Product/Order";
 function Profile() {
   const { page } = useParams();
   const navigate = useNavigate();
@@ -678,61 +680,7 @@ function AddressCard({ type, address, onAddressChange, isEditing }) {
     </Col>
   );
 }
-// function AddressCard({ type, addr, user, index, showToast }) {
-//   const [isEditing, setIsEditing] = useState(false);
-//   const [address, setAddress] = useState(addr);
-//   return (
-//     <Col md={6} key={index}>
-//       <Card className="shadow-sm mb-3 rounded-4">
-//         <Card.Body>
-//           <Card.Title className="d-flex justify-content-between align-items-center">
-//             <span className="text-capitalize fw-bold">{type} Address</span>
-//             {!isEditing ? (
-//               <Button
-//                 variant="outline-primary"
-//                 size="sm"
-//                 onClick={() => setIsEditing(!isEditing)}
-//               >
-//                 Edit
-//               </Button>
-//             ) : (
-//               <Button
-//                 variant="outline-primary"
-//                 size="sm"
-//                 onClick={() => {
-//                   showToast(`Updating ${type} Address`, "info", 1500);
-//                   updateAddress(user, type, address)
-//                     .then(() => {
-//                       setIsEditing(!isEditing);
-//                       showToast(`Updated ${type} Address`, "success", 3000);
-//                     })
-//                     .catch((e) => {
-//                       showToast(
-//                         `Error in Updating ${type}Address`,
-//                         "danger",
-//                         3000
-//                       );
-//                     });
-//                 }}
-//               >
-//                 Save
-//               </Button>
-//             )}
-//           </Card.Title>
-//           <Card.Text>
-//             <Form.Control
-//               value={address}
-//               readOnly={!isEditing}
-//               onChange={(e) => {
-//                 setAddress(e.target.value);
-//               }}
-//             ></Form.Control>
-//           </Card.Text>
-//         </Card.Body>
-//       </Card>
-//     </Col>
-//   );
-// }
+
 function AddAddressModal({ show, onHide, user, setUser, showToast }) {
   const [addressType, setAddressType] = useState("home");
   const [addressValue, setAddressValue] = useState("");
@@ -828,6 +776,13 @@ function updateUserDetails(user, dispName) {
 function ProfileCart() {
   const [cart, setCart] = useContext(cartContext);
   const [detailedItems, setDetailedItems] = useState([]); // holds { item, product }
+  const [user] = useContext(UserContext);
+  const [showModal, setShowModal] = useState(false);
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
+  const [finalAmount, setFinalAmount] = useState(cart.totalPrice);
+  const [selectedAddress, setSelectedAddress] = useState("home");
+
+
   const navigate = useNavigate();
   // 🧠 Fetch product details for each cart item
   useEffect(() => {
@@ -888,6 +843,19 @@ function ProfileCart() {
       console.error("❌ Failed to remove product:", err);
     }
   };
+  const computeDeliveryCharge = () => {
+    const itemCount = cart.items.reduce((sum, i) => sum + i.quantity, 0);
+
+    let charge = 0;
+
+    if (cart.totalPrice < 999) {
+      charge = 49 + itemCount * 10; // example: ₹49 base + ₹10 per item
+    }
+
+    setDeliveryCharge(charge);
+    setFinalAmount(cart.totalPrice + charge);
+  };
+
 
   // 🔢 Update item quantity
   const handleQuantityChange = async (productId, size, color, newQty) => {
@@ -906,6 +874,39 @@ function ProfileCart() {
       }
     }
   };
+
+  const handleConfirmOrder = async () => {
+    try {
+      const res = await fetch("http://localhost:5500/api/orders/place", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: user?.firebaseUser?.uid,
+          address: user?.getAddress(selectedAddress) || "",
+          paymentMethod: "cod",
+          cart: {
+            ...cart,
+            totalPrice: finalAmount  // include delivery cost
+          },
+          deliveryCharge
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Order failed");
+        return;
+      }
+
+      setCart({ items: [], totalPrice: 0 });
+      setShowModal(false);
+      navigate("/profile/orders");
+    } catch (err) {
+      console.error("Order error:", err);
+    }
+  };
+
 
   // ⛔ Empty cart
   if (!cart || cart.items.length === 0) {
@@ -999,23 +1000,173 @@ function ProfileCart() {
 
         <div className="text-end mt-3">
           <h5>Total: ₹{cart.totalPrice.toFixed(2)}</h5>
-          <Button variant="success" className="mt-2">
+          <Button variant="success" className="mt-2"
+            onClick={() => {
+              computeDeliveryCharge();
+              setShowModal(true);
+            }}>
             Proceed to Checkout
           </Button>
         </div>
       </Card>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Your Order</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {/* ADDRESS SELECTOR */}
+          <Form.Group className="mb-3">
+            <Form.Label>Select Delivery Address</Form.Label>
+            <Form.Select
+              value={selectedAddress}
+              onChange={(e) => setSelectedAddress(e.target.value)}
+            >
+              <option value="home">Home</option>
+              <option value="work">Work</option>
+            </Form.Select>
+          </Form.Group>
+
+          {/* DISPLAY SELECTED ADDRESS */}
+          <Card className="p-2 mb-3">
+            <small className="text-muted">Deliver To:</small>
+            <div className="fw-semibold">
+              {user?.getAddress(selectedAddress) || "Address not available"}
+            </div>
+          </Card>
+
+          {/* PRICE SECTION */}
+          <p>Items Total: <b>₹{cart.totalPrice.toFixed(2)}</b></p>
+          <p>Delivery Charge: <b>₹{deliveryCharge}</b></p>
+          <hr />
+          <h5>Final Amount: ₹{finalAmount.toFixed(2)}</h5>
+          <small className="text-muted">Free delivery above ₹999</small>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="success" onClick={handleConfirmOrder}>
+            Confirm Order
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
     </Container>
   );
 }
 function ProfileOrders() {
+  const [user] = useContext(UserContext);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user?.firebaseUser?.uid) return;
+
+    const loadOrders = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5500/api/orders/user/${user.firebaseUser.uid}`
+        );
+
+        const data = await res.json();
+
+        // Convert each backend order to frontend Order class
+        const converted = data.map((o) => new Order(o));
+
+        setOrders(converted);
+      } catch (err) {
+        console.error("Failed to load orders:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadOrders();
+  }, [user]);
+
+  // ⏳ Loading state
+  if (loading) {
+    return (
+      <Container className="mt-4 d-flex justify-content-center">
+        <Spinner animation="border" variant="primary" />
+      </Container>
+    );
+  }
+
+  // 🛒 Empty state
+  if (!orders.length) {
+    return (
+      <Container className="mt-4">
+        <h4>Your Orders</h4>
+        <Card className="p-3 mt-3 text-center">
+          <p className="text-muted">You have not placed any orders yet.</p>
+        </Card>
+      </Container>
+    );
+  }
+
   return (
     <Container className="mt-4">
       <h4>Your Orders</h4>
-      <Card className="p-3 mt-3">
-        <p>You have not placed any orders yet.</p>
-      </Card>
+
+      {orders.map((order) => (
+        <Card key={order._id} className="p-3 mt-3 shadow-sm">
+          <h5 className="mb-1">
+            Order #{order._id.slice(-6)}
+          </h5>
+          <small className="text-muted">
+            Ordered on {new Date(order.createdAt).toDateString()}
+          </small>
+
+          <Row className="mt-3">
+            {order.items.map((it, i) => {
+              const prod = new Product(it.product);
+              return (
+                <Col xs={12} md={6} key={i} className="d-flex align-items-center mb-3">
+                  <Image
+                    src={prod.firstImage()}
+                    alt={prod.name}
+                    width={70}
+                    height={70}
+                    rounded
+                    className="me-3"
+                    style={{ cursor: "pointer", objectFit: "cover" }}
+                    onClick={() => navigate(`/product/${prod._id}`)}
+                  />
+                  <div>
+                    <strong>{prod.name}</strong>  
+                    <br />
+                    Size: {it.size} | Color: {it.color}
+                    <br />
+                    Qty: {it.quantity}
+                    <br />
+                    Price: ₹{it.price}
+                  </div>
+                </Col>
+              );
+            })}
+          </Row>
+
+          {/* Delivery progress */}
+          <ProgressBar
+            now={order.statusProgress()}
+            label={order.statusLabel()}
+            className="my-3"
+          />
+
+          <p className="mb-0">
+            <b>Total Paid:</b> ₹{order.totalPrice}
+          </p>
+
+          <p className="text-muted">
+            Expected Delivery: {new Date(order.deliveryDate).toDateString()}
+          </p>
+        </Card>
+      ))}
     </Container>
   );
 }
-
 export default Profile;

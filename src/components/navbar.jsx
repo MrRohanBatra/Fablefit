@@ -182,8 +182,8 @@ function NavbarFinal() {
           <Dropdown.Item as={Link} to="/profile/orders">
             <i className="bi-box-seam-fill me-2"></i>My Orders
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/profile/wishlist">
-            <i className="bi-heart-fill me-2"></i>Wishlist
+          <Dropdown.Item as={Link} to="/profile/cart">
+            <i className="bi-heart-fill me-2"></i>Cart
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item
