@@ -1,79 +1,63 @@
-<<<<<<< HEAD
-// test.js
-import fetch from "node-fetch";
-import FormData from "form-data";
-import fs from "fs";
-
-const API_URL = "https://api.rohan.org.in/tryon"; // your endpoint
-const NUM_REQUESTS = 10; // number of concurrent users
-
-async function sendRequest(id) {
-  try {
-    // check that files exist
-    if (!fs.existsSync("./test_human.jpg") || !fs.existsSync("./test_garment.jpg")) {
-      throw new Error("Missing test_human.jpg or test_garment.jpg in current folder");
-    }
-
-    // create form
-    const formData = new FormData();
-    formData.append("human_image", fs.createReadStream("./test_human.jpg"), {
-      filename: "test_human.jpg",
-      contentType: "image/jpeg",
-    });
-    formData.append("garment_image", fs.createReadStream("./test_garment.jpg"), {
-      filename: "test_garment.jpg",
-      contentType: "image/jpeg",
-    });
-    formData.append("denoise_steps", "30");
-    formData.append("seed", "42");
-    formData.append("category", "upper_body");
-
-    // send POST request
-    const res = await fetch(API_URL, {
-      method: "POST",
-      body: formData,
-      headers: formData.getHeaders(),
-    });
-
-    const text = await res.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = text;
-    }
-
-    console.log(`✅ Request #${id}`, data);
-  } catch (e) {
-    console.error(`❌ Request #${id}`, e.message);
-  }
-}
-
-(async () => {
-  console.log(`🚀 Starting ${NUM_REQUESTS} concurrent try-on requests...\n`);
-  const tasks = [];
-  for (let i = 0; i < NUM_REQUESTS; i++) tasks.push(sendRequest(i + 1));
-  await Promise.all(tasks);
-  console.log("\n✅ All requests completed.");
-})();
-=======
 import mongoose from "mongoose";
+import fs from "fs";
 import dotenv from "dotenv";
 import Product from "./models/productModel.js";
 
 dotenv.config();
 
-await mongoose.connect(process.env.MONGODB_URI);
+// CHANGE THESE FOR YOUR PROJECT
+const CDN_PREFIX = "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/";
 
-const ids = [
-  "691af59aef1884c0aef1dc45",
-  "691af524ef1884c0aef1dc3c"
-];
+async function main() {
+  try {
+    console.log("📦 Connecting to MongoDB...");
+    await mongoose.connect(process.env.MONGODB_URI);
 
-for (const id of ids) {
-  const res = await Product.deleteOne({ _id: id });
-  console.log("Deleted:", id, "->", res.deletedCount);
+    console.log("📤 Fetching all products...");
+    const products = await Product.find({});
+
+    // Backup before changes
+    console.log("🛡 Creating backup: products_backup.json");
+    fs.writeFileSync("products_backup.json", JSON.stringify(products, null, 2));
+
+    let updatedCount = 0;
+
+    for (const p of products) {
+      let modified = false;
+
+      // Ensure images field exists
+      if (!p.images || !Array.isArray(p.images)) continue;
+
+      // Update only localhost images
+      p.images = p.images.map((url) => {
+        if (url.includes("localhost") && url.includes("product_images")) {
+          modified = true;
+
+          const filename = url.split("/").pop(); // extract only the filename
+          return CDN_PREFIX + filename; // new CDN URL
+        }
+        return url;
+      });
+
+      if (modified) {
+        await p.save();
+        updatedCount++;
+      }
+    }
+
+    console.log(`✅ Migration complete.`);
+    console.log(`🔄 ${updatedCount} products updated.`);
+    console.log("🛡 Backup saved as: products_backup.json");
+  } catch (err) {
+    console.error("❌ ERROR:", err);
+  } finally {
+    await mongoose.disconnect();
+    console.log("🔌 MongoDB disconnected.");
+  }
 }
 
-await mongoose.disconnect();
->>>>>>> backend-ayush
+
+export {
+  main,
+}
+export default main;

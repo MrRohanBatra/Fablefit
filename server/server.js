@@ -98,7 +98,6 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/poductRoutes.js";
-
 import path from "path";
 import { fileURLToPath } from "url";
 

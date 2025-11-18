@@ -82,6 +82,9 @@ function ProductDisplay() {
     setVtonStatus("Starting...");
 
     try {
+      if (stripLocalhost(user?.getVtonImageUrl() || "") == "") {
+        throw Error("Please complete the profile");
+      }
       console.log(`Server Product VTON Category: ${product.vton_category}`)
       const resultUrl = await runVtonProcess({
         apiURL: "https://api.rohan.org.in",

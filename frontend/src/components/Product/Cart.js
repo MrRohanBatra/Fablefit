@@ -57,7 +57,7 @@ class Cart {
       quantity,
     };
 
-    const res = await fetch("//api/cart/add", {
+    const res = await fetch("/api/cart/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
