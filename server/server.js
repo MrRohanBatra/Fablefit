@@ -1,3 +1,92 @@
+// import express from "express";
+// import mongoose from "mongoose";
+// import dotenv from "dotenv";
+// import cors from "cors";
+// import fileUpload from "express-fileupload";
+
+// import connectDB from "./db.js";
+// import cartRoutes from "./routes/cartRoutes.js";
+// import orderRouter from "./routes/orderRoutes.js";
+// import userRouter from "./routes/userRoutes.js";
+// import path from "path";
+// import { fileURLToPath } from "url";
+// import productRouter from "./routes/poductRoutes.js";
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// const frontendPath=path.join(__dirname, "../frontend/dist");
+
+// dotenv.config(); 
+
+// const app = express();
+
+
+// app.use(
+//   cors({
+//     origin: "*", 
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//   })
+// );
+
+// app.use(
+//   cors({
+//     origin: "*", 
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//   })
+// );
+// app.options(/.*/, cors());
+
+
+
+// app.use(
+//   fileUpload({
+    
+    
+//     createParentPath: true,
+    
+//   })
+// );
+
+
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// app.options(/.*/, cors());
+// app.use(express.json());
+
+
+// connectDB();
+
+
+// app.get("/status", (req, res) => {
+//   res.status(200).send({ message:"Running"});
+// });
+// app.use("/images", express.static(path.join(__dirname, "images")));
+
+// app.use("/product_images", express.static(path.join(__dirname, "product_images")));
+
+
+// app.use("/api/cart", cartRoutes);
+// app.use("/api/orders", orderRouter);
+// app.use("/api/users/", userRouter);
+// app.use("/api/products/", productRouter);
+// app.post("/test", async (req, res) => {
+//   if (!req.files || !req.files.foo)
+//     res.sendStatus(500);
+//   const filename = req.files.image
+//   filename.mv(`./test/${filename.name}`);
+//   res.sendStatus(200);
+// })
+
+// app.use(express.static(frontendPath));
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(frontendPath, "index.html"));
+// });
+
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -8,82 +97,102 @@ import connectDB from "./db.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import userRouter from "./routes/userRoutes.js";
-import path from "path";
-import { fileURLToPath } from "url";
 import productRouter from "./routes/poductRoutes.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Resolve paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const frontendPath=path.join(__dirname, "../frontend/dist");
-
-dotenv.config(); 
+const frontendPath = path.join(__dirname, "../frontend/dist");
+console.log(__filename,__dirname,frontendPath)
+dotenv.config();
 
 const app = express();
 
+// ---------------------------
+// Global Middleware
+// ---------------------------
 
+// CORS
 app.use(
   cors({
-    origin: "*", 
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 
-app.use(
-  cors({
-    origin: "*", 
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-app.options(/.*/, cors());
-
-
-
-app.use(
-  fileUpload({
-    
-    
-    createParentPath: true,
-    
-  })
-);
-
-
+// Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.options(/.*/, cors());
-app.use(express.json());
+// File upload middleware
+app.use(
+  fileUpload({
+    createParentPath: true,
+  })
+);
 
-
+// Connect DB
 connectDB();
 
-
-app.get("/", (req, res) => {
-  res.status(200).send({ message:"Running"});
+// Status route
+app.get("/status", (req, res) => {
+  res.status(200).send({ message: "Running" });
 });
-app.use("/images", express.static(path.join(__dirname, "images")));
 
+// ---------------------------
+// STATIC BACKEND FILES
+// ---------------------------
+
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/product_images", express.static(path.join(__dirname, "product_images")));
 
+// ---------------------------
+// API ROUTES
+// ---------------------------
 
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRouter);
-app.use("/api/users/", userRouter);
-app.use("/api/products/", productRouter);
-app.post("/test", async (req, res) => {
-  if (!req.files || !req.files.foo)
-    res.sendStatus(500);
-  const filename = req.files.image
-  filename.mv(`./test/${filename.name}`);
-  res.sendStatus(200);
-})
-app.use(express.static(frontendPath));
+app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
 
-app.get("*", (req, res) => {
+app.post("/test", async (req, res) => {
+  if (!req.files || !req.files.image) return res.sendStatus(500);
+
+  const file = req.files.image;
+  file.mv(`./test/${file.name}`);
+  res.sendStatus(200);
+});
+
+// ---------------------------
+// SERVE FRONTEND (VITE BUILD)
+// ---------------------------
+
+app.use(express.static(frontendPath)); // serve static dist assets
+
+// Express 5 SAFE SPA fallback
+app.use((req, res, next) => {
+  // Do not override backend paths
+  if (
+    req.path.startsWith("/api") ||
+    req.path.startsWith("/images") ||
+    req.path.startsWith("/product_images") ||
+    req.path.startsWith("/status") ||
+    req.path.startsWith("/test")
+  ) {
+    return next();
+  }
+
+  // Everything else → frontend
   res.sendFile(path.join(frontendPath, "index.html"));
 });
+
+// ---------------------------
+// START SERVER
+// ---------------------------
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
