@@ -740,7 +740,7 @@ function ProfileDetails() {
     console.log("🟢 VTON changed — updating...");
     lastVtonUrlRef.current = newUrl;
 
-    setLoadingVton(!newUrl);
+    setLoadingVton(false);
     setVtonUrl(newUrl);
 
   }, [user]);
@@ -1053,16 +1053,18 @@ function ProfileDetails() {
               onHide={() => setShowUploadModal(false)}
               onUploadComplete={async (url) => {
                 setVtonUrl(url);
-                const success = await user.updateVtonImage(url);
-                if (success) {
-                  const refreshedUser = User.refreshUser(user);
+
+                const backendUpdated = await user.updateVtonImage(url);
+
+                if (backendUpdated) {
+                  const refreshedUser = User.refreshUser(backendUpdated, user);
                   setUser(refreshedUser);
                 }
               }}
+
               user={user}
             />
-
-            {/* Address Modal */}
+              {/* Address Modal */}
             <AddAddressModal
               show={showAddAdressModal}
               user={user}
@@ -1192,46 +1194,54 @@ function AddAddressModal({ show, onHide, user, setUser, showToast }) {
   const [addressValue, setAddressValue] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSave = async () => {
-    if (!addressValue.trim()) {
-      showToast("Please enter a valid address.", "danger");
+const handleSave = async () => {
+  if (!addressValue.trim()) {
+    showToast("Please enter a valid address.", "danger");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const existingAddresses = Array.isArray(user.address)
+      ? [...user.address]
+      : [];
+
+    // build new address object
+    const updatedAddresses = [...existingAddresses];
+    const index = updatedAddresses.findIndex((a) => a[addressType]);
+
+    if (index !== -1) {
+      updatedAddresses[index][addressType] = addressValue;
+    } else {
+      updatedAddresses.push({ [addressType]: addressValue });
+    }
+
+    // 1️⃣ Update backend → get backend updated user
+    const backendUpdated = await user.updateAddress(updatedAddresses);
+
+    // 2️⃣ If backend failed
+    if (!backendUpdated) {
+      showToast("Failed to save address. Try again.", "danger");
       return;
     }
 
-    try {
-      setLoading(true);
+    // 3️⃣ Merge backend + firebase user → correct new User instance
+    const refreshedUser = User.refreshUser(backendUpdated, user);
 
-      const existingAddresses = Array.isArray(user.address)
-        ? [...user.address]
-        : [];
+    // 4️⃣ Save into context (react)
+    setUser(refreshedUser);
 
-      // Update or add address
-      const updatedAddresses = [...existingAddresses];
-      const index = updatedAddresses.findIndex((a) => a[addressType]);
+    showToast("Address saved successfully!", "success");
+    onHide();
 
-      if (index !== -1) {
-        updatedAddresses[index][addressType] = addressValue;
-      } else {
-        updatedAddresses.push({ [addressType]: addressValue });
-      }
-
-      const success = await user.updateAddress(updatedAddresses);
-
-      if (success) {
-        const refreshed = User.refreshUser(user);
-        setUser(refreshed);
-        showToast("Address saved successfully!", "success");
-        onHide();
-      } else {
-        showToast("Failed to save address. Try again.", "danger");
-      }
-    } catch (err) {
-      console.error(err);
-      showToast("Something went wrong!", "danger");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err) {
+    console.error(err);
+    showToast("Something went wrong!", "danger");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Modal show={show} onHide={onHide} centered>

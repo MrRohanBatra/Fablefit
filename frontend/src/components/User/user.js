@@ -179,31 +179,55 @@ export class User {
   }
 
   // 🏠 Update Address
-  async updateAddress(newAddress) {
-    const oldAddress = Array.isArray(this.address) ? [...this.address] : [];
+  // async updateAddress(newAddress) {
+  //   const oldAddress = Array.isArray(this.address) ? [...this.address] : [];
 
-    try {
-      if (!Array.isArray(newAddress)) throw new Error("Address must be an array");
+  //   try {
+  //     if (!Array.isArray(newAddress)) throw new Error("Address must be an array");
 
-      this.address = newAddress;
-      const updatedUser = await this.userUpdated();
-      console.log("Updated user");
-      if (updatedUser) {
-        const refreshUser = User.refreshUser(updatedUser);
-        console.log("✅ Address updated successfully!");
+  //     this.address = newAddress;
+  //     const updatedUser = await this.userUpdated();
+  //     console.log("Updated user");
+  //     if (updatedUser) {
+  //       const refreshUser = User.refreshUser(updatedUser);
+  //       console.log("✅ Address updated successfully!");
         
-        return true;
-      } else {
-        this.address = oldAddress;
-        console.warn("⚠️ Backend update failed, address reverted.");
-        return false;
-      }
-    } catch (err) {
-      console.error("❌ Error updating address:", err.message);
+  //       return true;
+  //     } else {
+  //       this.address = oldAddress;
+  //       console.warn("⚠️ Backend update failed, address reverted.");
+  //       return false;
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Error updating address:", err.message);
+  //     this.address = oldAddress;
+  //     return false;
+  //   }
+  // }
+  async updateAddress(newAddress) {
+  const oldAddress = Array.isArray(this.address) ? [...this.address] : [];
+
+  try {
+    if (!Array.isArray(newAddress)) 
+      throw new Error("Address must be an array");
+
+    this.address = newAddress;
+
+    const backendUpdated = await this.userUpdated();
+
+    if (!backendUpdated) {
       this.address = oldAddress;
-      return false;
+      return null;  // return null on failure
     }
+
+    return backendUpdated; // return updated backend data
+  } catch (err) {
+    console.error("❌ Error updating address:", err.message);
+    this.address = oldAddress;
+    return null;
   }
+}
+
 
   // 📞 Update Phone Number
   // async updatePhoneNumber(newNumber) {
@@ -238,29 +262,51 @@ export class User {
 
 
   // 🖼️ Update VTON Image URL
+  // async updateVtonImage(newImageUrl) {
+  //   const oldImage = this.vton_image;
+  //   try {
+  //     if (!newImageUrl) throw new Error("Invalid image URL");
+  //     this.vton_image = newImageUrl;
+
+  //     const updatedUser = await this.userUpdated();
+
+  //     if (updatedUser) {
+  //       Object.assign(this, User.refreshUser(updatedUser, this.firebaseUser));
+  //       console.log("🖼️ VTON image updated successfully!");
+  //       return true;
+  //     } else {
+  //       this.vton_image = oldImage;
+  //       console.warn("⚠️ Backend update failed, image reverted.");
+  //       return false;
+  //     }
+  //   } catch (err) {
+  //     console.error("❌ Error updating vton_image:", err.message);
+  //     this.vton_image = oldImage;
+  //     return false;
+  //   }
+  // }
   async updateVtonImage(newImageUrl) {
-    const oldImage = this.vton_image;
-    try {
-      if (!newImageUrl) throw new Error("Invalid image URL");
-      this.vton_image = newImageUrl;
+  const oldImage = this.vton_image;
 
-      const updatedUser = await this.userUpdated();
+  try {
+    if (!newImageUrl) throw new Error("Invalid image URL");
 
-      if (updatedUser) {
-        Object.assign(this, User.refreshUser(updatedUser, this.firebaseUser));
-        console.log("🖼️ VTON image updated successfully!");
-        return true;
-      } else {
-        this.vton_image = oldImage;
-        console.warn("⚠️ Backend update failed, image reverted.");
-        return false;
-      }
-    } catch (err) {
-      console.error("❌ Error updating vton_image:", err.message);
+    this.vton_image = newImageUrl;
+
+    const backendUpdated = await this.userUpdated();
+
+    if (!backendUpdated) {
       this.vton_image = oldImage;
-      return false;
+      return null;
     }
+
+    return backendUpdated; // IMPORTANT
+  } catch (err) {
+    this.vton_image = oldImage;
+    return null;
   }
+}
+
 
   // // ♻️ Rebuild user instance safely
   //   static refreshUser(oldUser) {
