@@ -14,7 +14,7 @@ import {
   Toast,
 } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
-import Product from "./Product/Product";
+import Product, { stripLocalhost } from "./Product/Product";
 import "../CSS/product-display.css";
 import { cartContext } from "../App";
 import { runVtonProcess,filterCategory } from "../utils/vton";
@@ -85,8 +85,8 @@ function ProductDisplay() {
       console.log(`Server Product VTON Category: ${product.vton_category}`)
       const resultUrl = await runVtonProcess({
         apiURL: "https://api.rohan.org.in",
-        humanImageUrl: user?.getVtonImageUrl() || "",// replace with actual user image
-        garmentImageUrl: product.images[0],
+        humanImageUrl: stripLocalhost(user?.getVtonImageUrl()) || "",// replace with actual user image
+        garmentImageUrl: stripLocalhost(product.images[0]),
         category: filterCategory(product.vton_category || "upper_body"),
         onProgress: setVtonProgress,
         onStatus: setVtonStatus,
@@ -208,7 +208,7 @@ function ProductDisplay() {
               {/* LEFT IMAGES */}
               <Col md={6} className="text-center">
                 <Image
-                  src={product.images[heroImage]}
+                  src={stripLocalhost(product.images[heroImage])}
                   alt={product.name}
                   fluid
                   className="rounded-4 shadow-sm mb-3 hero-image"
@@ -222,7 +222,7 @@ function ProductDisplay() {
                   {product.images.map((img, index) => (
                     <Image
                       key={index}
-                      src={img}
+                      src={stripLocalhost(img)}
                       alt={`thumb-${index}`}
                       onClick={() => setHeroImage(index)}
                       className={`rounded-3 thumb ${
@@ -355,7 +355,7 @@ function ProductDisplay() {
                       style={{ cursor: "pointer" }}
                     >
                       <Image
-                        src={item.firstImage()}
+                        src={stripLocalhost(item.firstImage())}
                         alt={item.name}
                         fluid
                         className="rounded-top"

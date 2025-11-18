@@ -43,3 +43,21 @@ export default class Product {
     return { ...this };
   }
 }
+
+export function stripLocalhost(url) {
+  try {
+    const u = new URL(url);
+    
+    // If hostname is localhost, return only the pathname
+    if (u.hostname === "localhost") {
+      console.log(`returning ${u.pathname} `)
+      return u.pathname; // includes leading '/'
+    }
+    
+    // Otherwise return original URL
+    return url;
+  } catch (e) {
+    console.error("Invalid URL:", e);
+    return url;
+  }
+}

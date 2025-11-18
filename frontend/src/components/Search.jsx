@@ -14,7 +14,7 @@ import {
   Toast,
 } from "react-bootstrap";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import Product from "./Product/Product";
+import Product, { stripLocalhost } from "./Product/Product";
 import "../CSS/products-scroll.css";
 import Cart from "./Product/Cart";
 import { AnimatePresence, motion } from "framer-motion";
@@ -366,7 +366,7 @@ function Search() {
                             }}
                           >
                             <Image
-                              src={product.firstImage()}
+                              src={stripLocalhost(product.firstImage())}
                               alt={product.name}
                               className="card-img-top object-fit-cover"
                               style={{ height: "200px" }}
