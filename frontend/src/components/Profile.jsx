@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, use } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
 import {
   Container,
@@ -103,10 +103,491 @@ function Profile() {
     </Container>
   );
 }
+// function ProfileDetails() {
+//   const [user, setUser, handleSignOut] = useContext(UserContext);
+
+//   // ✅ Hooks always at top
+//   const [showAddAdressModal, setAddAddressModal] = useState(false);
+//   const [editMode, setEditMode] = useState(false);
+//   const [saving, setSaving] = useState(false);
+//   const [toast, setToast] = useState({
+//     show: false,
+//     message: "",
+//     variant: "info",
+//   });
+
+//   // ✅ Safe optional chaining
+//   const fullName = user?.firebaseUser?.displayName || "";
+//   const nameParts = fullName.trim().split(" ").filter(Boolean);
+//   const firstNameInit = nameParts[0] || "";
+//   const lastNameInit = nameParts.slice(1).join(" ") || "";
+
+//   const [firstName, setFirstName] = useState(firstNameInit);
+//   const [lastName, setLastName] = useState(lastNameInit);
+//   const [phoneNumber, setPhoneNumber] = useState(
+//     user?.getPhoneNumber?.() || ""
+//   );
+//   const [addressList, setAddressList] = useState([]);
+//   const [editAdress, setEditAdress] = useState(false);
+//   const [homeAddress, setHomeAddress] = useState("");
+//   const [workAddress, setWorkAddress] = useState("");
+//   const [vtonUrl, setVtonUrl] = useState(user?.getVtonImageUrl() || "");
+//   const [loadingVton, setLoadingVton] = useState(true);
+//   const [showUploadModal, setShowUploadModal] = useState(false);
+//   const [loading, setLoading] = useState(true);
+
+//   // ✅ Effects always safe
+//   useEffect(() => {
+//     if (!user) return;
+//     const fullName = user?.firebaseUser?.displayName || "";
+//     const parts = fullName.trim().split(" ").filter(Boolean);
+//     setFirstName(parts[0] || "");
+//     setLastName(parts.slice(1).join(" ") || "");
+//     setPhoneNumber(user?.getPhoneNumber?.() || "");
+//   }, [user]);
+
+//   useEffect(() => {
+//     if (!user) return;
+//     const userAddresses = user.address || [];
+//     setAddressList(userAddresses);
+
+//     if (userAddresses.length > 0) {
+//       const home = userAddresses.find((a) => a.home)?.home || "";
+//       const work = userAddresses.find((a) => a.work)?.work || "";
+
+//       setHomeAddress(home);
+//       setWorkAddress(work);
+//     }
+//   }, [user]);
+
+//   // useEffect(() => {
+//   //   if (!user) return;
+//   //   console.log(user);
+//   //   setLoadingVton(true);
+//   //   const url = user.vton_image;
+//   //   console.log(url);
+//   //   setVtonUrl(url);
+//   //   console.log(vtonUrl);
+//   //   setLoadingVton(false);
+//   // }, [user]);
+//   useEffect(() => {
+//   if (!user) return;
+
+//   const newUrl = user.vton_image || "";
+
+//   // Only update if the URL actually changed
+//   if (newUrl !== vtonUrl) {
+//     setLoadingVton(!newUrl);  // show spinner only when URL is empty
+//     setVtonUrl(newUrl);
+//   }
+// }, [user?.vton_image]);  // NOTICE: only track vton_image, not full user
+
+
+//   // ✅ Keep all hooks above this line
+//   if (!user.firebaseUser) {
+//     return (
+//       <Container className="m-4 text-center">
+//         <Spinner animation="border" role="status">
+//           <span className="visually-hidden">Loading...</span>
+//         </Spinner>
+//         <p className="mt-2">Loading user data...</p>
+//       </Container>
+//     );
+//   }
+
+//   const showToast = (message, variant = "info", duration = 2500) => {
+//     setToast({ show: true, message, variant });
+//     setTimeout(() => setToast((prev) => ({ ...prev, show: false })), duration);
+//   };
+
+//   const handleSave = async () => {
+//     const newFullName = `${firstName} ${lastName}`.trim();
+//     const oldFullName = user.firebaseUser.displayName || "";
+//     const oldPhoneNumber = user.getPhoneNumber() || "";
+//     const newPhoneNumber = phoneNumber;
+//     if (newFullName === oldFullName && oldPhoneNumber === newPhoneNumber) {
+//       setEditMode(false);
+//       return;
+//     }
+
+//     try {
+//       setSaving(true);
+//       showToast("Saving your changes...", "info", 4000);
+
+//       await updateProfile(user.firebaseUser, { displayName: newFullName });
+//       await user.updatePhoneNumber(newPhoneNumber);
+//       const updatedUser = User.refreshUser(user);
+//       setUser(updatedUser);
+//       showToast("Profile updated successfully!", "success");
+//     } catch (error) {
+//       console.error("Error updating profile:", error);
+//       showToast("Failed to update profile. Please try again.", "danger");
+//     } finally {
+//       setSaving(false);
+//       setEditMode(false);
+//     }
+//   };
+
+//   return (
+//     <>
+//       {/* === ANIMATED TOAST === */}
+//       <div
+//         className="position-fixed top-0 end-0 p-3"
+//         style={{ marginTop: "70px", zIndex: 1060 }}
+//       >
+//         <AnimatePresence>
+//           {toast.show && (
+//             <motion.div
+//               key="toast"
+//               initial={{ opacity: 0, x: 50, y: -10 }}
+//               animate={{ opacity: 1, x: 0, y: 0 }}
+//               exit={{ opacity: 0, x: 50, y: -10 }}
+//               transition={{ duration: 0.3 }}
+//             >
+//               <Toast
+//                 bg={
+//                   toast.variant === "danger"
+//                     ? "danger"
+//                     : toast.variant === "success"
+//                       ? "success"
+//                       : "light"
+//                 }
+//                 onClose={() => setToast({ ...toast, show: false })}
+//                 className="shadow-lg rounded-3"
+//               >
+//                 <Toast.Header className="d-flex justify-content-between align-items-center">
+//                   <div className="d-flex align-items-center">
+//                     <Image
+//                       src="/react.svg"
+//                       width={20}
+//                       className="rounded me-2"
+//                     />
+//                     <strong className="me-auto">FableFit</strong>
+//                   </div>
+//                 </Toast.Header>
+//                 <Toast.Body
+//                   className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
+//                     }`}
+//                 >
+//                   {toast.message}
+//                   {saving && toast.variant === "info" && (
+//                     <Spinner
+//                       animation="border"
+//                       size="sm"
+//                       variant="primary"
+//                       className="ms-2"
+//                     />
+//                   )}
+//                 </Toast.Body>
+//               </Toast>
+//             </motion.div>
+//           )}
+//         </AnimatePresence>
+//       </div>
+
+//       {/* === MAIN PROFILE FORM === */}
+//       <motion.div
+//         initial={{ opacity: 0, y: 10 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         transition={{ duration: 0.4 }}
+//       >
+//         <Container className="mt-4">
+//           <Form className="ms-4">
+//             <h5 className="mt-2">Personal Information</h5>
+//             <Row className="mt-3">
+//               <Col md={6}>
+//                 <Form.Group className="mb-3">
+//                   <Form.Label>First Name</Form.Label>
+//                   <Form.Control
+//                     type="text"
+//                     placeholder="Enter your first name"
+//                     value={firstName}
+//                     onChange={(e) => setFirstName(e.target.value)}
+//                     readOnly={!editMode}
+//                   />
+//                 </Form.Group>
+//               </Col>
+//               <Col md={6}>
+//                 <Form.Group className="mb-3">
+//                   <Form.Label>Last Name</Form.Label>
+//                   <Form.Control
+//                     type="text"
+//                     placeholder="Enter your last name"
+//                     value={lastName}
+//                     onChange={(e) => setLastName(e.target.value)}
+//                     readOnly={!editMode}
+//                   />
+//                 </Form.Group>
+//               </Col>
+
+//               <Col md={12}>
+//                 <Form.Group className="mb-3">
+//                   <Form.Label>Email</Form.Label>
+//                   <InputGroup>
+//                     <Form.Control
+//                       type="email"
+//                       value={user?.firebaseUser.email || ""}
+//                       readOnly
+//                     />
+//                     {user?.firebaseUser.emailVerified ? (
+//                       <InputGroup.Text className="text-success">
+//                         Verified
+//                       </InputGroup.Text>
+//                     ) : (
+//                       <InputGroup.Text
+//                         className="text-danger"
+//                         style={{ cursor: "pointer" }}
+//                         onClick={() => {
+//                           sendEmailVerification(user).then(() =>
+//                             showToast("Verification email sent!", "info")
+//                           );
+//                         }}
+//                       >
+//                         Not Verified
+//                       </InputGroup.Text>
+//                     )}
+//                   </InputGroup>
+//                 </Form.Group>
+//               </Col>
+
+//               <Col md={6}>
+//                 <Form.Group className="mb-3">
+//                   <Form.Label>Phone Number</Form.Label>
+//                   <InputGroup>
+//                     <InputGroup.Text>+91</InputGroup.Text>
+//                     <Form.Control
+//                       type="number"
+//                       value={phoneNumber}
+//                       onChange={(e) => {
+//                         setPhoneNumber(e.target.value);
+//                       }}
+//                       readOnly={!editMode}
+//                     />
+//                   </InputGroup>
+//                 </Form.Group>
+//               </Col>
+//             </Row>
+//             {/* === VTON STATUS SECTION === */}
+//             <Row className="mt-4">
+//               <Col md={12}>
+//                 <Card className="shadow-sm border-0 rounded-3 p-3">
+//                   <Card.Body>
+//                     <div className="d-flex justify-content-between align-items-center">
+//                       <div>
+//                         <h6 className="mb-1">Virtual Try-On Image</h6>
+//                         {loadingVton ? (
+//                           <Spinner animation="border" size="sm" />
+//                         ) : vtonUrl ? (
+//                           <small
+//                             className="text-success fw-semibold"
+//                             style={{ cursor: "pointer" }}
+//                             onClick={() => window.open(vtonUrl, "_blank")}
+//                           >
+//                             ✅ Your VTON image is uploaded.
+//                           </small>
+
+//                         ) : (
+//                           <small className="text-danger fw-semibold">
+//                             ⚠️ No VTON image found.
+//                           </small>
+//                         )}
+//                       </div>
+
+//                       <div>
+//                         {vtonUrl ? (
+//                           <Button
+//                             variant="outline-primary"
+//                             onClick={() => {
+//                               setShowUploadModal(true);
+//                             }}
+//                           >
+//                             Re-Upload
+//                           </Button>
+//                         ) : (
+//                           <Button
+//                             variant="primary"
+//                             onClick={() => {
+//                               setShowUploadModal(true);
+//                             }}
+//                           >
+//                             Upload
+//                           </Button>
+//                         )}
+//                       </div>
+//                     </div>
+//                   </Card.Body>
+//                 </Card>
+//               </Col>
+//             </Row>
+
+//             <motion.div className="mt-3" layout>
+//               <motion.div
+//                 whileHover={{ scale: 1.05 }}
+//                 whileTap={{ scale: 0.95 }}
+//                 style={{ display: "inline-block" }}
+//               >
+//                 <Button variant="danger" onClick={handleSignOut}>
+//                   Sign Out
+//                 </Button>
+//               </motion.div>
+
+//               {!editMode ? (
+//                 <motion.div
+//                   whileHover={{ scale: 1.05 }}
+//                   whileTap={{ scale: 0.95 }}
+//                   style={{ display: "inline-block" }}
+//                 >
+//                   <Button
+//                     variant="primary"
+//                     className="ms-4"
+//                     onClick={() => {
+//                       setEditMode(true);
+//                       showToast("Email cannot be changed", "info", 3000);
+//                     }}
+//                   >
+//                     Edit Details
+//                   </Button>
+//                 </motion.div>
+//               ) : (
+//                 <motion.div
+//                   whileHover={{ scale: 1.05 }}
+//                   whileTap={{ scale: 0.95 }}
+//                   style={{ display: "inline-block" }}
+//                 >
+//                   <Button
+//                     variant="success"
+//                     className="ms-4"
+//                     onClick={handleSave}
+//                     disabled={saving}
+//                   >
+//                     Save Changes
+//                   </Button>
+//                 </motion.div>
+//               )}
+//             </motion.div>
+
+//             {/* === ADDRESS SECTION ===
+//             <Row className="mt-3">
+//               {addressList.length > 0 && (
+//                 <>
+//                   {addressList.map((obj, index) => {
+//                     const [type, addr] = Object.entries(obj)[0];
+//                     return (
+//                       <AddressCard
+//                         type={type}
+//                         addr={addr}
+//                         index={index}
+//                         user={user}
+//                         key={index}
+//                         showToast={showToast}
+//                       ></AddressCard>
+//                     );
+//                   })}
+//                 </>
+//               )}
+//             </Row> */}
+//             {/* === ADDRESS SECTION === */}
+//             <Row className="mt-3">
+//               {addressList.length > 0 ? (
+//                 <>
+//                   {/* {addressList.map((obj, index) => {
+//                     const [type, addr] = Object.entries(obj)[0];
+//                     return (
+//                       <AddressCard
+//                         type={type}
+//                         addr={addr}
+//                         index={index}
+//                         user={user}
+//                         key={index}
+//                         showToast={showToast}
+//                       />
+//                     );
+//                   })} */}
+//                   <AddressCard
+//                     type={"home"}
+//                     address={homeAddress}
+//                     onAddressChange={setHomeAddress}
+//                     isEditing={editAdress}
+//                   ></AddressCard>
+//                   <AddressCard
+//                     type={"work"}
+//                     address={workAddress}
+//                     onAddressChange={setWorkAddress}
+//                     isEditing={editAdress}
+//                   ></AddressCard>
+//                 </>
+//               ) : (
+//                 <Col md={12}>
+//                   <Card className="shadow-sm border-0 rounded-3 p-3 text-center">
+//                     <Card.Body>
+//                       <h6 className="text-muted mb-0">No address found.</h6>
+//                       <p className="text-secondary small mb-3">
+//                         Add a delivery address to complete your profile.
+//                       </p>
+//                       <Button
+//                         variant="outline-primary"
+//                         onClick={() => {
+//                           // example: open address add modal if you have one
+//                           setAddAddressModal(true);
+//                         }}
+//                       >
+//                         Add Address
+//                       </Button>
+//                     </Card.Body>
+//                   </Card>
+//                 </Col>
+//               )}
+//             </Row>
+//             {addressList.length < 2 ? (
+//               <Button
+//                 onClick={() => {
+//                   setAddAddressModal(true);
+//                 }}
+//               >
+//                 Add Address
+//               </Button>
+//             ) : (
+//               <Button
+//                 onClick={() => {
+//                   setAddAddressModal(true);
+//                 }}
+//               >
+//                 Edit Address
+//               </Button>
+//             )}
+//           </Form>
+//           <UploadModal
+//             show={showUploadModal}
+//             showToast={showToast}
+//             onHide={() => setShowUploadModal(false)}
+//             onUploadComplete={async (url) => {
+//               setVtonUrl(url);
+//               const success = await user.updateVtonImage(url);
+//               if (success) {
+//                 const refresdUser = User.refreshUser(user);
+//                 setUser(refresdUser);
+//               }
+//             }}
+//             user={user}
+//           ></UploadModal>
+//           <AddAddressModal
+//             show={showAddAdressModal}
+//             user={user}
+//             setUser={setUser}
+//             showToast={showToast}
+//             onHide={() => {
+//               setAddAddressModal(false);
+//             }}
+//           ></AddAddressModal>
+//         </Container>
+//       </motion.div>
+//     </>
+//   );
+// }
 function ProfileDetails() {
   const [user, setUser, handleSignOut] = useContext(UserContext);
 
-  // ✅ Hooks always at top
+  // ========================= STATE =========================
   const [showAddAdressModal, setAddAddressModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -116,83 +597,177 @@ function ProfileDetails() {
     variant: "info",
   });
 
-  // ✅ Safe optional chaining
-  const fullName = user?.firebaseUser?.displayName || "";
-  const nameParts = fullName.trim().split(" ").filter(Boolean);
-  const firstNameInit = nameParts[0] || "";
-  const lastNameInit = nameParts.slice(1).join(" ") || "";
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [firstName, setFirstName] = useState(firstNameInit);
-  const [lastName, setLastName] = useState(lastNameInit);
-  const [phoneNumber, setPhoneNumber] = useState(
-    user?.getPhoneNumber?.() || ""
-  );
   const [addressList, setAddressList] = useState([]);
   const [editAdress, setEditAdress] = useState(false);
   const [homeAddress, setHomeAddress] = useState("");
   const [workAddress, setWorkAddress] = useState("");
-  const [vtonUrl, setVtonUrl] = useState(user?.getVtonImageUrl() || "");
+
+  const [vtonUrl, setVtonUrl] = useState("");
   const [loadingVton, setLoadingVton] = useState(true);
+
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ Effects always safe
+  // ===================== INITIAL LOAD EFFECT =====================
+  // useEffect(() => {
+  //   if (!user || !loading) return;
+
+  //   // name
+  //   const fullName = user?.firebaseUser?.displayName || "";
+  //   const parts = fullName.trim().split(" ").filter(Boolean);
+  //   setFirstName(parts[0] || "");
+  //   setLastName(parts.slice(1).join(" ") || "");
+
+  //   // phone
+  //   setPhoneNumber(user?.getPhoneNumber?.() || "");
+
+  //   // addresses
+  //   const userAddresses = user.address || [];
+  //   setAddressList(userAddresses);
+
+  //   if (userAddresses.length > 0) {
+  //     const home = userAddresses.find((a) => a.home)?.home || "";
+  //     const work = userAddresses.find((a) => a.work)?.work || "";
+
+  //     setHomeAddress(home);
+  //     setWorkAddress(work);
+  //   }
+
+  //   // VTON
+  //   const url = user?.vton_image || "";
+  //   setVtonUrl(url);
+  //   setLoadingVton(!url);
+
+  //   // finish initial load
+  //   setLoading(false);
+  // }, [user, loading]);
+
+  // // ===================== VTON UPDATE EFFECT =====================
+  // useEffect(() => {
+  //   if (!user || loading) return;
+
+  //   const newUrl = user.vton_image || "";
+
+  //   if (newUrl !== vtonUrl) {
+  //     setLoadingVton(!newUrl);
+  //     setVtonUrl(newUrl);
+  //     setLoading(false)
+  //   }
+  // }, [user?.vton_image]);
+  const lastVtonUrlRef = useRef(null);
+
   useEffect(() => {
-    if (!user) return;
-    const fullName = user?.firebaseUser?.displayName || "";
-    const parts = fullName.trim().split(" ").filter(Boolean);
-    setFirstName(parts[0] || "");
-    setLastName(parts.slice(1).join(" ") || "");
-    setPhoneNumber(user?.getPhoneNumber?.() || "");
-  }, [user]);
+    console.log("🔄 useEffect RUN");
 
-  useEffect(() => {
-    if (!user) return;
-    const userAddresses = user.address || [];
-    setAddressList(userAddresses);
-
-    if (userAddresses.length > 0) {
-      const home = userAddresses.find((a) => a.home)?.home || "";
-      const work = userAddresses.find((a) => a.work)?.work || "";
-
-      setHomeAddress(home);
-      setWorkAddress(work);
+    console.log("➡️ user object:", user);
+    if (!user || !user.firebaseUser) {
+      console.log("❌ No user or firebaseUser — skipping effect");
+      return;
     }
+
+    // --- NAME ---
+    const fullName = user.firebaseUser.displayName || "";
+    console.log("👤 fullName from firebase:", fullName);
+
+    const parts = fullName.trim().split(" ").filter(Boolean);
+    const f = parts[0] || "";
+    const l = parts.slice(1).join(" ") || "";
+
+    console.log("🟦 Calculated name:", f, l);
+    console.log("🟧 Current state name:", firstName, lastName);
+
+    if (f !== firstName) {
+      console.log("📝 Updating firstName state");
+      setFirstName(f);
+    }
+    if (l !== lastName) {
+      console.log("📝 Updating lastName state");
+      setLastName(l);
+    }
+
+    // --- PHONE ---
+    const phone = user.getPhoneNumber?.() || "";
+    console.log("📞 phone from backend:", phone);
+    console.log("📞 phoneNumber state:", phoneNumber);
+
+    if (phone !== phoneNumber) {
+      console.log("📝 Updating phoneNumber");
+      setPhoneNumber(phone);
+    }
+
+    // --- ADDRESS ---
+    const addrs = user.address || [];
+    console.log("🏠 backend addresses:", addrs);
+    console.log("🏠 current addressList state:", addressList);
+
+    if (JSON.stringify(addrs) !== JSON.stringify(addressList)) {
+      console.log("📝 Updating addressList");
+      setAddressList(addrs);
+
+      const home = addrs.find((a) => a.home)?.home || "";
+      const work = addrs.find((a) => a.work)?.work || "";
+
+      console.log("🏡 home:", home, " | 🏢 work:", work);
+      console.log("🏡 homeAddress state:", homeAddress);
+      console.log("🏢 workAddress state:", workAddress);
+
+      if (home !== homeAddress) {
+        console.log("📝 Updating homeAddress");
+        setHomeAddress(home);
+      }
+      if (work !== workAddress) {
+        console.log("📝 Updating workAddress");
+        setWorkAddress(work);
+      }
+    }
+
+    // --- VTON ---
+    const newUrl = user.vton_image || "";
+    console.log("🖼️ backend VTON:", newUrl);
+    console.log("🖼️ current vtonUrl state:", vtonUrl);
+    console.log("🖼️ lastVtonUrlRef:", lastVtonUrlRef.current);
+
+    // ⛔ STOP if URL value didn't actually change
+    if (lastVtonUrlRef.current === newUrl) {
+      console.log("⛔ VTON unchanged — not updating spinner/state");
+      return;
+    }
+
+    console.log("🟢 VTON changed — updating...");
+    lastVtonUrlRef.current = newUrl;
+
+    setLoadingVton(!newUrl);
+    setVtonUrl(newUrl);
+
   }, [user]);
 
-  useEffect(() => {
-    if (!user) return;
-    console.log(user);
-    setLoadingVton(true);
-    const url = user.vton_image;
-    console.log(url);
-    setVtonUrl(url);
-    console.log(vtonUrl);
-    setLoadingVton(false);
-  }, [user]);
-
-  // ✅ Keep all hooks above this line
+  // ===================== BLOCK WHILE LOADING ====================
   if (!user || !user.firebaseUser) {
     return (
       <Container className="m-4 text-center">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
+        <Spinner animation="border" />
         <p className="mt-2">Loading user data...</p>
       </Container>
     );
   }
 
+  // ===================== TOAST HANDLER =====================
   const showToast = (message, variant = "info", duration = 2500) => {
     setToast({ show: true, message, variant });
     setTimeout(() => setToast((prev) => ({ ...prev, show: false })), duration);
   };
 
+  // ===================== SAVE HANDLER =====================
   const handleSave = async () => {
     const newFullName = `${firstName} ${lastName}`.trim();
     const oldFullName = user.firebaseUser.displayName || "";
-    const oldPhoneNumber = user.getPhoneNumber() || "";
-    const newPhoneNumber = phoneNumber;
-    if (newFullName === oldFullName && oldPhoneNumber === newPhoneNumber) {
+    const oldPhone = user.getPhoneNumber() || "";
+
+    if (newFullName === oldFullName && oldPhone === phoneNumber) {
       setEditMode(false);
       return;
     }
@@ -202,9 +777,15 @@ function ProfileDetails() {
       showToast("Saving your changes...", "info", 4000);
 
       await updateProfile(user.firebaseUser, { displayName: newFullName });
-      await user.updatePhoneNumber(newPhoneNumber);
-      const updatedUser = User.refreshUser(user);
-      setUser(updatedUser);
+      const backendUpdated = await user.updatePhoneNumber(phoneNumber);
+
+      if (backendUpdated) {
+        const refreshed = User.refreshUser(backendUpdated, user);
+        setUser(refreshed);
+      }
+      // const updatedUser = User.refreshUser(user);
+      // setUser(updatedUser);
+
       showToast("Profile updated successfully!", "success");
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -212,235 +793,200 @@ function ProfileDetails() {
     } finally {
       setSaving(false);
       setEditMode(false);
+      setLoading(true)
     }
   };
 
-  return (
-    <>
-      {/* === ANIMATED TOAST === */}
-      <div
-        className="position-fixed top-0 end-0 p-3"
-        style={{ marginTop: "70px", zIndex: 1060 }}
-      >
-        <AnimatePresence>
-          {toast.show && (
-            <motion.div
-              key="toast"
-              initial={{ opacity: 0, x: 50, y: -10 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              exit={{ opacity: 0, x: 50, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Toast
-                bg={
-                  toast.variant === "danger"
-                    ? "danger"
-                    : toast.variant === "success"
-                      ? "success"
-                      : "light"
-                }
-                onClose={() => setToast({ ...toast, show: false })}
-                className="shadow-lg rounded-3"
+  // ===================== RENDER UI =====================
+  return <>
+    {loading && !user && !user?.firebaseUser ? <><Container className="m-4 text-center">
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+      <p className="mt-2">Loading user data...</p>
+    </Container></> : (<>
+      <>
+        {/* === TOAST === */}
+        <div
+          className="position-fixed top-0 end-0 p-3"
+          style={{ marginTop: "70px", zIndex: 1060 }}
+        >
+          <AnimatePresence>
+            {toast.show && (
+              <motion.div
+                key="toast"
+                initial={{ opacity: 0, x: 50, y: -10 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
+                exit={{ opacity: 0, x: 50, y: -10 }}
+                transition={{ duration: 0.3 }}
               >
-                <Toast.Header className="d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center">
-                    <Image
-                      src="/react.svg"
-                      width={20}
-                      className="rounded me-2"
-                    />
-                    <strong className="me-auto">FableFit</strong>
-                  </div>
-                </Toast.Header>
-                <Toast.Body
-                  className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
-                    }`}
+                <Toast
+                  bg={
+                    toast.variant === "danger"
+                      ? "danger"
+                      : toast.variant === "success"
+                        ? "success"
+                        : "light"
+                  }
+                  onClose={() => setToast({ ...toast, show: false })}
+                  className="shadow-lg rounded-3"
                 >
-                  {toast.message}
-                  {saving && toast.variant === "info" && (
-                    <Spinner
-                      animation="border"
-                      size="sm"
-                      variant="primary"
-                      className="ms-2"
-                    />
-                  )}
-                </Toast.Body>
-              </Toast>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* === MAIN PROFILE FORM === */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <Container className="mt-4">
-          <Form className="ms-4">
-            <h5 className="mt-2">Personal Information</h5>
-            <Row className="mt-3">
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your first name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    readOnly={!editMode}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your last name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    readOnly={!editMode}
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={12}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Email</Form.Label>
-                  <InputGroup>
-                    <Form.Control
-                      type="email"
-                      value={user?.firebaseUser.email || ""}
-                      readOnly
-                    />
-                    {user?.firebaseUser.emailVerified ? (
-                      <InputGroup.Text className="text-success">
-                        Verified
-                      </InputGroup.Text>
-                    ) : (
-                      <InputGroup.Text
-                        className="text-danger"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          sendEmailVerification(user).then(() =>
-                            showToast("Verification email sent!", "info")
-                          );
-                        }}
-                      >
-                        Not Verified
-                      </InputGroup.Text>
+                  <Toast.Header>
+                    <Image src="/react.svg" width={20} className="rounded me-2" />
+                    <strong className="me-auto">FableFit</strong>
+                  </Toast.Header>
+                  <Toast.Body
+                    className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
+                      }`}
+                  >
+                    {toast.message}
+                    {saving && toast.variant === "info" && (
+                      <Spinner
+                        animation="border"
+                        size="sm"
+                        className="ms-2"
+                      />
                     )}
-                  </InputGroup>
-                </Form.Group>
-              </Col>
+                  </Toast.Body>
+                </Toast>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
 
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Phone Number</Form.Label>
-                  <InputGroup>
-                    <InputGroup.Text>+91</InputGroup.Text>
+        {/* === MAIN === */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <Container className="mt-4">
+            <Form className="ms-4">
+              {/* Personal Info */}
+              <h5 className="mt-2">Personal Information</h5>
+              <Row className="mt-3">
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>First Name</Form.Label>
                     <Form.Control
-                      type="number"
-                      value={phoneNumber}
-                      onChange={(e) => {
-                        setPhoneNumber(e.target.value);
-                      }}
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                       readOnly={!editMode}
                     />
-                  </InputGroup>
-                </Form.Group>
-              </Col>
-            </Row>
-            {/* === VTON STATUS SECTION === */}
-            <Row className="mt-4">
-              <Col md={12}>
-                <Card className="shadow-sm border-0 rounded-3 p-3">
-                  <Card.Body>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h6 className="mb-1">Virtual Try-On Image</h6>
-                        {loadingVton ? (
-                          <Spinner animation="border" size="sm" />
-                        ) : vtonUrl ? (
-                          <small
-                            className="text-success fw-semibold"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => window.open(vtonUrl, "_blank")}
-                          >
-                            ✅ Your VTON image is uploaded.
-                          </small>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      readOnly={!editMode}
+                    />
+                  </Form.Group>
+                </Col>
 
-                        ) : (
-                          <small className="text-danger fw-semibold">
-                            ⚠️ No VTON image found.
-                          </small>
-                        )}
-                      </div>
+                <Col md={12}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Email</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        type="email"
+                        value={user?.firebaseUser?.email || ""}
+                        readOnly
+                      />
+                      {user?.firebaseUser?.emailVerified ? (
+                        <InputGroup.Text className="text-success">
+                          Verified
+                        </InputGroup.Text>
+                      ) : (
+                        <InputGroup.Text
+                          className="text-danger"
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            sendEmailVerification(user).then(() =>
+                              showToast("Verification email sent!", "info")
+                            )
+                          }
+                        >
+                          Not Verified
+                        </InputGroup.Text>
+                      )}
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
 
-                      <div>
-                        {vtonUrl ? (
+                <Col md={6}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Phone Number</Form.Label>
+                    <InputGroup>
+                      <InputGroup.Text>+91</InputGroup.Text>
+                      <Form.Control
+                        type="number"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        readOnly={!editMode}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* VTON */}
+              <Row className="mt-4">
+                <Col md={12}>
+                  <Card className="shadow-sm border-0 rounded-3 p-3">
+                    <Card.Body>
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 className="mb-1">Virtual Try-On Image</h6>
+                          {loadingVton ? (
+                            <Spinner animation="border" size="sm" />
+                          ) : vtonUrl ? (
+                            <small
+                              className="text-success fw-semibold"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => window.open(vtonUrl, "_blank")}
+                            >
+                              ✅ Your VTON image is uploaded.
+                            </small>
+                          ) : (
+                            <small className="text-danger fw-semibold">
+                              ⚠️ No VTON image found.
+                            </small>
+                          )}
+                        </div>
+
+                        <div>
                           <Button
-                            variant="outline-primary"
-                            onClick={() => {
-                              setShowUploadModal(true);
-                            }}
+                            variant={vtonUrl ? "outline-primary" : "primary"}
+                            onClick={() => setShowUploadModal(true)}
                           >
-                            Re-Upload
+                            {vtonUrl ? "Re-Upload" : "Upload"}
                           </Button>
-                        ) : (
-                          <Button
-                            variant="primary"
-                            onClick={() => {
-                              setShowUploadModal(true);
-                            }}
-                          >
-                            Upload
-                          </Button>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
 
-            <motion.div className="mt-3" layout>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                style={{ display: "inline-block" }}
-              >
+              {/* Buttons */}
+              <motion.div className="mt-3" layout>
                 <Button variant="danger" onClick={handleSignOut}>
                   Sign Out
                 </Button>
-              </motion.div>
 
-              {!editMode ? (
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{ display: "inline-block" }}
-                >
+                {!editMode ? (
                   <Button
                     variant="primary"
                     className="ms-4"
                     onClick={() => {
                       setEditMode(true);
-                      showToast("Email cannot be changed", "info", 3000);
+                      showToast("Email cannot be changed", "info");
                     }}
                   >
                     Edit Details
                   </Button>
-                </motion.div>
-              ) : (
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{ display: "inline-block" }}
-                >
+                ) : (
                   <Button
                     variant="success"
                     className="ms-4"
@@ -449,128 +995,88 @@ function ProfileDetails() {
                   >
                     Save Changes
                   </Button>
-                </motion.div>
-              )}
-            </motion.div>
+                )}
+              </motion.div>
 
-            {/* === ADDRESS SECTION ===
-            <Row className="mt-3">
-              {addressList.length > 0 && (
-                <>
-                  {addressList.map((obj, index) => {
-                    const [type, addr] = Object.entries(obj)[0];
-                    return (
-                      <AddressCard
-                        type={type}
-                        addr={addr}
-                        index={index}
-                        user={user}
-                        key={index}
-                        showToast={showToast}
-                      ></AddressCard>
-                    );
-                  })}
-                </>
-              )}
-            </Row> */}
-            {/* === ADDRESS SECTION === */}
-            <Row className="mt-3">
-              {addressList.length > 0 ? (
-                <>
-                  {/* {addressList.map((obj, index) => {
-                    const [type, addr] = Object.entries(obj)[0];
-                    return (
-                      <AddressCard
-                        type={type}
-                        addr={addr}
-                        index={index}
-                        user={user}
-                        key={index}
-                        showToast={showToast}
-                      />
-                    );
-                  })} */}
-                  <AddressCard
-                    type={"home"}
-                    address={homeAddress}
-                    onAddressChange={setHomeAddress}
-                    isEditing={editAdress}
-                  ></AddressCard>
-                  <AddressCard
-                    type={"work"}
-                    address={workAddress}
-                    onAddressChange={setWorkAddress}
-                    isEditing={editAdress}
-                  ></AddressCard>
-                </>
+              {/* Address Cards */}
+              <Row className="mt-3">
+                {addressList.length > 0 ? (
+                  <>
+                    <AddressCard
+                      type="home"
+                      address={homeAddress}
+                      onAddressChange={setHomeAddress}
+                      isEditing={editAdress}
+                    />
+                    <AddressCard
+                      type="work"
+                      address={workAddress}
+                      onAddressChange={setWorkAddress}
+                      isEditing={editAdress}
+                    />
+                  </>
+                ) : (
+                  <Col md={12}>
+                    <Card className="shadow-sm border-0 rounded-3 p-3 text-center">
+                      <Card.Body>
+                        <h6 className="text-muted mb-0">No address found.</h6>
+                        <p className="text-secondary small mb-3">
+                          Add a delivery address to complete your profile.
+                        </p>
+                        <Button
+                          variant="outline-primary"
+                          onClick={() => setAddAddressModal(true)}
+                        >
+                          Add Address
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )}
+              </Row>
+
+              {addressList.length < 2 ? (
+                <Button onClick={() => setAddAddressModal(true)}>
+                  Add Address
+                </Button>
               ) : (
-                <Col md={12}>
-                  <Card className="shadow-sm border-0 rounded-3 p-3 text-center">
-                    <Card.Body>
-                      <h6 className="text-muted mb-0">No address found.</h6>
-                      <p className="text-secondary small mb-3">
-                        Add a delivery address to complete your profile.
-                      </p>
-                      <Button
-                        variant="outline-primary"
-                        onClick={() => {
-                          // example: open address add modal if you have one
-                          setAddAddressModal(true);
-                        }}
-                      >
-                        Add Address
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
+                <Button onClick={() => setAddAddressModal(true)}>
+                  Edit Address
+                </Button>
               )}
-            </Row>
-            {addressList.length < 2 ? (
-              <Button
-                onClick={() => {
-                  setAddAddressModal(true);
-                }}
-              >
-                Add Address
-              </Button>
-            ) : (
-              <Button
-                onClick={() => {
-                  setAddAddressModal(true);
-                }}
-              >
-                Edit Address
-              </Button>
-            )}
-          </Form>
-          <UploadModal
-            show={showUploadModal}
-            showToast={showToast}
-            onHide={() => setShowUploadModal(false)}
-            onUploadComplete={async (url) => {
-              setVtonUrl(url);
-              const success = await user.updateVtonImage(url);
-              if (success) {
-                const refresdUser = User.refreshUser(user);
-                setUser(refresdUser);
-              }
-            }}
-            user={user}
-          ></UploadModal>
-          <AddAddressModal
-            show={showAddAdressModal}
-            user={user}
-            setUser={setUser}
-            showToast={showToast}
-            onHide={() => {
-              setAddAddressModal(false);
-            }}
-          ></AddAddressModal>
-        </Container>
-      </motion.div>
-    </>
-  );
+            </Form>
+
+            {/* Upload Modal */}
+            <UploadModal
+              show={showUploadModal}
+              showToast={showToast}
+              onHide={() => setShowUploadModal(false)}
+              onUploadComplete={async (url) => {
+                setVtonUrl(url);
+                const success = await user.updateVtonImage(url);
+                if (success) {
+                  const refreshedUser = User.refreshUser(user);
+                  setUser(refreshedUser);
+                }
+              }}
+              user={user}
+            />
+
+            {/* Address Modal */}
+            <AddAddressModal
+              show={showAddAdressModal}
+              user={user}
+              setUser={setUser}
+              showToast={showToast}
+              onHide={() => setAddAddressModal(false)}
+            />
+          </Container>
+        </motion.div>
+      </>
+    </>)}
+  </>;
 }
+
 function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -1137,7 +1643,7 @@ function ProfileOrders() {
                     onClick={() => navigate(`/product/${prod._id}`)}
                   />
                   <div>
-                    <strong>{prod.name}</strong>  
+                    <strong>{prod.name}</strong>
                     <br />
                     Size: {it.size} | Color: {it.color}
                     <br />

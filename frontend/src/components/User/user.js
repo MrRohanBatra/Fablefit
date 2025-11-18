@@ -206,21 +206,36 @@ export class User {
   }
 
   // 📞 Update Phone Number
+  // async updatePhoneNumber(newNumber) {
+  //   const oldNumber = this.phone;
+  //   if (this.phone === newNumber) return false;
+
+  //   this.phone = newNumber;
+  //   const updatedUser = await this.userUpdated();
+
+  //   if (updatedUser) {
+  //     Object.assign(this, User.refreshUser(updatedUser, this.firebaseUser));
+  //     return true;
+  //   } else {
+  //     this.phone = oldNumber;
+  //     return false;
+  //   }
+  // }
   async updatePhoneNumber(newNumber) {
-    const oldNumber = this.phone;
-    if (this.phone === newNumber) return false;
+  const oldNumber = this.phone;
+  if (this.phone === newNumber) return null;
 
-    this.phone = newNumber;
-    const updatedUser = await this.userUpdated();
+  this.phone = newNumber;
+  const backendUser = await this.userUpdated();
 
-    if (updatedUser) {
-      Object.assign(this, User.refreshUser(updatedUser, this.firebaseUser));
-      return true;
-    } else {
-      this.phone = oldNumber;
-      return false;
-    }
+  if (!backendUser) {
+    this.phone = oldNumber;
+    return null;
   }
+
+  return backendUser; // <-- return backend user data
+}
+
 
   // 🖼️ Update VTON Image URL
   async updateVtonImage(newImageUrl) {
@@ -247,16 +262,28 @@ export class User {
     }
   }
 
-  // ♻️ Rebuild user instance safely
-    static refreshUser(oldUser) {
-    if (!oldUser) return null;
+  // // ♻️ Rebuild user instance safely
+  //   static refreshUser(oldUser) {
+  //   if (!oldUser) return null;
 
-    return new User({
-      user: oldUser.firebaseUser,
-      phone: oldUser.phone,
-      vton_image: oldUser.vton_image ||"",
-      address: [...oldUser.address],
-      type: oldUser.type,
-    });
-  }
+  //   return new User({
+  //     user: oldUser.firebaseUser,
+  //     phone: oldUser.phone,
+  //     vton_image: oldUser.vton_image ||"",
+  //     address: [...oldUser.address],
+  //     type: oldUser.type,
+  //   });
+  // }
+static refreshUser(fromBackend, prevUser) {
+  if (!fromBackend || !prevUser) return null;
+
+  return new User({
+    user: prevUser.firebaseUser,     // keep firebase user
+    phone: fromBackend.phone,
+    vton_image: fromBackend.vton_image || "",
+    address: [...fromBackend.address],
+    type: fromBackend.type,
+  });
+}
+
 }
