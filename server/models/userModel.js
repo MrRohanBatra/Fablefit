@@ -4,8 +4,8 @@ const userSchema = new mongoose.Schema(
   {
     uid: {
       type: String,
-      required: true,
-      unique: true, // Firebase UID
+      
+      // Firebase UID
     },
     phone: {
       type: String,
