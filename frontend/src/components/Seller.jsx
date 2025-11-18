@@ -39,7 +39,7 @@ export default function AddProduct() {
         const imgData = new FormData();
         imgData.append("abcd", file);
 
-        const res = await fetch("http://localhost:5500/api/products/upload", {
+        const res = await fetch("/api/products/upload", {
           method: "POST",
           body: imgData,
         });
@@ -47,7 +47,7 @@ export default function AddProduct() {
         const result = await res.json();
 
         if (res.ok && result.url) {
-          const imgURL = `http://localhost:5500${result.url}`;
+          const imgURL = `${result.url}`;
           imageUrls.push(imgURL);
         } else {
           throw new Error(result.message || "Failed to upload image");
@@ -58,7 +58,7 @@ export default function AddProduct() {
       const productData = { ...data, images: imageUrls };
 
       // Send product data to backend
-      const response = await fetch("http://localhost:5500/api/products/add", {
+      const response = await fetch("/api/products/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),

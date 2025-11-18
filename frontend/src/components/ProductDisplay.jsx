@@ -46,7 +46,7 @@ function ProductDisplay() {
     variant: "info",
   });
   async function getProductWithID(pid) {
-    const response = await fetch("http://localhost:5500/api/products/");
+    const response = await fetch("/api/products/");
     const data = await response.json();
     const products = data.map((p) => new Product(p));
     const product = products.find((el) => el._id == pid);

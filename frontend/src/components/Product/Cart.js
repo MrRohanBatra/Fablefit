@@ -57,7 +57,7 @@ class Cart {
       quantity,
     };
 
-    const res = await fetch("http://localhost:5500/api/cart/add", {
+    const res = await fetch("//api/cart/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -70,7 +70,7 @@ class Cart {
 
   /** ❌ Remove an item */
   async removeProduct(productId, size, color) {
-    const res = await fetch("http://localhost:5500/api/cart/remove", {
+    const res = await fetch("/api/cart/remove", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uid: this.uid, productId, size, color }),
@@ -83,7 +83,7 @@ class Cart {
 
   /** 🔢 Update quantity */
   async updateQuantity(productId, size, color, quantity) {
-    const res = await fetch("http://localhost:5500/api/cart/update", {
+    const res = await fetch("/api/cart/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ uid: this.uid, productId, size, color, quantity }),
@@ -96,7 +96,7 @@ class Cart {
 
   /** 🔄 Load cart for a user */
   static async fetchForUser(uid) {
-    const res = await fetch(`http://localhost:5500/api/cart/${uid}`);
+    const res = await fetch(`/api/cart/${uid}`);
     if (!res.ok) throw new Error("Failed to load cart");
     const data = await res.json();
     return new Cart(data);

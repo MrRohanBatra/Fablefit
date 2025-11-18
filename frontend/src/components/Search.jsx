@@ -51,7 +51,7 @@ function Search() {
     if (query != "") {
       const loadProducts = async () => {
       try {
-        const response = await fetch(`http://localhost:5500/api/products/search?s=${encodeURIComponent(query)}`);
+        const response = await fetch(`/api/products/search?s=${encodeURIComponent(query)}`);
         const data = await response.json();
         const wrapped = data.map((p) => new Product(p));
         setProducts(wrapped);

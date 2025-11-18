@@ -1,2442 +1,2855 @@
 [
-  {
-    "_id": "prod_0001",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Blue.",
-    "category": "Women",
-    "price": 167,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Blue",
-    "stock": 13,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-20T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0002",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Green.",
-    "category": "Unisex",
-    "price": 184,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Green",
-    "stock": 26,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-07-21T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0003",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Black.",
-    "category": "Kids",
-    "price": 201,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Black",
-    "stock": 39,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-22T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0004",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in White.",
-    "category": "Accessories",
-    "price": 218,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "White",
-    "stock": 2,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-23T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0005",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Gray.",
-    "category": "Men",
-    "price": 235,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Gray",
-    "stock": 15,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-24T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0006",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Brown.",
-    "category": "Women",
-    "price": 252,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 28,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-25T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0007",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Yellow.",
-    "category": "Unisex",
-    "price": 269,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 41,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-07-26T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0008",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Pink.",
-    "category": "Kids",
-    "price": 286,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Pink",
-    "stock": 4,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-07-27T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0009",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Purple.",
-    "category": "Accessories",
-    "price": 303,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Purple",
-    "stock": 17,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-07-28T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0010",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Orange.",
-    "category": "Men",
-    "price": 320,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Orange",
-    "stock": 30,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-29T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0011",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Red.",
-    "category": "Women",
-    "price": 337,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Red",
-    "stock": 43,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-07-30T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0012",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Blue.",
-    "category": "Unisex",
-    "price": 354,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Blue",
-    "stock": 6,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-07-31T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0013",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Green.",
-    "category": "Kids",
-    "price": 371,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Green",
-    "stock": 19,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-01T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0014",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Black.",
-    "category": "Accessories",
-    "price": 388,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Black",
-    "stock": 32,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-02T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0015",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in White.",
-    "category": "Men",
-    "price": 405,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "White",
-    "stock": 45,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-03T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0016",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Gray.",
-    "category": "Women",
-    "price": 422,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 8,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-04T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0017",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Brown.",
-    "category": "Unisex",
-    "price": 439,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 21,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-08-05T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0018",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Yellow.",
-    "category": "Kids",
-    "price": 456,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 34,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-06T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0019",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Pink.",
-    "category": "Accessories",
-    "price": 473,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Pink",
-    "stock": 47,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-07T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0020",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Purple.",
-    "category": "Men",
-    "price": 490,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Purple",
-    "stock": 10,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-08T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0021",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Orange.",
-    "category": "Women",
-    "price": 507,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Orange",
-    "stock": 23,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-09T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0022",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Red.",
-    "category": "Unisex",
-    "price": 524,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Red",
-    "stock": 36,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-10T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0023",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Blue.",
-    "category": "Kids",
-    "price": 541,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Blue",
-    "stock": 49,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-11T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0024",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Green.",
-    "category": "Accessories",
-    "price": 558,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Green",
-    "stock": 12,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-12T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0025",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Black.",
-    "category": "Men",
-    "price": 575,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Black",
-    "stock": 25,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-13T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0026",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in White.",
-    "category": "Women",
-    "price": 592,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 38,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-14T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0027",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Gray.",
-    "category": "Unisex",
-    "price": 609,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 1,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-08-15T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0028",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Brown.",
-    "category": "Kids",
-    "price": 626,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 14,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-16T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0029",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Yellow.",
-    "category": "Accessories",
-    "price": 643,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 27,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-17T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0030",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Pink.",
-    "category": "Men",
-    "price": 160,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Pink",
-    "stock": 40,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-18T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0031",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Purple.",
-    "category": "Women",
-    "price": 177,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Purple",
-    "stock": 3,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-19T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0032",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Orange.",
-    "category": "Unisex",
-    "price": 194,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Orange",
-    "stock": 16,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-20T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0033",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Red.",
-    "category": "Kids",
-    "price": 211,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Red",
-    "stock": 29,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-21T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0034",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Blue.",
-    "category": "Accessories",
-    "price": 228,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Blue",
-    "stock": 42,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-22T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0035",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Green.",
-    "category": "Men",
-    "price": 245,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Green",
-    "stock": 5,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-23T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0036",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Black.",
-    "category": "Women",
-    "price": 262,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Black",
-    "stock": 18,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-24T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0037",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in White.",
-    "category": "Unisex",
-    "price": 279,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 31,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-08-25T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0038",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Gray.",
-    "category": "Kids",
-    "price": 296,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 44,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-26T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0039",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Brown.",
-    "category": "Accessories",
-    "price": 313,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 7,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-27T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0040",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Yellow.",
-    "category": "Men",
-    "price": 330,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 20,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-28T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0041",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Pink.",
-    "category": "Women",
-    "price": 347,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Pink",
-    "stock": 33,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-29T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0042",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Purple.",
-    "category": "Unisex",
-    "price": 364,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Purple",
-    "stock": 46,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-08-30T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0043",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Orange.",
-    "category": "Kids",
-    "price": 381,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Orange",
-    "stock": 9,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-08-31T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0044",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Red.",
-    "category": "Accessories",
-    "price": 398,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Red",
-    "stock": 22,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-01T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0045",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Blue.",
-    "category": "Men",
-    "price": 415,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Blue",
-    "stock": 35,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-02T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0046",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Green.",
-    "category": "Women",
-    "price": 432,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Green",
-    "stock": 48,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-03T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0047",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Black.",
-    "category": "Unisex",
-    "price": 449,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Black",
-    "stock": 11,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-09-04T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0048",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in White.",
-    "category": "Kids",
-    "price": 466,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 24,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-05T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0049",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Gray.",
-    "category": "Accessories",
-    "price": 483,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 37,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-06T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0050",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Brown.",
-    "category": "Men",
-    "price": 500,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 0,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-07T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0051",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Yellow.",
-    "category": "Women",
-    "price": 517,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 13,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-08T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0052",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Pink.",
-    "category": "Unisex",
-    "price": 534,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Pink",
-    "stock": 26,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-09T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0053",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Purple.",
-    "category": "Kids",
-    "price": 551,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Purple",
-    "stock": 39,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-10T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0054",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Orange.",
-    "category": "Accessories",
-    "price": 568,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Orange",
-    "stock": 2,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-11T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0055",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Red.",
-    "category": "Men",
-    "price": 585,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Red",
-    "stock": 15,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-12T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0056",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Blue.",
-    "category": "Women",
-    "price": 602,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Blue",
-    "stock": 28,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-13T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0057",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Green.",
-    "category": "Unisex",
-    "price": 619,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Green",
-    "stock": 41,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-09-14T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0058",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Black.",
-    "category": "Kids",
-    "price": 636,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Black",
-    "stock": 4,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-15T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0059",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in White.",
-    "category": "Accessories",
-    "price": 653,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 17,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-16T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0060",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Gray.",
-    "category": "Men",
-    "price": 170,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 30,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-17T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0061",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Brown.",
-    "category": "Women",
-    "price": 187,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 43,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-18T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0062",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Yellow.",
-    "category": "Unisex",
-    "price": 204,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 6,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-19T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0063",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Pink.",
-    "category": "Kids",
-    "price": 221,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Pink",
-    "stock": 19,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-20T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0064",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Purple.",
-    "category": "Accessories",
-    "price": 238,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Purple",
-    "stock": 32,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-21T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0065",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Orange.",
-    "category": "Men",
-    "price": 255,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Orange",
-    "stock": 45,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-22T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0066",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Red.",
-    "category": "Women",
-    "price": 272,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Red",
-    "stock": 8,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-23T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0067",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Blue.",
-    "category": "Unisex",
-    "price": 289,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Blue",
-    "stock": 21,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-09-24T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0068",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Green.",
-    "category": "Kids",
-    "price": 306,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Green",
-    "stock": 34,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-25T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0069",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Black.",
-    "category": "Accessories",
-    "price": 323,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Black",
-    "stock": 47,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-26T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0070",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in White.",
-    "category": "Men",
-    "price": 340,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 10,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-27T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0071",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Gray.",
-    "category": "Women",
-    "price": 357,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 23,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-28T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0072",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Brown.",
-    "category": "Unisex",
-    "price": 374,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 36,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-09-29T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0073",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Yellow.",
-    "category": "Kids",
-    "price": 391,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Yellow",
-    "stock": 49,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-09-30T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0074",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Pink.",
-    "category": "Accessories",
-    "price": 408,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Pink",
-    "stock": 12,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-01T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0075",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Purple.",
-    "category": "Men",
-    "price": 425,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Purple",
-    "stock": 25,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-02T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0076",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Orange.",
-    "category": "Women",
-    "price": 442,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Orange",
-    "stock": 38,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-03T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0077",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Red.",
-    "category": "Unisex",
-    "price": 459,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Red",
-    "stock": 1,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-10-04T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0078",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Blue.",
-    "category": "Kids",
-    "price": 476,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Blue",
-    "stock": 14,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-05T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0079",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Green.",
-    "category": "Accessories",
-    "price": 493,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Green",
-    "stock": 27,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-06T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0080",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Black.",
-    "category": "Men",
-    "price": 510,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Black",
-    "stock": 40,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-07T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0081",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in White.",
-    "category": "Women",
-    "price": 527,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 3,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-08T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0082",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in Gray.",
-    "category": "Unisex",
-    "price": 544,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 16,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-09T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0083",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Brown.",
-    "category": "Kids",
-    "price": 561,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Brown",
-    "stock": 29,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-10T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0084",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Yellow.",
-    "category": "Accessories",
-    "price": 578,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Yellow",
-    "stock": 42,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-11T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0085",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Pink.",
-    "category": "Men",
-    "price": 595,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Pink",
-    "stock": 5,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-12T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0086",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Purple.",
-    "category": "Women",
-    "price": 612,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Purple",
-    "stock": 18,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-13T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0087",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Orange.",
-    "category": "Unisex",
-    "price": 629,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Orange",
-    "stock": 31,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-10-14T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0088",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Red.",
-    "category": "Kids",
-    "price": 646,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Red",
-    "stock": 44,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-15T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0089",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Blue.",
-    "category": "Accessories",
-    "price": 163,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Blue",
-    "stock": 7,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-16T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0090",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Green.",
-    "category": "Men",
-    "price": 180,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Green",
-    "stock": 20,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-17T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  },
-  {
-    "_id": "prod_0091",
-    "name": "Vintage Hoodie",
-    "description": "A high-quality Vintage Hoodie in Black.",
-    "category": "Women",
-    "price": 197,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Black",
-    "stock": 33,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-18T17:28:43.344Z",
-    "updatedAt": "2025-10-27T16:28:43.344Z"
-  },
-  {
-    "_id": "prod_0092",
-    "name": "Graphic Jeans",
-    "description": "A high-quality Graphic Jeans in White.",
-    "category": "Unisex",
-    "price": 214,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "White",
-    "stock": 46,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-19T17:28:43.344Z",
-    "updatedAt": "2025-10-27T15:28:43.344Z"
-  },
-  {
-    "_id": "prod_0093",
-    "name": "Slim-Fit Jacket",
-    "description": "A high-quality Slim-Fit Jacket in Gray.",
-    "category": "Kids",
-    "price": 231,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Gray",
-    "stock": 9,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-20T17:28:43.344Z",
-    "updatedAt": "2025-10-27T14:28:43.344Z"
-  },
-  {
-    "_id": "prod_0094",
-    "name": "Oversized Hat",
-    "description": "A high-quality Oversized Hat in Brown.",
-    "category": "Accessories",
-    "price": 248,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Brown",
-    "stock": 22,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-21T17:28:43.344Z",
-    "updatedAt": "2025-10-27T13:28:43.344Z"
-  },
-  {
-    "_id": "prod_0095",
-    "name": "Running Socks",
-    "description": "A high-quality Running Socks in Yellow.",
-    "category": "Men",
-    "price": 265,
-    "sizes": [
-      "One Size"
-    ],
-    "color": "Yellow",
-    "stock": 35,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-22T17:28:43.344Z",
-    "updatedAt": "2025-10-27T12:28:43.344Z"
-  },
-  {
-    "_id": "prod_0096",
-    "name": "Denim Sweater",
-    "description": "A high-quality Denim Sweater in Pink.",
-    "category": "Women",
-    "price": 282,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Pink",
-    "stock": 48,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-23T17:28:43.344Z",
-    "updatedAt": "2025-10-27T11:28:43.344Z"
-  },
-  {
-    "_id": "prod_0097",
-    "name": "Leather Dress",
-    "description": "A high-quality Leather Dress in Purple.",
-    "category": "Unisex",
-    "price": 299,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Purple",
-    "stock": 11,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "dress",
-    "createdAt": "2025-10-24T17:28:43.344Z",
-    "updatedAt": "2025-10-27T10:28:43.344Z"
-  },
-  {
-    "_id": "prod_0098",
-    "name": "Woolen Shorts",
-    "description": "A high-quality Woolen Shorts in Orange.",
-    "category": "Kids",
-    "price": 316,
-    "sizes": [
-      "XS",
-      "S",
-      "M",
-      "L"
-    ],
-    "color": "Orange",
-    "stock": 24,
-    "companyId": "comp_789",
-    "companyName": "EcoWear",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-25T17:28:43.344Z",
-    "updatedAt": "2025-10-27T09:28:43.344Z"
-  },
-  {
-    "_id": "prod_0099",
-    "name": "Cotton Skirt",
-    "description": "A high-quality Cotton Skirt in Red.",
-    "category": "Accessories",
-    "price": 333,
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL"
-    ],
-    "color": "Red",
-    "stock": 37,
-    "companyId": "comp_123",
-    "companyName": "StyleSync",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "lower",
-    "createdAt": "2025-10-26T17:28:43.344Z",
-    "updatedAt": "2025-10-27T08:28:43.344Z"
-  },
-  {
-    "_id": "prod_0100",
-    "name": "Classic T-Shirt",
-    "description": "A high-quality Classic T-Shirt in Blue.",
-    "category": "Men",
-    "price": 350,
-    "sizes": [
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ],
-    "color": "Blue",
-    "stock": 0,
-    "companyId": "comp_456",
-    "companyName": "UrbanThreads",
-    "images": [
-      "/blur.jpg",
-      "/place.png",
-      "/random.png"
-    ],
-    "vtonCategory": "upper",
-    "createdAt": "2025-10-27T17:28:43.344Z",
-    "updatedAt": "2025-10-27T17:28:43.344Z"
-  }
+    {
+        "_id": "prod_0001",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Blue.",
+        "category": "Women",
+        "price": 167,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Blue",
+        "stock": 13,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-20T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0002",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Green.",
+        "category": "Unisex",
+        "price": 184,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Green",
+        "stock": 26,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-07-21T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0003",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Black.",
+        "category": "Kids",
+        "price": 201,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Black",
+        "stock": 39,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-22T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0004",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in White.",
+        "category": "Accessories",
+        "price": 218,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "White",
+        "stock": 2,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-23T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0005",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Gray.",
+        "category": "Men",
+        "price": 235,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Gray",
+        "stock": 15,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-24T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0006",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Brown.",
+        "category": "Women",
+        "price": 252,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 28,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-25T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0007",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Yellow.",
+        "category": "Unisex",
+        "price": 269,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 41,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-07-26T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0008",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Pink.",
+        "category": "Kids",
+        "price": 286,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 4,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-07-27T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0009",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Purple.",
+        "category": "Accessories",
+        "price": 303,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Purple",
+        "stock": 17,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-07-28T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0010",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Orange.",
+        "category": "Men",
+        "price": 320,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Orange",
+        "stock": 30,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-29T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0011",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Red.",
+        "category": "Women",
+        "price": 337,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Red",
+        "stock": 43,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-07-30T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0012",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Blue.",
+        "category": "Unisex",
+        "price": 354,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Blue",
+        "stock": 6,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-07-31T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0013",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Green.",
+        "category": "Kids",
+        "price": 371,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Green",
+        "stock": 19,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-01T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0014",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Black.",
+        "category": "Accessories",
+        "price": 388,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Black",
+        "stock": 32,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-02T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0015",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in White.",
+        "category": "Men",
+        "price": 405,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "White",
+        "stock": 45,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-03T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0016",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Gray.",
+        "category": "Women",
+        "price": 422,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 8,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-04T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0017",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Brown.",
+        "category": "Unisex",
+        "price": 439,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 21,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-08-05T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0018",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Yellow.",
+        "category": "Kids",
+        "price": 456,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 34,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-06T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0019",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Pink.",
+        "category": "Accessories",
+        "price": 473,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 47,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-07T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0020",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Purple.",
+        "category": "Men",
+        "price": 490,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Purple",
+        "stock": 10,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-08T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0021",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Orange.",
+        "category": "Women",
+        "price": 507,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Orange",
+        "stock": 23,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-09T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0022",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Red.",
+        "category": "Unisex",
+        "price": 524,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Red",
+        "stock": 36,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-10T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0023",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Blue.",
+        "category": "Kids",
+        "price": 541,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Blue",
+        "stock": 49,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-11T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0024",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Green.",
+        "category": "Accessories",
+        "price": 558,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Green",
+        "stock": 12,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-12T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0025",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Black.",
+        "category": "Men",
+        "price": 575,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Black",
+        "stock": 25,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-13T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0026",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in White.",
+        "category": "Women",
+        "price": 592,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 38,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-14T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0027",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Gray.",
+        "category": "Unisex",
+        "price": 609,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 1,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-08-15T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0028",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Brown.",
+        "category": "Kids",
+        "price": 626,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 14,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-16T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0029",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Yellow.",
+        "category": "Accessories",
+        "price": 643,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 27,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-17T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0030",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Pink.",
+        "category": "Men",
+        "price": 160,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 40,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-18T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0031",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Purple.",
+        "category": "Women",
+        "price": 177,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Purple",
+        "stock": 3,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-19T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0032",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Orange.",
+        "category": "Unisex",
+        "price": 194,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Orange",
+        "stock": 16,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-20T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0033",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Red.",
+        "category": "Kids",
+        "price": 211,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Red",
+        "stock": 29,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-21T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0034",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Blue.",
+        "category": "Accessories",
+        "price": 228,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Blue",
+        "stock": 42,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-22T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0035",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Green.",
+        "category": "Men",
+        "price": 245,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Green",
+        "stock": 5,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-23T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0036",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Black.",
+        "category": "Women",
+        "price": 262,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 18,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-24T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0037",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in White.",
+        "category": "Unisex",
+        "price": 279,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 31,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-08-25T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0038",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Gray.",
+        "category": "Kids",
+        "price": 296,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 44,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-26T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0039",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Brown.",
+        "category": "Accessories",
+        "price": 313,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 7,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-27T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0040",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Yellow.",
+        "category": "Men",
+        "price": 330,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 20,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-28T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0041",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Pink.",
+        "category": "Women",
+        "price": 347,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 33,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-29T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0042",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Purple.",
+        "category": "Unisex",
+        "price": 364,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Purple",
+        "stock": 46,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-08-30T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0043",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Orange.",
+        "category": "Kids",
+        "price": 381,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Orange",
+        "stock": 9,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-08-31T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0044",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Red.",
+        "category": "Accessories",
+        "price": 398,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Red",
+        "stock": 22,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-01T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0045",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Blue.",
+        "category": "Men",
+        "price": 415,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Blue",
+        "stock": 35,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-02T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0046",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Green.",
+        "category": "Women",
+        "price": 432,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Green",
+        "stock": 48,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-03T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0047",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Black.",
+        "category": "Unisex",
+        "price": 449,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 11,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-09-04T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0048",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in White.",
+        "category": "Kids",
+        "price": 466,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 24,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-05T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0049",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Gray.",
+        "category": "Accessories",
+        "price": 483,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 37,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-06T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0050",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Brown.",
+        "category": "Men",
+        "price": 500,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 0,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-07T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0051",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Yellow.",
+        "category": "Women",
+        "price": 517,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 13,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-08T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0052",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Pink.",
+        "category": "Unisex",
+        "price": 534,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 26,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-09T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0053",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Purple.",
+        "category": "Kids",
+        "price": 551,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Purple",
+        "stock": 39,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-10T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0054",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Orange.",
+        "category": "Accessories",
+        "price": 568,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Orange",
+        "stock": 2,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-11T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0055",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Red.",
+        "category": "Men",
+        "price": 585,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Red",
+        "stock": 15,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-12T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0056",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Blue.",
+        "category": "Women",
+        "price": 602,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Blue",
+        "stock": 28,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-13T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0057",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Green.",
+        "category": "Unisex",
+        "price": 619,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Green",
+        "stock": 41,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-09-14T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0058",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Black.",
+        "category": "Kids",
+        "price": 636,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 4,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-15T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0059",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in White.",
+        "category": "Accessories",
+        "price": 653,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 17,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-16T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0060",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Gray.",
+        "category": "Men",
+        "price": 170,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 30,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-17T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0061",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Brown.",
+        "category": "Women",
+        "price": 187,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 43,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-18T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0062",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Yellow.",
+        "category": "Unisex",
+        "price": 204,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 6,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-19T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0063",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Pink.",
+        "category": "Kids",
+        "price": 221,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 19,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-20T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0064",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Purple.",
+        "category": "Accessories",
+        "price": 238,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Purple",
+        "stock": 32,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-21T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0065",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Orange.",
+        "category": "Men",
+        "price": 255,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Orange",
+        "stock": 45,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-22T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0066",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Red.",
+        "category": "Women",
+        "price": 272,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Red",
+        "stock": 8,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-23T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0067",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Blue.",
+        "category": "Unisex",
+        "price": 289,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Blue",
+        "stock": 21,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-09-24T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0068",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Green.",
+        "category": "Kids",
+        "price": 306,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Green",
+        "stock": 34,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-25T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0069",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Black.",
+        "category": "Accessories",
+        "price": 323,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 47,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-26T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0070",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in White.",
+        "category": "Men",
+        "price": 340,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 10,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-27T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0071",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Gray.",
+        "category": "Women",
+        "price": 357,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 23,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-28T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0072",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Brown.",
+        "category": "Unisex",
+        "price": 374,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 36,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-09-29T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0073",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Yellow.",
+        "category": "Kids",
+        "price": 391,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Yellow",
+        "stock": 49,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-09-30T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0074",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Pink.",
+        "category": "Accessories",
+        "price": 408,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Pink",
+        "stock": 12,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-01T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0075",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Purple.",
+        "category": "Men",
+        "price": 425,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Purple",
+        "stock": 25,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-02T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0076",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Orange.",
+        "category": "Women",
+        "price": 442,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Orange",
+        "stock": 38,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-03T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0077",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Red.",
+        "category": "Unisex",
+        "price": 459,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Red",
+        "stock": 1,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-10-04T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0078",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Blue.",
+        "category": "Kids",
+        "price": 476,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Blue",
+        "stock": 14,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-05T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0079",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Green.",
+        "category": "Accessories",
+        "price": 493,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Green",
+        "stock": 27,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-06T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0080",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Black.",
+        "category": "Men",
+        "price": 510,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 40,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-07T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0081",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in White.",
+        "category": "Women",
+        "price": 527,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 3,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-08T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0082",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in Gray.",
+        "category": "Unisex",
+        "price": 544,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 16,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-09T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0083",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Brown.",
+        "category": "Kids",
+        "price": 561,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Brown",
+        "stock": 29,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-10T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0084",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Yellow.",
+        "category": "Accessories",
+        "price": 578,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Yellow",
+        "stock": 42,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-11T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0085",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Pink.",
+        "category": "Men",
+        "price": 595,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Pink",
+        "stock": 5,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-12T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0086",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Purple.",
+        "category": "Women",
+        "price": 612,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Purple",
+        "stock": 18,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-13T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0087",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Orange.",
+        "category": "Unisex",
+        "price": 629,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Orange",
+        "stock": 31,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-10-14T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0088",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Red.",
+        "category": "Kids",
+        "price": 646,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Red",
+        "stock": 44,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-15T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0089",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Blue.",
+        "category": "Accessories",
+        "price": 163,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Blue",
+        "stock": 7,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-16T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0090",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Green.",
+        "category": "Men",
+        "price": 180,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Green",
+        "stock": 20,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-17T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0091",
+        "name": "Vintage Hoodie",
+        "description": "A high-quality Vintage Hoodie in Black.",
+        "category": "Women",
+        "price": 197,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 33,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-18T17:28:43.344Z",
+        "updatedAt": "2025-10-27T16:28:43.344Z"
+    },
+    {
+        "_id": "prod_0092",
+        "name": "Graphic Jeans",
+        "description": "A high-quality Graphic Jeans in White.",
+        "category": "Unisex",
+        "price": 214,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "White",
+        "stock": 46,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-19T17:28:43.344Z",
+        "updatedAt": "2025-10-27T15:28:43.344Z"
+    },
+    {
+        "_id": "prod_0093",
+        "name": "Slim-Fit Jacket",
+        "description": "A high-quality Slim-Fit Jacket in Gray.",
+        "category": "Kids",
+        "price": 231,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Gray",
+        "stock": 9,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-20T17:28:43.344Z",
+        "updatedAt": "2025-10-27T14:28:43.344Z"
+    },
+    {
+        "_id": "prod_0094",
+        "name": "Oversized Hat",
+        "description": "A high-quality Oversized Hat in Brown.",
+        "category": "Accessories",
+        "price": 248,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Brown",
+        "stock": 22,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-21T17:28:43.344Z",
+        "updatedAt": "2025-10-27T13:28:43.344Z"
+    },
+    {
+        "_id": "prod_0095",
+        "name": "Running Socks",
+        "description": "A high-quality Running Socks in Yellow.",
+        "category": "Men",
+        "price": 265,
+        "sizes": [
+            "One Size"
+        ],
+        "color": "Yellow",
+        "stock": 35,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-22T17:28:43.344Z",
+        "updatedAt": "2025-10-27T12:28:43.344Z"
+    },
+    {
+        "_id": "prod_0096",
+        "name": "Denim Sweater",
+        "description": "A high-quality Denim Sweater in Pink.",
+        "category": "Women",
+        "price": 282,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Pink",
+        "stock": 48,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-23T17:28:43.344Z",
+        "updatedAt": "2025-10-27T11:28:43.344Z"
+    },
+    {
+        "_id": "prod_0097",
+        "name": "Leather Dress",
+        "description": "A high-quality Leather Dress in Purple.",
+        "category": "Unisex",
+        "price": 299,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Purple",
+        "stock": 11,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "dress",
+        "createdAt": "2025-10-24T17:28:43.344Z",
+        "updatedAt": "2025-10-27T10:28:43.344Z"
+    },
+    {
+        "_id": "prod_0098",
+        "name": "Woolen Shorts",
+        "description": "A high-quality Woolen Shorts in Orange.",
+        "category": "Kids",
+        "price": 316,
+        "sizes": [
+            "XS",
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Orange",
+        "stock": 24,
+        "companyId": "comp_789",
+        "companyName": "EcoWear",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-25T17:28:43.344Z",
+        "updatedAt": "2025-10-27T09:28:43.344Z"
+    },
+    {
+        "_id": "prod_0099",
+        "name": "Cotton Skirt",
+        "description": "A high-quality Cotton Skirt in Red.",
+        "category": "Accessories",
+        "price": 333,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Red",
+        "stock": 37,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-26T17:28:43.344Z",
+        "updatedAt": "2025-10-27T08:28:43.344Z"
+    },
+    {
+        "_id": "prod_0100",
+        "name": "Classic T-Shirt",
+        "description": "A high-quality Classic T-Shirt in Blue.",
+        "category": "Men",
+        "price": 350,
+        "sizes": [
+            "M",
+            "L",
+            "XL",
+            "XXL"
+        ],
+        "color": "Blue",
+        "stock": 0,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/blur.jpg",
+            "/place.png",
+            "/random.png"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-27T17:28:43.344Z",
+        "updatedAt": "2025-10-27T17:28:43.344Z"
+    },
+    {
+        "_id": "prod_0101",
+        "name": "Denim Jeans",
+        "description": "Slim-fit denim jeans in dark blue.",
+        "category": "Men",
+        "price": 899,
+        "sizes": [
+            "30",
+            "32",
+            "34",
+            "36"
+        ],
+        "color": "Dark Blue",
+        "stock": 25,
+        "companyId": "comp_789",
+        "companyName": "DenimCo",
+        "images": [
+            "/jeans1.jpg",
+            "/jeans2.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-26T12:20:00.000Z",
+        "updatedAt": "2025-10-26T12:20:00.000Z"
+    },
+    {
+        "_id": "prod_0102",
+        "name": "Leather Jacket",
+        "description": "Stylish black leather jacket for men.",
+        "category": "Men",
+        "price": 1999,
+        "sizes": [
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 10,
+        "companyId": "comp_321",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/jacket1.jpg",
+            "/jacket2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-26T14:00:00.000Z",
+        "updatedAt": "2025-10-26T14:00:00.000Z"
+    },
+    {
+        "_id": "prod_0103",
+        "name": "Hooded Sweatshirt",
+        "description": "Comfortable cotton hoodie with drawstring.",
+        "category": "Unisex",
+        "price": 799,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Gray",
+        "stock": 42,
+        "companyId": "comp_654",
+        "companyName": "CozyWear",
+        "images": [
+            "/hoodie1.jpg",
+            "/hoodie2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-25T11:40:00.000Z",
+        "updatedAt": "2025-10-25T11:40:00.000Z"
+    },
+    {
+        "_id": "prod_0104",
+        "name": "Floral Summer Dress",
+        "description": "Lightweight cotton dress with floral prints.",
+        "category": "Women",
+        "price": 899,
+        "sizes": [
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Yellow",
+        "stock": 18,
+        "companyId": "comp_999",
+        "companyName": "StyleSync",
+        "images": [
+            "/dress1.jpg",
+            "/dress2.jpg"
+        ],
+        "vtonCategory": "full",
+        "createdAt": "2025-10-24T10:30:00.000Z",
+        "updatedAt": "2025-10-24T10:30:00.000Z"
+    },
+    {
+        "_id": "prod_0105",
+        "name": "Woolen Scarf",
+        "description": "Soft wool scarf with check pattern.",
+        "category": "Accessories",
+        "price": 299,
+        "sizes": [
+            "Free"
+        ],
+        "color": "Red & Black",
+        "stock": 60,
+        "companyId": "comp_111",
+        "companyName": "WinterThreads",
+        "images": [
+            "/scarf1.jpg"
+        ],
+        "vtonCategory": "accessory",
+        "createdAt": "2025-10-22T09:00:00.000Z",
+        "updatedAt": "2025-10-22T09:00:00.000Z"
+    },
+    {
+        "_id": "prod_0106",
+        "name": "Cotton Kurta",
+        "description": "Traditional Indian kurta in white cotton.",
+        "category": "Men",
+        "price": 699,
+        "sizes": [
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "White",
+        "stock": 50,
+        "companyId": "comp_222",
+        "companyName": "EthnicEdge",
+        "images": [
+            "/kurta1.jpg",
+            "/kurta2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-21T18:00:00.000Z",
+        "updatedAt": "2025-10-21T18:00:00.000Z"
+    },
+    {
+        "_id": "prod_0107",
+        "name": "Printed Saree",
+        "description": "Elegant saree with traditional prints.",
+        "category": "Women",
+        "price": 1299,
+        "sizes": [
+            "Free"
+        ],
+        "color": "Green",
+        "stock": 20,
+        "companyId": "comp_333",
+        "companyName": "EthnicEdge",
+        "images": [
+            "/saree1.jpg",
+            "/saree2.jpg"
+        ],
+        "vtonCategory": "full",
+        "createdAt": "2025-10-20T08:00:00.000Z",
+        "updatedAt": "2025-10-20T08:00:00.000Z"
+    },
+    {
+        "_id": "prod_0108",
+        "name": "Track Pants",
+        "description": "Comfortable stretchable track pants for workouts.",
+        "category": "Unisex",
+        "price": 599,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 33,
+        "companyId": "comp_777",
+        "companyName": "FitZone",
+        "images": [
+            "/track1.jpg",
+            "/track2.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-18T16:00:00.000Z",
+        "updatedAt": "2025-10-18T16:00:00.000Z"
+    },
+    {
+        "_id": "prod_0109",
+        "name": "Puffer Jacket",
+        "description": "Warm puffer jacket for cold weather.",
+        "category": "Men",
+        "price": 1599,
+        "sizes": [
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Navy Blue",
+        "stock": 8,
+        "companyId": "comp_555",
+        "companyName": "CozyWear",
+        "images": [
+            "/puffer1.jpg",
+            "/puffer2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-17T13:00:00.000Z",
+        "updatedAt": "2025-10-17T13:00:00.000Z"
+    },
+    {
+        "_id": "prod_0110",
+        "name": "Formal Trousers",
+        "description": "Slim-fit formal trousers in gray.",
+        "category": "Men",
+        "price": 850,
+        "sizes": [
+            "30",
+            "32",
+            "34",
+            "36"
+        ],
+        "color": "Gray",
+        "stock": 15,
+        "companyId": "comp_654",
+        "companyName": "DenimCo",
+        "images": [
+            "/trouser1.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-15T11:00:00.000Z",
+        "updatedAt": "2025-10-15T11:00:00.000Z"
+    },
+    {
+        "_id": "prod_0111",
+        "name": "Casual Shirt",
+        "description": "Cotton casual shirt with stripes.",
+        "category": "Men",
+        "price": 649,
+        "sizes": [
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "White & Blue",
+        "stock": 28,
+        "companyId": "comp_987",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/shirt1.jpg",
+            "/shirt2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-14T09:00:00.000Z",
+        "updatedAt": "2025-10-14T09:00:00.000Z"
+    },
+    {
+        "_id": "prod_0112",
+        "name": "Joggers",
+        "description": "Soft fleece joggers for casual wear.",
+        "category": "Unisex",
+        "price": 550,
+        "sizes": [
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Olive Green",
+        "stock": 19,
+        "companyId": "comp_888",
+        "companyName": "FitZone",
+        "images": [
+            "/jogger1.jpg",
+            "/jogger2.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-12T08:00:00.000Z",
+        "updatedAt": "2025-10-12T08:00:00.000Z"
+    },
+    {
+        "_id": "prod_0113",
+        "name": "Crop Top",
+        "description": "Trendy crop top for casual outings.",
+        "category": "Women",
+        "price": 499,
+        "sizes": [
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Pink",
+        "stock": 23,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/crop1.jpg",
+            "/crop2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-11T18:00:00.000Z",
+        "updatedAt": "2025-10-11T18:00:00.000Z"
+    },
+    {
+        "_id": "prod_0114",
+        "name": "Linen Shorts",
+        "description": "Breathable linen shorts for summer comfort.",
+        "category": "Men",
+        "price": 450,
+        "sizes": [
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Beige",
+        "stock": 22,
+        "companyId": "comp_999",
+        "companyName": "SummerThreads",
+        "images": [
+            "/shorts1.jpg",
+            "/shorts2.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-10T12:00:00.000Z",
+        "updatedAt": "2025-10-10T12:00:00.000Z"
+    },
+    {
+        "_id": "prod_0115",
+        "name": "Sweatpants",
+        "description": "Relaxed-fit sweatpants with elastic waist.",
+        "category": "Unisex",
+        "price": 699,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Light Gray",
+        "stock": 16,
+        "companyId": "comp_654",
+        "companyName": "CozyWear",
+        "images": [
+            "/sweat1.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-09T09:00:00.000Z",
+        "updatedAt": "2025-10-09T09:00:00.000Z"
+    },
+    {
+        "_id": "prod_0116",
+        "name": "Winter Coat",
+        "description": "Long warm coat with fleece lining.",
+        "category": "Women",
+        "price": 1899,
+        "sizes": [
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Maroon",
+        "stock": 12,
+        "companyId": "comp_111",
+        "companyName": "CozyWear",
+        "images": [
+            "/coat1.jpg",
+            "/coat2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-08T14:00:00.000Z",
+        "updatedAt": "2025-10-08T14:00:00.000Z"
+    },
+    {
+        "_id": "prod_0117",
+        "name": "Graphic Tee",
+        "description": "Cotton graphic printed t-shirt for men.",
+        "category": "Men",
+        "price": 499,
+        "sizes": [
+            "S",
+            "M",
+            "L",
+            "XL"
+        ],
+        "color": "Black",
+        "stock": 45,
+        "companyId": "comp_456",
+        "companyName": "UrbanThreads",
+        "images": [
+            "/tee1.jpg",
+            "/tee2.jpg"
+        ],
+        "vtonCategory": "upper",
+        "createdAt": "2025-10-07T17:00:00.000Z",
+        "updatedAt": "2025-10-07T17:00:00.000Z"
+    },
+    {
+        "_id": "prod_0118",
+        "name": "Pleated Skirt",
+        "description": "Elegant pleated skirt for women.",
+        "category": "Women",
+        "price": 799,
+        "sizes": [
+            "S",
+            "M",
+            "L"
+        ],
+        "color": "Navy Blue",
+        "stock": 30,
+        "companyId": "comp_123",
+        "companyName": "StyleSync",
+        "images": [
+            "/pleated1.jpg",
+            "/pleated2.jpg"
+        ],
+        "vtonCategory": "lower",
+        "createdAt": "2025-10-06T11:00:00.000Z",
+        "updatedAt": "2025-10-06T11:00:00.000Z"
+    }
 ]

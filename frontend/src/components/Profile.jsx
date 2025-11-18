@@ -588,7 +588,7 @@ function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
       formData.append("uid", user.firebaseUser.uid);
 
       const response = await fetch(
-        "http://localhost:5500/api/users/uploadimage",
+        "/api/users/uploadimage",
         {
           method: "POST",
           body: formData,
@@ -599,7 +599,7 @@ function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
         const data = await response.json();
         console.log(data);
         showToast("VTON image uploaded successfully!", "success");
-        onUploadComplete(`http://localhost:5500${data.file}`);
+        onUploadComplete(`${data.file}`);
         onHide();
       } else {
         showToast("Upload failed. Try again.", "danger");
@@ -807,7 +807,7 @@ function ProfileCart() {
               if (!productId) throw new Error("Missing product ID");
 
               const res = await fetch(
-                `http://localhost:5500/api/products/id/${productId}`
+                `/api/products/id/${productId}`
               );
 
               if (!res.ok) throw new Error(`Product ${productId} not found`);
@@ -877,7 +877,7 @@ function ProfileCart() {
 
   const handleConfirmOrder = async () => {
     try {
-      const res = await fetch("http://localhost:5500/api/orders/place", {
+      const res = await fetch("/api/orders/place", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1068,7 +1068,7 @@ function ProfileOrders() {
     const loadOrders = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5500/api/orders/user/${user.firebaseUser.uid}`
+          `/api/orders/user/${user.firebaseUser.uid}`
         );
 
         const data = await res.json();

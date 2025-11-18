@@ -33,7 +33,7 @@ function App_home() {
   //       try {
   //         const appUser = new User(currentUser);
   //         const response = await fetch(
-  //           `http://localhost:5500/api/users/${currentUser.uid}`
+  //           `/api/users/${currentUser.uid}`
   //         );
   //         if (response.ok) {
   //           const existingUser = await res.json();
@@ -65,7 +65,7 @@ function App_home() {
 
         // Try to get user data from backend
         const response = await fetch(
-          `http://localhost:5500/api/users/${currentUser.uid}`
+          `/api/users/${currentUser.uid}`
         );
 
         if (response.ok) {

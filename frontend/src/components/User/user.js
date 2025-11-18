@@ -54,7 +54,7 @@
 //   async userUpdated() {
 //     try {
 //       console.log("sending req to backend ");
-//       const response = await fetch("http://localhost:5500/api/users/add", {
+//       const response = await fetch("/api/users/add", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify(this.toJson()),
@@ -161,7 +161,7 @@ export class User {
   async userUpdated() {
     try {
       console.log("sending req to backend...");
-      const response = await fetch("http://localhost:5500/api/users/add", {
+      const response = await fetch("/api/users/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(this.toJson()),

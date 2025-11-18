@@ -43,7 +43,7 @@ class Order {
   /** 📥 Fetch user's orders from backend */
   static async fetchForUser(uid) {
     const res = await fetch(
-      `http://localhost:5500/api/orders/user/${uid}`
+      `/api/orders/user/${uid}`
     );
     if (!res.ok) throw new Error("Failed to load orders");
 
