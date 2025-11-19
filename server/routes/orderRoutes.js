@@ -4,23 +4,59 @@ import Order from "../models/orderModel.js";
 const orderRouter = express.Router();
 orderRouter.post("/place", placeOrder)
 orderRouter.get("/getall",getall)
+// function computeStatus(order) {
+//   const createdAt = new Date(order.createdAt);
+//   // createdAt.setDate(createdAt.getDate() - 3);
+//   const deliveryDate = new Date(order.deliveryDate);
+//   const now = new Date();
+//   const diffDays = Math.floor((deliveryDate - now) / (1000 * 60 * 60 * 24));//Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+//   const since = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+//   console.log("\n==============================");
+//   console.log("📦 Order Status Evaluation");
+//   console.log("==============================");
+//   console.log(`🆔 Order ID: ${order._id}`);
+//   console.log(`📅 Order Created At: ${createdAt.toLocaleString()}`);
+//   console.log(`📅 Order Delivery Date: ${deliveryDate.toLocaleString()}`);
+  
+//   console.log(`⏱️ Current Time: ${now.toLocaleString()}`);
+//   console.log(`Status Difference: ${diffDays} day(s)`);
+//   console.log(`📆 Days Since Order: ${since} day(s)`);
+
+//   let status = "";
+
+//   if (diffDays <= 1) {
+//     status = "placed";
+//   } else if (diffDays <= 3) {
+//     status = "shipped";
+//   } else if (diffDays <= 6) {
+//     status = "out-for-delivery";
+//   } else {
+//     status = "delivered";
+//   }
+
+//   console.log(`🔎 Computed Status: ${status.toUpperCase()}`);
+//   console.log("==============================\n");
+
+//   return status;
+// }
+
 function computeStatus(order) {
   const createdAt = new Date(order.createdAt);
-  // createdAt.setDate(createdAt.getDate() - 3);
   const deliveryDate = new Date(order.deliveryDate);
   const now = new Date();
-  const diffDays = Math.floor((deliveryDate - now) / (1000 * 60 * 60 * 24));//Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
-  const since = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+
+  const diffDays = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+  const daysUntilDelivery = Math.floor((deliveryDate - now) / (1000 * 60 * 60 * 24));
+
   console.log("\n==============================");
   console.log("📦 Order Status Evaluation");
   console.log("==============================");
   console.log(`🆔 Order ID: ${order._id}`);
   console.log(`📅 Order Created At: ${createdAt.toLocaleString()}`);
   console.log(`📅 Order Delivery Date: ${deliveryDate.toLocaleString()}`);
-  
   console.log(`⏱️ Current Time: ${now.toLocaleString()}`);
-  console.log(`Status Difference: ${diffDays} day(s)`);
-  console.log(`📆 Days Since Order: ${since} day(s)`);
+  console.log(`📆 Days Since Order: ${diffDays} day(s)`);
+  console.log(`🚚 Days Until Delivery: ${daysUntilDelivery} day(s)`);
 
   let status = "";
 
