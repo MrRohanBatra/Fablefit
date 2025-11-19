@@ -44,15 +44,11 @@ function computeStatus(order) {
   const createdAt = new Date(order.createdAt);
   const now = new Date();
 
-  const diffDays = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+  // Convert both to local date without time for correct day difference
+  const start = new Date(createdAt.getFullYear(), createdAt.getMonth(), createdAt.getDate());
+  const end = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  console.log("\n==============================");
-  console.log("📦 Order Status Evaluation");
-  console.log("==============================");
-  console.log(`🆔 Order ID: ${order._id}`);
-  console.log(`📅 Order Created At: ${createdAt.toLocaleString()}`);
-  console.log(`⏱️ Current Time: ${now.toLocaleString()}`);
-  console.log(`📆 Days Since Order: ${diffDays} day(s)`);
+  const diffDays = Math.floor((end - start) / (1000 * 60 * 60 * 24)) + 1;
 
   let status = "";
 
@@ -65,9 +61,6 @@ function computeStatus(order) {
   } else {
     status = "delivered";
   }
-
-  console.log(`🔎 Computed Status: ${status.toUpperCase()}`);
-  console.log("==============================\n");
 
   return status;
 }
