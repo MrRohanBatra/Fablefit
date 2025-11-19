@@ -60,11 +60,12 @@ function computeStatus(order) {
 
   let status = "";
 
-  if (diffDays <= 1) {
+  // FINAL DELIVERY-BASED LOGIC
+  if (daysUntilDelivery > 4) {
     status = "placed";
-  } else if (diffDays <= 3) {
+  } else if (daysUntilDelivery > 1) {
     status = "shipped";
-  } else if (diffDays <= 6) {
+  } else if (daysUntilDelivery > 0) {
     status = "out-for-delivery";
   } else {
     status = "delivered";
@@ -75,7 +76,6 @@ function computeStatus(order) {
 
   return status;
 }
-
 
 // 👉 GET all orders of a specific user
 orderRouter.get("/user/:uid", async (req, res) => {
