@@ -9,7 +9,7 @@ function computeStatus(order) {
   // createdAt.setDate(createdAt.getDate() - 3);
   const deliveryDate = new Date(order.deliveryDate);
   const now = new Date();
-  const diffDays = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
+  const diffDays = Math.floor((deliveryDate - now) / (1000 * 60 * 60 * 24));//Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
   const since = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
   console.log("\n==============================");
   console.log("📦 Order Status Evaluation");
