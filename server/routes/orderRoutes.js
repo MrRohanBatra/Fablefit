@@ -42,30 +42,25 @@ orderRouter.get("/getall",getall)
 
 function computeStatus(order) {
   const createdAt = new Date(order.createdAt);
-  const deliveryDate = new Date(order.deliveryDate);
   const now = new Date();
 
   const diffDays = Math.floor((now - createdAt) / (1000 * 60 * 60 * 24));
-  const daysUntilDelivery = Math.floor((deliveryDate - now) / (1000 * 60 * 60 * 24));
 
   console.log("\n==============================");
   console.log("📦 Order Status Evaluation");
   console.log("==============================");
   console.log(`🆔 Order ID: ${order._id}`);
   console.log(`📅 Order Created At: ${createdAt.toLocaleString()}`);
-  console.log(`📅 Order Delivery Date: ${deliveryDate.toLocaleString()}`);
   console.log(`⏱️ Current Time: ${now.toLocaleString()}`);
   console.log(`📆 Days Since Order: ${diffDays} day(s)`);
-  console.log(`🚚 Days Until Delivery: ${daysUntilDelivery} day(s)`);
 
   let status = "";
 
-  // FINAL DELIVERY-BASED LOGIC
-  if (daysUntilDelivery > 4) {
+  if (diffDays <= 1) {
     status = "placed";
-  } else if (daysUntilDelivery > 1) {
+  } else if (diffDays <= 4) {
     status = "shipped";
-  } else if (daysUntilDelivery > 0) {
+  } else if (diffDays <= 7) {
     status = "out-for-delivery";
   } else {
     status = "delivered";
@@ -76,6 +71,7 @@ function computeStatus(order) {
 
   return status;
 }
+
 
 // 👉 GET all orders of a specific user
 orderRouter.get("/user/:uid", async (req, res) => {
