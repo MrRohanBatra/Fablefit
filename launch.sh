@@ -7,5 +7,5 @@ npm run build
 
 # Move back to server and start it
 echo "🚀 Starting server with nodemon..."
-cd ../server || exit
+cd ../backend || exit
 nodemon server.js
