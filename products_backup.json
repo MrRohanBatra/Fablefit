@@ -1,0 +1,2152 @@
+[
+  {
+    "_id": "691068d88eebba4336edba59",
+    "name": "Running lower",
+    "description": "A high-quality Running lower in Gray.",
+    "category": "Men",
+    "price": 235,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "Gray",
+    "stock": 0,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/lower.jpg"
+    ],
+    "createdAt": "2025-07-24T17:28:43.344Z",
+    "updatedAt": "2025-11-17T16:45:42.693Z",
+    "companyId": "691068d88eebba4336edba5a",
+    "__v": 0,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba5b",
+    "name": "Denim Sweater",
+    "description": "A high-quality Denim Sweater in White.",
+    "category": "Women",
+    "price": 252,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "White",
+    "stock": 28,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/women_sweater.jpg"
+    ],
+    "createdAt": "2025-07-25T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.881Z",
+    "companyId": "691068d88eebba4336edba5c",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba57",
+    "name": "Oversized Shirt",
+    "description": "A high-quality Oversized Shirt in White.",
+    "category": "Men",
+    "price": 218,
+    "sizes": [
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "White",
+    "stock": 0,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/white_shirt.jpg"
+    ],
+    "createdAt": "2025-07-23T17:28:43.344Z",
+    "updatedAt": "2025-11-17T15:23:37.922Z",
+    "companyId": "691068d88eebba4336edba58",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba5f",
+    "name": "Woolen Sweater",
+    "description": "A high-quality Woolen Sweater in Golden",
+    "category": "Kids",
+    "price": 286,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "Golden",
+    "stock": 3,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/woolen_sweaterjpg.jpg"
+    ],
+    "createdAt": "2025-07-27T17:28:43.344Z",
+    "updatedAt": "2025-11-18T11:24:05.256Z",
+    "companyId": "691068d88eebba4336edba60",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba51",
+    "name": "Vintage Hoodie",
+    "description": "A high-quality Vintage Hoodie in Blue.",
+    "category": "Women",
+    "price": 167,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Blue",
+    "stock": 12,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/blue_hoodie.jpg"
+    ],
+    "createdAt": "2025-07-20T17:28:43.344Z",
+    "updatedAt": "2025-11-17T17:12:41.524Z",
+    "companyId": "691068d88eebba4336edba52",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba53",
+    "name": "Graphic Jeans",
+    "description": "A high-quality Graphic Jeans in Green.",
+    "category": "Unisex",
+    "price": 184,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Green",
+    "stock": 26,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/green_jeans.jpg"
+    ],
+    "createdAt": "2025-07-21T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.731Z",
+    "companyId": "691068d88eebba4336edba54",
+    "__v": 0,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba63",
+    "name": "Classic T-Shirt",
+    "description": "A high-quality Classic T-Shirt in Orange.",
+    "category": "Men",
+    "price": 320,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Orange",
+    "stock": 29,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/orange_tshirt.jpg"
+    ],
+    "createdAt": "2025-07-29T17:28:43.344Z",
+    "updatedAt": "2025-11-18T11:24:05.017Z",
+    "companyId": "691068d88eebba4336edba64",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba55",
+    "name": "Slim-Fit Jacket",
+    "description": "A high-quality Slim-Fit Jacket in Black.",
+    "category": "Kids",
+    "price": 201,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "Black",
+    "stock": 37,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/black_jacket.jpg"
+    ],
+    "createdAt": "2025-07-22T17:28:43.344Z",
+    "updatedAt": "2025-11-18T11:24:05.421Z",
+    "companyId": "691068d88eebba4336edba56",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba5d",
+    "name": "Leather Jacket",
+    "description": "A high-quality Leather Jacket in Black.",
+    "category": "Men",
+    "price": 269,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Black",
+    "stock": 25,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/leather_jacket.jpg"
+    ],
+    "createdAt": "2025-07-26T17:28:43.344Z",
+    "updatedAt": "2025-11-18T11:24:05.100Z",
+    "companyId": "691068d88eebba4336edba5e",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "691068d88eebba4336edba61",
+    "name": "Cotton Skirt",
+    "description": "A high-quality Cotton Skirt in Black.",
+    "category": "Women",
+    "price": 303,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 17,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/skirt.jpg"
+    ],
+    "createdAt": "2025-07-28T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:38.989Z",
+    "companyId": "691068d88eebba4336edba62",
+    "__v": 0,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6910d0227045b3e44314b9ff",
+    "name": "Vintage Hoodie",
+    "description": "A high-quality Vintage Hoodie in Red.",
+    "category": "Women",
+    "price": 337,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "Red",
+    "stock": 43,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/red_hoodie.jpg"
+    ],
+    "createdAt": "2025-07-30T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.060Z",
+    "companyId": "6910d0227045b3e44314ba00",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6910d0227045b3e44314ba03",
+    "name": "Graphic Jeans",
+    "description": "A high-quality Graphic Jeans in Blue.",
+    "category": "Unisex",
+    "price": 354,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Blue",
+    "stock": 6,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/blue_jeans.jpg"
+    ],
+    "createdAt": "2025-07-31T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.099Z",
+    "companyId": "6910d0227045b3e44314ba04",
+    "__v": 0,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6910d0227045b3e44314ba07",
+    "name": "Slim-Fit Jacket",
+    "description": "A high-quality Slim-Fit Jacket in Green.",
+    "category": "Kids",
+    "price": 371,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Green",
+    "stock": 18,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/green_jacket.jpg"
+    ],
+    "createdAt": "2025-08-01T17:28:43.344Z",
+    "updatedAt": "2025-11-18T11:24:05.512Z",
+    "companyId": "6910d0227045b3e44314ba08",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6910d0227045b3e44314ba0b",
+    "name": "Shirt",
+    "description": "A high-quality Shirt in Black.",
+    "category": "Men",
+    "price": 388,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 30,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/black_shirt.jpg"
+    ],
+    "createdAt": "2025-08-02T17:28:43.344Z",
+    "updatedAt": "2025-11-18T11:24:05.179Z",
+    "companyId": "6910d0227045b3e44314ba0c",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6910d0227045b3e44314ba0f",
+    "name": "Trousers",
+    "description": "A high-quality Trousers in White.",
+    "category": "Men",
+    "price": 405,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "White",
+    "stock": 45,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/trouser.jpg"
+    ],
+    "createdAt": "2025-08-03T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.204Z",
+    "companyId": "6910d0227045b3e44314ba10",
+    "__v": 0,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6910d40f19b9eaf0ee69fdf9",
+    "name": "Cardigon",
+    "description": "A high-quality Cardigon.",
+    "category": "Women",
+    "price": 422,
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L"
+    ],
+    "color": "Blue",
+    "stock": 8,
+    "companyName": "UrbanThreads",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/cardigon.jpg"
+    ],
+    "createdAt": "2025-08-04T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.249Z",
+    "companyId": "6910d40f19b9eaf0ee69fdfa",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6910d40f19b9eaf0ee69fdfd",
+    "name": "Leather Jacket",
+    "description": "A high-quality Leather Jacket in Black.",
+    "category": "Unisex",
+    "price": 439,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 21,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/leth2.jpg"
+    ],
+    "createdAt": "2025-08-05T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.318Z",
+    "companyId": "6910d40f19b9eaf0ee69fdfe",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6910d40f19b9eaf0ee69fe01",
+    "name": "Woolen lower",
+    "description": "A high-quality Woolen lower in Yellow.",
+    "category": "Kids",
+    "price": 456,
+    "sizes": [
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "color": "Yellow",
+    "stock": 34,
+    "companyName": "StyleSync",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/yellow_lower.jpg"
+    ],
+    "createdAt": "2025-08-06T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.357Z",
+    "companyId": "6910d40f19b9eaf0ee69fe02",
+    "__v": 0,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6910d40f19b9eaf0ee69fe09",
+    "name": "Classic T-Shirt",
+    "description": "A high-quality Classic T-Shirt in Purple.",
+    "category": "Men",
+    "price": 490,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Purple",
+    "stock": 10,
+    "companyName": "EcoWear",
+    "images": [
+      "https://raw.githubusercontent.com/MrRohanBatra/Fablefit/refs/heads/main/public/image/purple_tshirt.jpg"
+    ],
+    "createdAt": "2025-08-08T17:28:43.344Z",
+    "updatedAt": "2025-11-17T11:49:39.400Z",
+    "companyId": "6910d40f19b9eaf0ee69fe0a",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6910dccd47de625c5d55351a",
+    "name": "Black Hoodie",
+    "description": "a common black hoodie",
+    "category": "Men",
+    "price": 400,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XXL"
+    ],
+    "color": "",
+    "stock": 10,
+    "companyName": "Jaypee",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1762712781133-ArmorHoodieBlack_01.webp"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-09T18:26:21.150Z",
+    "updatedAt": "2025-11-18T11:38:51.040Z",
+    "__v": 1
+  },
+  {
+    "_id": "69184858db73b003c3571bbd",
+    "name": "Double-breasted blazer",
+    "description": "Double-breasted blazer in twill with contrasting-colour details. Featuring peak lapels, buttons down the front, jetted front pockets and long sleeves with decorative buttons at the cuffs. Lined.",
+    "category": "Women",
+    "price": 4499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Cream/Black",
+    "stock": 40,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763199064850-4da9c895fc66752e317bc1111c13b2d529cd3992.avif"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T09:31:04.890Z",
+    "updatedAt": "2025-11-18T11:38:51.075Z",
+    "__v": 1
+  },
+  {
+    "_id": "69189fa3e79f4b4f80eeeb3c",
+    "name": "Open-back dress",
+    "description": "Short, fitted dress in a sturdy weave. Features a round neckline, two covered buttons at the back of the neck and an open back with a concealed zip and hook-and-eye fastener at the back of the waist. Shaping seams down the front for a flattering silhouette, and a gently flared skirt. Partly lined.",
+    "category": "Women",
+    "price": 3599,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Red",
+    "stock": 9,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763221411230-160dac302eb74cf3a03b241b182b2849ecb786bd2abdc4db745be62e.jpg"
+    ],
+    "vton_category": "dresses",
+    "createdAt": "2025-11-15T15:43:31.263Z",
+    "updatedAt": "2025-11-18T11:38:51.179Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918d99a09ec25b79632afa4",
+    "name": "Teddy jacket",
+    "description": "Jacket in soft teddy with a high collar, concealed zip down the front, dropped shoulders and welt side pockets. Lined.",
+    "category": "Women",
+    "price": 1699,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light beige",
+    "stock": 15,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763236250184-81a47bbc636cab560fbc9b46ec8bbce98b73ddf41a9cd577318af43f.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T19:50:50.213Z",
+    "updatedAt": "2025-11-18T11:38:51.259Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918da5409ec25b79632afaf",
+    "name": "Quilted jacket",
+    "description": "Lightly padded jacket in quilted nylon with a round neckline and press-studs down the front. Discreet side pockets and narrow elastication at the cuffs. Lined.",
+    "category": "Women",
+    "price": 2299,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 6,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763236436879-7c4df934b4889f514ffe2974ce0e70a4c82c49f417ecd634ea9a802b.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T19:53:56.890Z",
+    "updatedAt": "2025-11-18T11:38:51.293Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918dad709ec25b79632afb1",
+    "name": "Oversized quilted jacket",
+    "description": "Oversized, lightly padded jacket in quilted nylon. Ribbed stand collar, zip down the front and patch front pockets with a flap. Straight-cut hem with curved side vents. Lined.",
+    "category": "Women",
+    "price": 3299,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Burgundy",
+    "stock": 8,
+    "companyName": "H&M",
+    "images": [],
+    "createdAt": "2025-11-15T19:56:07.157Z",
+    "updatedAt": "2025-11-17T11:49:39.624Z",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918db4a09ec25b79632afb3",
+    "name": "Bomber jacket",
+    "description": "Short, padded bomber jacket in woven fabric with a collar, zip down the front and welt side pockets. Dropped shoulders, long sleeves with elasticated cuffs and narrow elastication at the hem. Lined.",
+    "category": "Women",
+    "price": 3999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 4,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763236682906-399f41b1c4588f5600a25fe768bf95eb2fc8751faee38c549bb25abb.jpg"
+    ],
+    "createdAt": "2025-11-15T19:58:02.921Z",
+    "updatedAt": "2025-11-18T11:38:51.352Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918dbc809ec25b79632afb5",
+    "name": "Oversized puffer jacket",
+    "description": "Oversized puffer jacket in woven fabric featuring a stand-up collar lined with fluffy fabric. Zip down the front, welt front pockets with a concealed press-stud and concealed elastication at the cuffs. Concealed drawstring with cord stoppers at the hem. Lined.",
+    "category": "Women",
+    "price": 3299,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 15,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763236808374-8d3e597fbe025def989c47671406d93dc9b05c66d53c0730ce4b1b18.jpg"
+    ],
+    "createdAt": "2025-11-15T20:00:08.387Z",
+    "updatedAt": "2025-11-18T11:38:51.387Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918dc7f09ec25b79632afba",
+    "name": "T",
+    "description": "T",
+    "category": "Women",
+    "price": 1000,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 3,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763236991736-7c0b660a06659e18c34ca20755c2e35936829c7e.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T20:03:11.751Z",
+    "updatedAt": "2025-11-18T11:38:51.424Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918dd3009ec25b79632afc3",
+    "name": "Oversized shacket",
+    "description": "Shacket in woven fabric with a collar and press-studs down the front. Patch chest pockets with a flap and press-stud, and a yoke with pleats at the back. Gently dropped shoulders and a press-stud at the cuffs. Curved hem with side vents. Lined.",
+    "category": "Women",
+    "price": 2599,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 9,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237168524-converted (1).jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T20:06:08.535Z",
+    "updatedAt": "2025-11-18T11:38:51.457Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918dd9609ec25b79632afc5",
+    "name": "Bomber jacket",
+    "description": "Short bomber jacket with a soft, napped finish. Ribbed stand collar, concealed zip down the front and flap chest pockets with a concealed press-stud. Long sleeves and ribbing at the cuffs and hem. Lined.",
+    "category": "Women",
+    "price": 3499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 2,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237269994-08e5d2ce2118f698ec87e2079da39a866b7c7d234c403111813dd25e.jpg"
+    ],
+    "createdAt": "2025-11-15T20:07:50.008Z",
+    "updatedAt": "2025-11-18T11:38:51.490Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918de0f09ec25b79632afc7",
+    "name": "Teddy jacket",
+    "description": "Jacket in soft teddy with a stand collar and buttons down the front. Welt side pockets and gently dropped shoulders. Lined.",
+    "category": "Women",
+    "price": 3499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark beige",
+    "stock": 4,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237391619-6fcc5570c4230f90347b4b280a3e1b532610f251efc17e874b4b973d.jpg"
+    ],
+    "createdAt": "2025-11-15T20:09:51.647Z",
+    "updatedAt": "2025-11-18T11:38:51.533Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918dece09ec25b79632afc9",
+    "name": "Zip-through sports jacket",
+    "description": "hort, zip-through sports jacket in functional fabric made with SoftMove™, which provides the ultimate in softness and comfort plus contouring support, and DryMove™, which helps pull moisture away from your skin. Slim fit with a stand-up collar and a zip down the front with an anti-chafe chin guard. Extra-long sleeves with thumbholes.",
+    "category": "Women",
+    "price": 2299,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 7,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237582905-487f0ef22f8e33d720e399701ec51f725bd99dd06ed371add05c950f.jpg"
+    ],
+    "createdAt": "2025-11-15T20:13:02.920Z",
+    "updatedAt": "2025-11-18T11:38:51.566Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918df3909ec25b79632afcb",
+    "name": "Velour jacket",
+    "description": "Short, oversized jacket in soft velour with a stand collar and zip and wind flap down the front. Dropped shoulders, long sleeves with concealed elastication at the cuffs and gathers around the hem. Lined.",
+    "category": "Women",
+    "price": 1999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 20,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237689019-de4a68cf15e724627670e19dfdba76745347e0543e99fc2f199b5ec3.jpg"
+    ],
+    "createdAt": "2025-11-15T20:14:49.033Z",
+    "updatedAt": "2025-11-18T11:38:51.601Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918dfa209ec25b79632afcd",
+    "name": "Fluffy coat",
+    "description": "Coat in fluffy fabric with a round neckline, concealed hook-and-eye fastening down the front and pockets in the side seams. Lined.",
+    "category": "Women",
+    "price": 3499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 12,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237794163-8f515f073b5c7e8a5ebd7c2c2824950667a43f628e381d90fefe1a54.jpg"
+    ],
+    "createdAt": "2025-11-15T20:16:34.175Z",
+    "updatedAt": "2025-11-18T11:38:51.634Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e00c09ec25b79632afcf",
+    "name": "Oversized teddy jacket",
+    "description": "Oversized jacket in soft teddy with a small stand collar, zip down the front and discreet side pockets.",
+    "category": "Women",
+    "price": 1799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light grey",
+    "stock": 8,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763237900606-d5006051142c9d2a0027c0d52714f105082f0791b72ca5ac725374ab.jpg"
+    ],
+    "createdAt": "2025-11-15T20:18:20.621Z",
+    "updatedAt": "2025-11-18T11:38:51.667Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e07609ec25b79632afd1",
+    "name": "Teddy gilet",
+    "description": "Loose-fit gilet in soft teddy with narrow piping along the edges. Press-studs down the front and welt front pockets.",
+    "category": "Women",
+    "price": 999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 2,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238006134-70317e89c29e91cc7713af0ac47b4167835a90eefc1508e9ffac4731.jpg"
+    ],
+    "createdAt": "2025-11-15T20:20:06.148Z",
+    "updatedAt": "2025-11-18T11:38:51.700Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e0dc09ec25b79632afd3",
+    "name": "Cotton corduroy jacket",
+    "description": "Short, fitted jacket in cotton corduroy with a collar, buttons down the front and a yoke at the back. Welt side pockets and long sleeves with buttoned cuffs. Lined.",
+    "category": "Women",
+    "price": 3499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark green",
+    "stock": 15,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238108372-8a46fe83659ccdfedc3fd1894aea5e77dde94b64f21e7b85307a0f6e.jpg"
+    ],
+    "createdAt": "2025-11-15T20:21:48.386Z",
+    "updatedAt": "2025-11-18T11:38:51.730Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e15b09ec25b79632afd5",
+    "name": "Coated jacket",
+    "description": "Fitted jacket in coated fabric with a V-neckline and covered buttons down the front. Long sleeves that taper to the cuffs and jetted front pockets with a flap. Nipped-in waist for a flattering silhouette. Lined.",
+    "category": "Women",
+    "price": 2799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Brown",
+    "stock": 5,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238235661-06092808fa862995dd10824e7d9776c12011728ce62dbe9259448a2e.jpg"
+    ],
+    "createdAt": "2025-11-15T20:23:55.674Z",
+    "updatedAt": "2025-11-18T11:38:51.762Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e1c209ec25b79632afd7",
+    "name": "Hooded jacket",
+    "description": "Short jacket in soft, fluffy fabric with an oversized hood and concealed press-studs down the front. Gently dropped shoulders, long sleeves and discreet pockets in the side seams. Lined.",
+    "category": "Women",
+    "price": 3399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 11,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238338327-16fc1b78ec5361a582ba4da3a0b1dcdb286e5544105b63f17cd11d0b.jpg"
+    ],
+    "createdAt": "2025-11-15T20:25:38.344Z",
+    "updatedAt": "2025-11-18T11:38:51.792Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e2f509ec25b79632afda",
+    "name": "Oversized printed T-shirt",
+    "description": "versized T-shirt in printed cotton jersey with a round, rib-trimmed neckline, dropped shoulders and short sleeves.",
+    "category": "Women",
+    "price": 999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 17,
+    "companyName": "Zara",
+    "images": [],
+    "createdAt": "2025-11-15T20:30:45.329Z",
+    "updatedAt": "2025-11-17T11:49:40.130Z",
+    "__v": 0,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e33409ec25b79632afdc",
+    "name": "Oversized printed T-shirt",
+    "description": "Oversized T-shirt in printed cotton jersey with a round, rib-trimmed neckline, dropped shoulders and short sleeves.",
+    "category": "Women",
+    "price": 999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 17,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238708287-8495aefe2c94668bf89791b290c8f7f8fd2d9a03ad216c2b872b483c.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T20:31:48.302Z",
+    "updatedAt": "2025-11-18T11:38:51.823Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918e39d09ec25b79632afde",
+    "name": "Long-sleeved jersey top",
+    "description": "Fitted top in soft jersey with a square neckline and long sleeves.",
+    "category": "Women",
+    "price": 699,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Olive green",
+    "stock": 12,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238813040-993fbb0d143cc82947d8f970274e9e3e80fcbcd8e52d317f3f8bf513.jpg"
+    ],
+    "createdAt": "2025-11-15T20:33:33.052Z",
+    "updatedAt": "2025-11-18T11:38:51.867Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e41309ec25b79632afe0",
+    "name": "Viscose polo-neck top",
+    "description": "Top in soft viscose jersey with a polo neck and long sleeves.",
+    "category": "Women",
+    "price": 699,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark purple",
+    "stock": 1,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763238931556-10eb3de8ae1f4c5077a52cba62e13d291787943d9a40694be598135c.jpg"
+    ],
+    "createdAt": "2025-11-15T20:35:31.571Z",
+    "updatedAt": "2025-11-18T11:38:51.898Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e47209ec25b79632afe2",
+    "name": "Loose-fit T-shirt",
+    "description": "Loose-fit T-shirt in soft jersey with a crew neck and dropped shoulders.",
+    "category": "Women",
+    "price": 699,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light grey",
+    "stock": 6,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239026016-39e135308fad0b924708b5f8436f531b7022ca459941957bd47ab831.jpg"
+    ],
+    "createdAt": "2025-11-15T20:37:06.031Z",
+    "updatedAt": "2025-11-18T11:38:51.936Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e4c909ec25b79632afe5",
+    "name": "Collared rib-knit top",
+    "description": "Long-sleeved top in a fine rib knit featuring a collar with a scalloped edge and a V-shaped opening at the front. Delicate picot trim at the cuffs and hem.",
+    "category": "Women",
+    "price": 1499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark blue",
+    "stock": 8,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239113766-0c0517dbfd71cad93e93b00a00d63f330447bc174df240258d31adc3.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T20:38:33.780Z",
+    "updatedAt": "2025-11-18T11:38:51.968Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918e52009ec25b79632afe7",
+    "name": "Long-sleeved microfibre top",
+    "description": "Short, fitted top in soft microfibre with a square neckline and long sleeves. Lined over the bust.",
+    "category": "Women",
+    "price": 799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 8,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239200609-74b23697aabd224c77b7071d4e211e312c9cdf760e0cd9f724a1a49c.jpg"
+    ],
+    "createdAt": "2025-11-15T20:40:00.622Z",
+    "updatedAt": "2025-11-18T11:38:52.000Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e59e09ec25b79632afe9",
+    "name": "Draped top",
+    "description": "Fitted, long-sleeved top in jersey with pleats on one shoulder and at the opposite side of the waist to create a draped effect.",
+    "category": "Women",
+    "price": 1199,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Burgundy",
+    "stock": 12,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239326491-37d4f83bedfd018006ee045c93a6a34714fe1b157522c1b160411c70.jpg"
+    ],
+    "createdAt": "2025-11-15T20:42:06.506Z",
+    "updatedAt": "2025-11-18T11:38:52.036Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e5fe09ec25b79632afeb",
+    "name": "Layered-look top",
+    "description": "Long-sleeved top in pointelle jersey with accent-colour trims at the neckline and hem to create a layered look. Deep, round neckline, button placket and a straight-cut hem.",
+    "category": "Women",
+    "price": 1199,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "White",
+    "stock": 3,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239422563-e891636750f58af065ed188cdf6a57ca55c2008806d803d8ad2d1d7a.jpg"
+    ],
+    "createdAt": "2025-11-15T20:43:42.578Z",
+    "updatedAt": "2025-11-18T11:38:52.069Z",
+    "__v": 1,
+    "vton_category": "upper_body"
+  },
+  {
+    "_id": "6918e6ed09ec25b79632afee",
+    "name": "Cowl neck top",
+    "description": "Fitted top in stretch jersey with a cowl neckline and long sleeves.",
+    "category": "Women",
+    "price": 999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark mole",
+    "stock": 17,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239661774-0d92b30a0aa9375c5f49489d530e46c0bec43cb7e239d86c5fed970f.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-15T20:47:41.790Z",
+    "updatedAt": "2025-11-18T11:38:52.103Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918e78e09ec25b79632aff0",
+    "name": "Flared High Jeans",
+    "description": "Jeans in slightly stretchy denim with a high waist, zip fly and button and legs with wide, flared hems. Fake front pockets and real pockets at the back.",
+    "category": "Women",
+    "price": 1699,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Denim blue",
+    "stock": 8,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239822747-88aca5c180911cafd0c989933a58fff1cb09f14306065d01dc1ea244.jpg"
+    ],
+    "vton_category": "lower_body",
+    "createdAt": "2025-11-15T20:50:22.762Z",
+    "updatedAt": "2025-11-18T11:38:52.171Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918e7ea09ec25b79632aff2",
+    "name": "Wide Ultra High Jeans",
+    "description": "5-pocket jeans in rigid cotton denim that feels firm at first but then softens and loosens with wear. Wide leg with a regular fit from the waist to the hip and a wide cut from the thigh to the hem. Extra-high waist with a zip fly and button. Regular length, designed to hit the top of the foot with little or no stacking. The wide-leg jean is a wardrobe essential.",
+    "category": "Women",
+    "price": 1999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 17,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763239914773-06700e29bff49656534e6c7a5a5fe28c662db5dc652e2c8e9e228c6f.jpg"
+    ],
+    "createdAt": "2025-11-15T20:51:54.786Z",
+    "updatedAt": "2025-11-18T11:38:52.202Z",
+    "__v": 1,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6918e84709ec25b79632aff4",
+    "name": "Wide High Jeans",
+    "description": "5-pocket jeans in washed cotton denim with a high waist, zip fly and button and wide, straight legs.",
+    "category": "Women",
+    "price": 1799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light denim blue",
+    "stock": 1,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763240007027-afa55ffdb90ec25d211140bea18729a42d8cd50555e8a92c7ba7a77e.jpg"
+    ],
+    "createdAt": "2025-11-15T20:53:27.038Z",
+    "updatedAt": "2025-11-18T11:38:52.241Z",
+    "__v": 1,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6918e8ac09ec25b79632aff6",
+    "name": "Straight High Jeans",
+    "description": "5-pocket jeans in rigid denim that feels firm at first but then softens and loosens with wear. Straight leg with a regular fit from the waist to the hip and a looser, straight cut from the thigh to the hem. High waist with a zip fly and button. Longer length, designed to fall over the foot with a stacking effect. This classic shape complements everything from hoodies to blazers.",
+    "category": "Women",
+    "price": 1399,
+    "sizes": [],
+    "color": "Black",
+    "stock": 16,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763240108561-8ccd2ffe0bd6f358361b2f9e32fbf31f4308f0dc9d31db3f38a19415.jpg"
+    ],
+    "createdAt": "2025-11-15T20:55:08.578Z",
+    "updatedAt": "2025-11-18T11:38:52.272Z",
+    "__v": 1,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6918e94a09ec25b79632aff8",
+    "name": "Flared High Jeans",
+    "description": "Jeans in slightly stretchy denim with a high waist, zip fly and button and legs with wide, flared hems. Fake front pockets and real pockets at the back.",
+    "category": "Women",
+    "price": 1699,
+    "sizes": [],
+    "color": "Washed Black",
+    "stock": 22,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763240266622-acbc32e881963d08c003a3fb660cbb8f87dc67e0a61781f718044ffe.jpg"
+    ],
+    "createdAt": "2025-11-15T20:57:46.636Z",
+    "updatedAt": "2025-11-18T11:38:52.302Z",
+    "__v": 1,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "6918e9af09ec25b79632affb",
+    "name": "Skinny High Jeans",
+    "description": "5-pocket jeans in stretch denim with a skinny fit from the waist to the hem. High waist with a zip fly and button.",
+    "category": "Women",
+    "price": 1299,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark denim blue",
+    "stock": 4,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763240367340-30ca45f364c3177ced7128031491602ab5e3a3aa5b8da0e1d53e5811.jpg"
+    ],
+    "vton_category": "lower_body",
+    "createdAt": "2025-11-15T20:59:27.352Z",
+    "updatedAt": "2025-11-18T11:38:52.335Z",
+    "__v": 1
+  },
+  {
+    "_id": "6918ea1809ec25b79632affd",
+    "name": "Wide High Jeans",
+    "description": "5-pocket jeans in washed cotton denim with a high waist, zip fly and button and wide, straight legs.",
+    "category": "Women",
+    "price": 1799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Denim grey",
+    "stock": 11,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763240472491-6c0f5e37ba199db3eebaa48e5cf1ecb9ce9b8add1e5a50c324ab12f2.jpg"
+    ],
+    "createdAt": "2025-11-15T21:01:12.503Z",
+    "updatedAt": "2025-11-18T11:38:52.404Z",
+    "__v": 1,
+    "vton_category": "lower_body"
+  },
+  {
+    "_id": "691b4dc52f21bc0769757e89",
+    "name": "rohan batra",
+    "description": "ujff",
+    "category": "Men",
+    "price": 631,
+    "sizes": [
+      "S"
+    ],
+    "color": "Black",
+    "stock": 152,
+    "companyName": "jhgf",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763397061313-09166_00.jpg"
+    ],
+    "vton_category": "upper_body",
+    "createdAt": "2025-11-17T16:31:01.325Z",
+    "updatedAt": "2025-11-18T11:38:52.449Z",
+    "__v": 1
+  },
+  {
+    "_id": "691b6eb5de73bc8a8c9c5c02",
+    "name": "Loose Fit Sweatshirt",
+    "description": "Top in midweight sweatshirt fabric made from a cotton blend with a soft brushed inside. Round, rib-trimmed neckline, dropped shoulders, long sleeves and wide ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 679,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 14,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763405493926-fee39d9b641aa9512f97d734791157bad98d5ca0ffa1b678f40330e7.jpg"
+    ],
+    "vton_category": "upper",
+    "createdAt": "2025-11-17T18:51:33.942Z",
+    "updatedAt": "2025-11-18T11:38:52.482Z",
+    "__v": 1
+  },
+  {
+    "_id": "691b710ade73bc8a8c9c5c0a",
+    "name": "Loose Fit Hoodie",
+    "description": "Hoodie in midweight sweatshirt fabric made from a cotton blend with a soft brushed inside. Jersey-lined, drawstring hood, dropped shoulders, long sleeves, a kangaroo pocket and wide ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1274,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 12,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763406090097-fe7f5f0ec8e687e9b5aed38c3b58a25f5903379283e9d1d62f42b054.jpg"
+    ],
+    "vton_category": "upper",
+    "createdAt": "2025-11-17T19:01:30.116Z",
+    "updatedAt": "2025-11-18T11:38:52.519Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c1817de73bc8a8c9c5c11",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in midweight sweatshirt fabric with a soft brushed inside. Hood with a drawstring, zip down the front and front pockets. Dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark grey",
+    "stock": 10,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763448855269-0c6aa074845e5d842a12b57653d17f0f18f8949c4d36982169365834.jpg"
+    ],
+    "vton_category": "upper",
+    "createdAt": "2025-11-18T06:54:15.288Z",
+    "updatedAt": "2025-11-18T11:38:52.551Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c1ad0de73bc8a8c9c5c13",
+    "name": "Loose Fit Sweatshirt",
+    "description": "Top in midweight sweatshirt fabric made from a cotton blend with a soft brushed inside. Round, rib-trimmed neckline, dropped shoulders, long sleeves and wide ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Plum",
+    "stock": 11,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763449552557-9c14a92ac0f0c5506576a46e6696ebf91614a37b73992703eec230e3.jpg"
+    ],
+    "createdAt": "2025-11-18T07:05:52.578Z",
+    "updatedAt": "2025-11-18T11:38:52.583Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c1c7ade73bc8a8c9c5c15",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in midweight sweatshirt fabric with a soft brushed inside. Hood with a drawstring, zip down the front and front pockets. Dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Brown",
+    "stock": 20,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763449978412-093fce2b619891269f716ecbcdc1f6bfa5c35accf9b15988bbb69cc5.jpg"
+    ],
+    "createdAt": "2025-11-18T07:12:58.431Z",
+    "updatedAt": "2025-11-18T11:38:52.615Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c1da6de73bc8a8c9c5c17",
+    "name": "Loose Fit Hoodie",
+    "description": "Hoodie in midweight sweatshirt fabric made from a cotton blend with a soft brushed inside. Jersey-lined, drawstring hood, dropped shoulders, long sleeves, a kangaroo pocket and wide ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light beige",
+    "stock": 15,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763450278572-10af06d57a046ea0f0eae416ec716f880b72b238183b5a2cb5d54413.jpg"
+    ],
+    "createdAt": "2025-11-18T07:17:58.590Z",
+    "updatedAt": "2025-11-18T11:38:52.656Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c1eafde73bc8a8c9c5c19",
+    "name": "Loose Fit Sweatshirt",
+    "description": "Top in midweight sweatshirt fabric made from a cotton blend with a soft brushed inside. Round, rib-trimmed neckline, dropped shoulders, long sleeves and wide ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Brown",
+    "stock": 10,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763450543731-ca6a0c83cab541583ab8db93689e1333f1b542dfa2442b8afbe2a138.jpg"
+    ],
+    "createdAt": "2025-11-18T07:22:23.754Z",
+    "updatedAt": "2025-11-18T11:38:52.690Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c1fe8de73bc8a8c9c5c1b",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in midweight sweatshirt fabric with a soft brushed inside. Hood with a drawstring, zip down the front and front pockets. Dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "White",
+    "stock": 19,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763450856029-3fbe6c5d079f4833568f128102bb78d233b8cd6c8bb145ac79513515.jpg"
+    ],
+    "createdAt": "2025-11-18T07:27:36.048Z",
+    "updatedAt": "2025-11-18T11:38:52.722Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c2303de73bc8a8c9c5c1d",
+    "name": "Regular Fit T-shirt",
+    "description": "T-shirt in lightweight cotton jersey with a round, rib-trimmed neckline and a straight-cut hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "White",
+    "stock": 20,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763451651948-95010cb5d291c4f119b83d9afa3f139b99d2f0bb1598d86dec1e36c7.jpg"
+    ],
+    "createdAt": "2025-11-18T07:40:51.968Z",
+    "updatedAt": "2025-11-18T11:38:52.753Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c24dede73bc8a8c9c5c1f",
+    "name": "Regular Fit T-shirt",
+    "description": "T-shirt in lightweight cotton jersey with a round, rib-trimmed neckline and a straight-cut hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 16,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763452126620-a361dd7e80d84f779b2baf6d188c379dfbadbd58ebeeb7313bf5154e.jpg"
+    ],
+    "createdAt": "2025-11-18T07:48:46.639Z",
+    "updatedAt": "2025-11-18T11:38:52.784Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c25b5de73bc8a8c9c5c21",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in midweight sweatshirt fabric with a soft brushed inside. Hood with a drawstring, zip down the front and front pockets. Dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 14,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763452341588-325e72841755c04e44ff6fcd5f6cdb0d1862c8f6f266b8ee1f7b0f2d.jpg"
+    ],
+    "createdAt": "2025-11-18T07:52:21.608Z",
+    "updatedAt": "2025-11-18T11:38:52.978Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c26f9de73bc8a8c9c5c23",
+    "name": "Regular Fit Corduroy shirt",
+    "description": "Shirt in soft cotton corduroy with a button-down collar. Features a classic front, open chest pocket and a back yoke. Long sleeves with adjustable buttoned cuffs and a sleeve placket with a link button. Finished with a rounded hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 1999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Burgundy",
+    "stock": 10,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763452665292-7accb810a76518025a566de13a0f5850a1dfa5e954fadb73f0a42f1c.jpg"
+    ],
+    "createdAt": "2025-11-18T07:57:45.310Z",
+    "updatedAt": "2025-11-18T11:38:53.017Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c2944de73bc8a8c9c5c25",
+    "name": "Regular Fit Zip-top sweatshirt",
+    "description": "Top in heavyweight sweatshirt fabric with a soft brushed inside. Stand-up collar, a zip at the top, dropped shoulders and long sleeves. Ribbing at the cuffs and hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 2099,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Cream",
+    "stock": 8,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763453252867-6071dd17cae109fba2774a5199b1e6d038a6797f24c6fc4b53fd5987.jpg"
+    ],
+    "createdAt": "2025-11-18T08:07:32.887Z",
+    "updatedAt": "2025-11-18T11:38:53.053Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c2af1de73bc8a8c9c5c27",
+    "name": "Regular Fit Felted overshirt",
+    "description": "Overshirt in a felted weave with a collar, two-way zip down the front and welt front pockets. Regular fit for comfortable wear and a classic silhouette. Unlined.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark grey",
+    "stock": 14,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763453681170-c9e0f32c07c8b90a0ee163a112369a29fb59b23c66539e9cd6ef66e3.jpg"
+    ],
+    "createdAt": "2025-11-18T08:14:41.189Z",
+    "updatedAt": "2025-11-18T11:38:53.087Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c2fd6de73bc8a8c9c5c29",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in midweight sweatshirt fabric with a soft brushed inside. Hood with a drawstring, zip down the front and front pockets. Dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark blue",
+    "stock": 12,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763454933986-6011ea68276039c3ebc206d139a854021af38a04694fdeac191265f4.jpg"
+    ],
+    "createdAt": "2025-11-18T08:35:34.006Z",
+    "updatedAt": "2025-11-18T11:38:53.123Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c315fde73bc8a8c9c5c2b",
+    "name": "Regular Fit Oxford shirt",
+    "description": "Shirt in Oxford cotton with a button-down collar, classic front, yoke at the back and an open chest pocket. Long sleeves with buttoned cuffs and a sleeve placket with a link button. Gently rounded hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light blue",
+    "stock": 20,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763455327889-8cc33a06c942cd89f7db92b5c19fc956c848ac1c72e477004ba5f355.jpg"
+    ],
+    "createdAt": "2025-11-18T08:42:07.908Z",
+    "updatedAt": "2025-11-18T11:38:53.166Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c32a0de73bc8a8c9c5c2d",
+    "name": "Regular Fit Oxford shirt",
+    "description": "Shirt in Oxford cotton with a button-down collar, classic front, yoke at the back and an open chest pocket. Long sleeves with buttoned cuffs and a sleeve placket with a link button. Gently rounded hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "White",
+    "stock": 10,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763455648313-07170c2fc453b9fbe7c3210e5919a9fea6a6bcfefa3c708dc74bf790.jpg"
+    ],
+    "createdAt": "2025-11-18T08:47:28.335Z",
+    "updatedAt": "2025-11-18T11:38:53.221Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c335bde73bc8a8c9c5c2f",
+    "name": "Slim Fit Easy-iron shirt",
+    "description": "Shirt in woven fabric with an easy-iron finish. Turn-down collar, a classic front and a yoke at the back. Long sleeves with adjustable buttoning at the cuffs and a sleeve placket with a link button. Gently rounded hem. Slim fit that hugs the contours of your body, creating a fitted silhouette.",
+    "category": "Men",
+    "price": 1499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark brown",
+    "stock": 14,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763455835456-d92dcdeaef65d26d14bc3664e02644c1de5fb5755ef54493500bddaa.jpg"
+    ],
+    "createdAt": "2025-11-18T08:50:35.478Z",
+    "updatedAt": "2025-11-18T11:38:53.256Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c3471de73bc8a8c9c5c31",
+    "name": "Loose Fit Sweatpants",
+    "description": "Sweatpants in heavyweight sweatshirt fabric made from a cotton blend, with a soft brushed inside. Designed with covered elasticating and a drawstring at the waist, and side pockets. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 13,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763456113447-f20badbab0b2e8bda0cffae57c38b62792062ab8ef8e81c35222292a.jpg"
+    ],
+    "vton_category": "lower",
+    "createdAt": "2025-11-18T08:55:13.468Z",
+    "updatedAt": "2025-11-18T11:38:53.299Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c3523de73bc8a8c9c5c33",
+    "name": "Regular Fit Felted overshirt",
+    "description": "Overshirt in a felted weave with a collar, two-way zip down the front and welt front pockets. Regular fit for comfortable wear and a classic silhouette. Unlined.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Grey/Checked",
+    "stock": 10,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763456291518-7f2354fe4f12e2fa10217a52a1bd8ea4f3e1059c828b640a0b5f3df4.jpg"
+    ],
+    "vton_category": "upper",
+    "createdAt": "2025-11-18T08:58:11.537Z",
+    "updatedAt": "2025-11-18T11:38:53.330Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c35f6de73bc8a8c9c5c35",
+    "name": "Slim Fit Lightweight puffer jacket",
+    "description": "Lightweight puffer jacket in a quilted fabric featuring a stand collar and front zip with an anti-chafe chin guard. Designed with zipped side pockets and open inner pockets for practical storage. Slim fit that hugs the contours of your body, creating a fitted silhouette. Lined.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 18,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763456502023-9fbe85e5266dc497b6fb157fa32b942c1827753402f64bdd625a70b9.jpg"
+    ],
+    "createdAt": "2025-11-18T09:01:42.043Z",
+    "updatedAt": "2025-11-18T11:38:53.368Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c369fde73bc8a8c9c5c37",
+    "name": "Regular Fit Zip-top sweatshirt",
+    "description": "Top in heavyweight sweatshirt fabric with a soft brushed inside. Stand-up collar, a zip at the top, dropped shoulders and long sleeves. Ribbing at the cuffs and hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 2099,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 10,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763456671710-a27ac83fce4f01684079cd72227d1134fe5ae3f096429e75146a5935.jpg"
+    ],
+    "createdAt": "2025-11-18T09:04:31.730Z",
+    "updatedAt": "2025-11-18T11:38:53.402Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c3770de73bc8a8c9c5c39",
+    "name": "Loose Fit Printed T-shirt",
+    "description": "T-shirt in midweight cotton jersey with a print motif, round, rib-trimmed neckline, dropped shoulders and a straight-cut hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black/Lost Time",
+    "stock": 15,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763456880296-12d4e85833cfdc060f0a0a358bfe97fb951fcc7ff0abf28c9379da54.jpg"
+    ],
+    "createdAt": "2025-11-18T09:08:00.318Z",
+    "updatedAt": "2025-11-18T11:38:53.432Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c3857de73bc8a8c9c5c3b",
+    "name": "Loose Fit Hoodie",
+    "description": "Hoodie in midweight sweatshirt fabric made from a cotton blend with a soft brushed inside. Lined hood, kangaroo pocket, dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 2799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 10,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763457111318-491459276ae596a83eab322d9a2f1cb55d68d7a89116dd42181da1d1.jpg"
+    ],
+    "createdAt": "2025-11-18T09:11:51.337Z",
+    "updatedAt": "2025-11-18T11:38:53.470Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c390ede73bc8a8c9c5c3d",
+    "name": "Loose Fit Baseball jacket",
+    "description": "Baseball jacket in scuba fabric with a ribbed stand-up collar, press-studs down the front, welt front pockets and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black/White",
+    "stock": 11,
+    "companyName": "Bloom",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763457294126-0e3c8837c27af428ea1bb7d956b296e7f4d00432e4c5a49782b0cec8.jpg"
+    ],
+    "createdAt": "2025-11-18T09:14:54.144Z",
+    "updatedAt": "2025-11-18T11:38:53.504Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c3a09de73bc8a8c9c5c3f",
+    "name": "Regular Fit Corduroy shirt",
+    "description": "Shirt in soft cotton corduroy with a button-down collar. Features a classic front, open chest pocket and a back yoke. Long sleeves with adjustable buttoned cuffs and a sleeve placket with a link button. Finished with a rounded hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 1999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark forest green",
+    "stock": 19,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763457545271-5a8e454d93ac331cdb8e1f96b34aa0f54af183d24ab5f993da2adceb.jpg"
+    ],
+    "createdAt": "2025-11-18T09:19:05.289Z",
+    "updatedAt": "2025-11-18T11:38:53.540Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c3b06de73bc8a8c9c5c41",
+    "name": "Loose Fit Printed T-shirt",
+    "description": "T-shirt in midweight cotton jersey with a print motif, round, rib-trimmed neckline, dropped shoulders and a straight-cut hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 799,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark Green",
+    "stock": 16,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763457798511-f866887319e40e05b84e217c1a5db39d357286757305390762d5e559.jpg"
+    ],
+    "createdAt": "2025-11-18T09:23:18.529Z",
+    "updatedAt": "2025-11-18T11:38:53.576Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c51acde73bc8a8c9c5c48",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in midweight sweatshirt fabric with a soft brushed inside. Hood with a drawstring, zip down the front and front pockets. Dropped shoulders, long sleeves and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 1399,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Grey marl",
+    "stock": 17,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763463596174-7e37d08f2be9162a8a64121e74d2e2a95e40547b03679ea0a51ac8b7.jpg"
+    ],
+    "vton_category": "upper",
+    "createdAt": "2025-11-18T10:59:56.218Z",
+    "updatedAt": "2025-11-18T11:38:53.608Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5291de73bc8a8c9c5c4a",
+    "name": "Oversized Fit Printed hoodie",
+    "description": "Hoodie in printed heavyweight cotton sweatshirt fabric with a double-layered, wrap over hood, low dropped shoulders, long sleeves, a kangaroo pocket and a wide, ribbed trim at the cuffs and hem. Oversized fit for a baggy, extra-loose silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black/Statue of Liberty",
+    "stock": 9,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763463825487-73bc2abf569f02d06d05edea05d00600ba0282c1bfa15a6a820cf847.jpg"
+    ],
+    "createdAt": "2025-11-18T11:03:45.520Z",
+    "updatedAt": "2025-11-18T11:38:53.640Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5379de73bc8a8c9c5c4c",
+    "name": "Loose Fit Zip-top sweatshirt",
+    "description": "Top in heavyweight sweatshirt fabric with a soft brushed inside and a print motif on the front. Stand collar, zip at the top, gently dropped shoulders and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 18,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763464057097-32b5f7867eb545b43fd4ec104c214427670e1b5359304ad6d53d147c.jpg"
+    ],
+    "createdAt": "2025-11-18T11:07:37.137Z",
+    "updatedAt": "2025-11-18T11:38:53.675Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c548bde73bc8a8c9c5c4e",
+    "name": "Oversized Fit Washed hoodie",
+    "description": "Hoodie in heavyweight cotton sweatshirt fabric with a washed look and a print motif. Dropped shoulders, long sleeves, a kangaroo pocket and wide ribbing at the cuffs and hem. Oversized fit for a baggy, extra-loose silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 15,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763464331871-2d8dd6207e943e77c65d91a5d3e5acfc9d788df8be800e3f0385865d.jpg"
+    ],
+    "createdAt": "2025-11-18T11:12:11.910Z",
+    "updatedAt": "2025-11-18T11:38:53.709Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c55dcde73bc8a8c9c5c50",
+    "name": "Loose Fit Zip-through hoodie",
+    "description": "Zip-through hoodie in heavyweight cotton-blend sweatshirt fabric with a jersey-lined hood and a two-way zip down the front. Designed with dropped shoulders, long sleeves, front pockets and a ribbed trim at the hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [],
+    "color": "Black",
+    "stock": 16,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763464668953-221b3138a1d46e3976a4743478655040e80ac2b7a41f13be22e9129e.jpg"
+    ],
+    "createdAt": "2025-11-18T11:17:48.988Z",
+    "updatedAt": "2025-11-18T11:38:53.743Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5693de73bc8a8c9c5c52",
+    "name": "Relaxed Fit Sweatpants",
+    "description": "Sweatpants in heavyweight cotton-blend sweatshirt fabric with a soft brushed inside. Featuring covered elasticating at the waist, a fake fly and welt side pockets. Asymmetrical seams down the front and back. Finished with elasticated drawstrings at the hems. Relaxed fit for a casual but not oversized silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 16,
+    "companyName": "H&M",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763464851061-88af997c96e47292043820a3ef9cc9b7fd6ea518c6814970ee2e769d.jpg"
+    ],
+    "vton_category": "lower",
+    "createdAt": "2025-11-18T11:20:51.097Z",
+    "updatedAt": "2025-11-18T11:38:53.777Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c576ade73bc8a8c9c5c54",
+    "name": "Oversized Fit Washed hoodie",
+    "description": "Boxy-style hoodie in heavyweight cotton sweatshirt fabric with a washed look featuring a lined wrap over hood, low dropped shoulders and long sleeves. Finished with a kangaroo pocket and ribbing at the cuffs and hem. Oversized fit for a baggy, extra-loose silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Navy blue",
+    "stock": 9,
+    "companyName": "Levis",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763465066116-b9abaefa43384482d2161c09d434aa2e0c4460fd423ab7842daabc7b.jpg"
+    ],
+    "vton_category": "upper",
+    "createdAt": "2025-11-18T11:24:26.150Z",
+    "updatedAt": "2025-11-18T11:38:53.810Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5859de73bc8a8c9c5c56",
+    "name": "Regular Fit Hoodie",
+    "description": "Long-sleeved hoodie in midweight sweatshirt fabric with a soft brushed inside. Kangaroo pocket, double-layered drawstring hood with a wrap over front, and ribbing at the cuffs and hem. Regular fit for comfortable wear and a classic silhouette.",
+    "category": "Men",
+    "price": 2099,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Black",
+    "stock": 20,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763465305758-4a55560cb6576eba33b6defa93017c971e74c4a34c196dbb756e709a.jpg"
+    ],
+    "createdAt": "2025-11-18T11:28:25.793Z",
+    "updatedAt": "2025-11-18T11:38:53.843Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5955de73bc8a8c9c5c58",
+    "name": "Loose Fit Track jacket with side stripes",
+    "description": "Track jacket in midweight scuba fabric with side stripes in woven fabric. Designed with a stand-up collar, two-way zip down the front, welt side pockets and ribbing at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Dark green/White",
+    "stock": 16,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763465556974-4091cad197d7a83cac9d33984049254283a8f301dea928000fa677cd.jpg"
+    ],
+    "createdAt": "2025-11-18T11:32:37.008Z",
+    "updatedAt": "2025-11-18T11:38:53.880Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5a94de73bc8a8c9c5c5a",
+    "name": "Oversized Fit Printed hoodie",
+    "description": "Hoodie in printed heavyweight cotton sweatshirt fabric with a double-layered, wrap over hood, low dropped shoulders, long sleeves, a kangaroo pocket and a wide, ribbed trim at the cuffs and hem. Oversized fit for a baggy, extra-loose silhouette.",
+    "category": "Men",
+    "price": 2999,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Cream",
+    "stock": 13,
+    "companyName": "Biba",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763465876896-e9bd9f955451d7f9ba38e7b9fc6a3d9900b7041dc7814e2a5aa802ae.jpg"
+    ],
+    "createdAt": "2025-11-18T11:37:56.932Z",
+    "updatedAt": "2025-11-18T11:38:53.914Z",
+    "__v": 1
+  },
+  {
+    "_id": "691c5b71de73bc8a8c9c5c5c",
+    "name": "Loose Fit Teddy zip-through hoodie",
+    "description": "Zip-through hoodie in soft teddy with a zip down the front, patch front pockets and dropped shoulders. Long sleeves and elasticated binding at the cuffs and hem. Loose fit for a generous but not oversized silhouette.",
+    "category": "Men",
+    "price": 3499,
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "color": "Light beige",
+    "stock": 12,
+    "companyName": "Zara",
+    "images": [
+      "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/1763466097754-7042b115116a90d5afc425c1f0842460abc69ad6bd6665933d5a2840.jpg"
+    ],
+    "createdAt": "2025-11-18T11:41:37.792Z",
+    "updatedAt": "2025-11-18T11:43:46.278Z",
+    "__v": 1
+  }
+]

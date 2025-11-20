@@ -89,6 +89,32 @@ productRouter.post("/upload", async (req, res) => {
 // ----------------------
 // 2️⃣ Add Product Route
 // ----------------------
+// Auto-fix image URLs for a single product
+async function fixProductImageUrls(product) {
+  if (!product || !Array.isArray(product.images)) return product;
+
+  const CDN_PREFIX =
+    "https://cdn.jsdelivr.net/gh/MrRohanBatra/Fablefit@backend-ayush/product_images/";
+
+  let modified = false;
+
+  product.images = product.images.map((url) => {
+    if (url.includes("localhost") && url.includes("product_images")) {
+      modified = true;
+      const filename = url.split("/").pop();
+      return CDN_PREFIX + filename;
+    }
+    return url;
+  });
+
+  if (modified) {
+    await product.save(); // update only if changed
+    console.log("🔄 Image URLs fixed for product:", product._id);
+  }
+
+  return product;
+}
+
 productRouter.post("/add", async (req, res) => {
   try {
     console.log(req.body)
@@ -130,9 +156,10 @@ productRouter.get("/all", async (req, res) => {
 productRouter.get("/id/:id", async (req, res) => {
   try {
     console.log("Product id ", req.params.id);
-    const product = await Product.findById(req.params.id);
+    let product = await Product.findById(req.params.id);
     // console.log(product);
     if (!product) return res.status(404).json({ message: "Product not found" });
+    product = await fixProductImageUrls(product);
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: error.message });
