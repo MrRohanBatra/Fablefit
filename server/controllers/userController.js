@@ -102,38 +102,72 @@ export const getUser = async (req, res) => {
   }
 };
 
+// export const uploadImage = async (req, res) => {
+//     try {
+//       if (!req.files || !req.files.image) {
+//         return res.status(400).json({ message: "No image uploaded" });
+//       }
+
+//       const uid = req.body.uid;
+//       if (!uid) {
+//         return res.status(400).json({ message: "UID not provided" });
+//       }
+
+//       const imageFile = req.files.image;
+
+//       // ✅ Make sure "images" folder exists
+//       const uploadDir = path.join(__dirname, "../images");
+//       if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+
+//       // ✅ Save as <uid>.png (or whatever extension)
+//       const ext = path.extname(imageFile.name);
+//       const fileName = `${uid}${ext}`;
+//       const uploadPath = path.join(uploadDir, fileName);
+
+//       // ✅ Move the file
+//       await imageFile.mv(uploadPath);
+
+//       // ✅ Respond with public path
+//       res.status(200).json({
+//         message: "✅ Image uploaded successfully",
+//         file: `/images/${fileName}`,
+//       });
+//     } catch (error) {
+//       console.error("Upload error:", error);
+//       res.status(500).json({ message: error.message });
+//     }
+//   };
 export const uploadImage = async (req, res) => {
-    try {
-      if (!req.files || !req.files.image) {
-        return res.status(400).json({ message: "No image uploaded" });
-      }
+  try {
+    if (!req.files || !req.files.image)
+      return res.status(400).json({ message: "No image uploaded" });
 
-      const uid = req.body.uid;
-      if (!uid) {
-        return res.status(400).json({ message: "UID not provided" });
-      }
+    const uid = req.body.uid;
+    if (!uid) return res.status(400).json({ message: "UID not provided" });
 
-      const imageFile = req.files.image;
+    const imageFile = req.files.image;
 
-      // ✅ Make sure "images" folder exists
-      const uploadDir = path.join(__dirname, "../images");
-      if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    const uploadDir = path.join(__dirname, "../images");
+    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
-      // ✅ Save as <uid>.png (or whatever extension)
-      const ext = path.extname(imageFile.name);
-      const fileName = `${uid}${ext}`;
-      const uploadPath = path.join(uploadDir, fileName);
+    const ext = path.extname(imageFile.name);
+    const fileName = `${uid}${ext}`;
+    const uploadPath = path.join(uploadDir, fileName);
 
-      // ✅ Move the file
-      await imageFile.mv(uploadPath);
-
-      // ✅ Respond with public path
-      res.status(200).json({
-        message: "✅ Image uploaded successfully",
-        file: `/images/${fileName}`,
-      });
-    } catch (error) {
-      console.error("Upload error:", error);
-      res.status(500).json({ message: error.message });
+    // ❌ Delete existing image
+    if (fs.existsSync(uploadPath)) {
+      fs.unlinkSync(uploadPath);
     }
-  };
+
+    // 📌 Save new image
+    await imageFile.mv(uploadPath);
+
+    res.status(200).json({
+      message: "Image replaced successfully",
+      file: `/images/${fileName}`,
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
