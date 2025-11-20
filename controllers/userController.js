@@ -151,7 +151,8 @@ export const uploadImage = async (req, res) => {
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
     const ext = path.extname(imageFile.name);
-    const fileName = `${uid}${ext}`;
+    // const fileName = `${uid}${ext}`;
+    const fileName = `${uid}_${Date.now()}${ext}`;        
     const uploadPath = path.join(uploadDir, fileName);
 
     // ❌ Delete existing image
