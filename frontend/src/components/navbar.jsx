@@ -262,13 +262,13 @@ function NavbarFinal() {
             >
               Kids
             </Nav.Link>
-            <Nav.Link
+            {(user?.type||"normal") === "seller"&&(<Nav.Link
               as={Link}
               to="/seller"
               className="fw-semibold text-uppercase "
             >
               Seller
-            </Nav.Link>
+            </Nav.Link>)}
           </Nav>
           <Nav className="mx-auto d-none d-lg-flex">
             <marquee className="rounded-pill small">
