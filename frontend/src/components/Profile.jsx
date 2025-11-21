@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, use } from "react";
 import { useParams, useNavigate } from "react-router";
 import {
   Container,
@@ -1082,6 +1082,16 @@ function ProfileDetails() {
 function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [preview,setPreview]=useState(null);
+  useEffect(()=>{
+    if(!file){
+      setPreview(null);
+      return;
+    }
+    const objectUrl=URL.createObjectURL(file);
+    setPreview(objectUrl);
+    return ()=>URL.revokeObjectURL(objectUrl);
+  },[file]);
 
   const handleUpload = async () => {
     if (!file) {
@@ -1136,10 +1146,13 @@ function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
         </Form.Group>
 
         {file && (
-          <p className="text-muted small mb-0">
+          <><p className="text-muted small mb-0">
             Selected: <strong>{file.name}</strong>
           </p>
-        )}
+          <Image src={preview} alt="Preview" fluid rounded className="mt-3" width="120"
+                      height="120"/>
+        </>
+      )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide} disabled={uploading}>
