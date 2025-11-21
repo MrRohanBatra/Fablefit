@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, getUser, uploadImage } from "../controllers/userController.js";
+import { addUser, allusers, getUser, updateUserType, uploadImage } from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
@@ -10,5 +10,7 @@ userRouter.post("/add", addUser);
 userRouter.get("/:uid", getUser);
 
 userRouter.post("/uploadimage", uploadImage);
+userRouter.post("/updatetype/:uid", updateUserType)
+userRouter.get("/all/users", allusers);
 
 export default userRouter;

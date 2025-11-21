@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
 //               user.address = address;
 //               user.markModified("address");
 //           }
-          
+
 //       user.vton_image = vton_image ?? user.vton_image;
 //       user.type = type ?? user.type;
 //       await user.save();
@@ -152,7 +152,7 @@ export const uploadImage = async (req, res) => {
 
     const ext = path.extname(imageFile.name);
     // const fileName = `${uid}${ext}`;
-    const fileName = `${uid}_${Date.now()}${ext}`;        
+    const fileName = `${uid}_${Date.now()}${ext}`;
     const uploadPath = path.join(uploadDir, fileName);
 
     // ❌ Delete existing image
@@ -169,6 +169,43 @@ export const uploadImage = async (req, res) => {
     });
   } catch (error) {
     console.error("Upload error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+export const updateUserType = async (req, res) => {
+  try {
+    const { uid } = req.params;
+    const { type } = req.body;
+
+    if (!type) return res.status(400).json({ message: "New user type is required" });
+
+    const user = await User.findOne({ uid });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const allowedTypes = ["normal", "seller"];
+    if (!allowedTypes.includes(type)) {
+      return res.status(400).json({ message: "Invalid user type" });
+    }
+
+    // 🔄 Update type only
+    user.type = type;
+    await user.save();
+
+    res.status(200).json({
+      message: "User type updated successfully",
+      user
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const allusers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json(users);
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
