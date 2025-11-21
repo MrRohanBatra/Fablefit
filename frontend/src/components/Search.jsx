@@ -396,8 +396,9 @@ function Search() {
                                       1
                                     );
                                     setCart(updated);
-                                    showToast("Added to Cart", "success", 1000); // ✅ new instance triggers re-render
+                                    showToast("Added to Cart", "success", 2500); // ✅ new instance triggers re-render
                                   } catch (err) {
+                                    showToast("Error in adding to Cart", "danger", 2500);
                                     console.error(
                                       "❌ Failed to add product:",
                                       err

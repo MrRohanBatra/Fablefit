@@ -14,6 +14,7 @@ import {
   Dropdown,
   Offcanvas,
   ListGroup,
+  Modal,
 } from "react-bootstrap";
 import Appname from "./NameContext";
 import logo from "../assets/react.svg";
@@ -35,6 +36,7 @@ import {
 } from "firebase/auth";
 import { cartContext, themeContext } from "../App";
 import { Link, useLocation, useNavigate } from "react-router";
+import { User } from "./User/user";
 const searchRecommendations = [
   // 👔 Men
   "Men GenZ T-Shirts",
@@ -99,6 +101,8 @@ function NavbarFinal() {
   const [searchValue, setSearchValue] = useState("");
   const [cart, setCart] = useContext(cartContext);
   const [cartItemCount, setCartItemCount] = useState(cart?.itemCount && 0);
+  const [showSellerModal, setShowSellerModal] = useState(false);
+
   const loadTheme = () => {
     const data = localStorage.getItem("theme") || "light";
     setTheme(data);
@@ -182,9 +186,23 @@ function NavbarFinal() {
           <Dropdown.Item as={Link} to="/profile/orders">
             <i className="bi-box-seam-fill me-2"></i>My Orders
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to="/profile/cart">
+          {/* <Dropdown.Item as={Link} to="/profile/cart">
             <i className="bi-heart-fill me-2"></i>Cart
-          </Dropdown.Item>
+          </Dropdown.Item> */}
+          {(user?.type || "normal") !== "seller" ? (
+            <Dropdown.Item
+              onClick={() => setShowSellerModal(true)}
+            >
+              <i className="bi-shop me-2"></i> Register as Seller
+            </Dropdown.Item>
+          ) : (
+            <Dropdown.Item
+              onClick={() => setShowSellerModal(true)}
+            >
+              <i className="bi-x-circle me-2"></i> Deregister as Seller
+            </Dropdown.Item>
+          )}
+
           <Dropdown.Divider />
           <Dropdown.Item
             onClick={() => {
@@ -211,116 +229,117 @@ function NavbarFinal() {
     navi(addr);
   };
   return (
-    <Navbar
-      collapseOnSelect
-      expand="lg"
-      bg={theme}
-      variant={theme}
-      className="shadow-sm py-3"
-      sticky="top"
-    >
-      <Container fluid className="px-4">
-        {/* Brand/Logo */}
-        <Navbar.Brand
-          as={Link}
-          to={"/"}
-          className="d-flex align-items-center fw-bold fs-4 me-lg-4"
-        >
-          <Image
-            src={logo}
-            width="35"
-            height="35"
-            className="d-inline-block align-top me-2"
-            alt="Logo"
-          />
-          {name}
-        </Navbar.Brand>
+    <>
+      <Navbar
+        collapseOnSelect
+        expand="lg"
+        bg={theme}
+        variant={theme}
+        className="shadow-sm py-3"
+        sticky="top"
+      >
+        <Container fluid className="px-4">
+          {/* Brand/Logo */}
+          <Navbar.Brand
+            as={Link}
+            to={"/"}
+            className="d-flex align-items-center fw-bold fs-4 me-lg-4"
+          >
+            <Image
+              src={logo}
+              width="35"
+              height="35"
+              className="d-inline-block align-top me-2"
+              alt="Logo"
+            />
+            {name}
+          </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-        <Navbar.Collapse id="responsive-navbar-nav">
-          {/* Centered navigation links */}
-          <Nav className="ms-5 gap-3">
-            <Nav.Link
-              as={Link}
-              to="/search?s=men"
-              className="fw-semibold text-uppercase "
-            >
-              Men
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/search?s=women"
-              className="fw-semibold text-uppercase "
-            >
-              Women
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/search?s=kids"
-              className="fw-semibold text-uppercase "
-            >
-              Kids
-            </Nav.Link>
-            {(user?.type||"normal") === "seller"&&(<Nav.Link
-              as={Link}
-              to="/seller"
-              className="fw-semibold text-uppercase "
-            >
-              Seller
-            </Nav.Link>)}
-          </Nav>
-          <Nav className="mx-auto d-none d-lg-flex">
-            <marquee className="rounded-pill small">
-              <div
-                className="d-flex align-items-center gap-2 bg-body-tertiary px-3 py-1 rounded-pill small"
-                style={{ width: "300px" }}
+          <Navbar.Collapse id="responsive-navbar-nav">
+            {/* Centered navigation links */}
+            <Nav className="ms-5 gap-3">
+              <Nav.Link
+                as={Link}
+                to="/search?s=men"
+                className="fw-semibold text-uppercase "
               >
-                <Truck size={20} className="text-primary" />
-                <span className="fw-semibold">
-                  Free Shipping on Orders Over ₹999
-                </span>
-              </div>
-            </marquee>
-          </Nav>
-          {/* Right-aligned content */}
-          <Nav className="ms-auto align-items-center gap-3 flex-row">
-            {/* 2. Modern Search Bar using InputGroup */}
-            <Form className="d-none d-lg-flex" onSubmit={handleSearch}>
-              <InputGroup>
-                <Button
-                  variant="outline-primary"
-                  type="submit"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSearchCanvas(true);
-                  }}
+                Men
+              </Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="/search?s=women"
+                className="fw-semibold text-uppercase "
+              >
+                Women
+              </Nav.Link>
+              <Nav.Link
+                as={Link}
+                to="/search?s=kids"
+                className="fw-semibold text-uppercase "
+              >
+                Kids
+              </Nav.Link>
+              {(user?.type || "normal") === "seller" && (<Nav.Link
+                as={Link}
+                to="/seller"
+                className="fw-semibold text-uppercase "
+              >
+                Seller
+              </Nav.Link>)}
+            </Nav>
+            <Nav className="mx-auto d-none d-lg-flex">
+              <marquee className="rounded-pill small">
+                <div
+                  className="d-flex align-items-center gap-2 bg-body-tertiary px-3 py-1 rounded-pill small"
+                  style={{ width: "300px" }}
                 >
-                  <Search />
-                </Button>
-              </InputGroup>
-            </Form>
+                  <Truck size={20} className="text-primary" />
+                  <span className="fw-semibold">
+                    Free Shipping on Orders Over ₹999
+                  </span>
+                </div>
+              </marquee>
+            </Nav>
+            {/* Right-aligned content */}
+            <Nav className="ms-auto align-items-center gap-3 flex-row">
+              {/* 2. Modern Search Bar using InputGroup */}
+              <Form className="d-none d-lg-flex" onSubmit={handleSearch}>
+                <InputGroup>
+                  <Button
+                    variant="outline-primary"
+                    type="submit"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSearchCanvas(true);
+                    }}
+                  >
+                    <Search />
+                  </Button>
+                </InputGroup>
+              </Form>
 
-            {/* 3. Account and Cart Icons */}
-            <Nav.Link
-              as={Link}
-              to="/profile/cart"
-              className="position-relative"
-              title="Shopping Cart"
-            >
-              <Cart3 size={24} />
-              {cartItemCount > 0 && (
-                <Badge
-                  bg="danger"
-                  pill
-                  className="position-absolute top-0 start-100 translate-middle"
-                  style={{ fontSize: "0.6em", padding: "0.4em 0.6em" }}
-                >
-                  {cartItemCount > 20 ? "20+" : cartItemCount}
-                </Badge>
-              )}
-            </Nav.Link>
-            {/* <Nav.Link className="postion-relative">
+              {/* 3. Account and Cart Icons */}
+              <Nav.Link
+                as={Link}
+                to="/profile/cart"
+                className="position-relative"
+                title="Shopping Cart"
+              >
+                <Cart3 size={24} />
+                {cartItemCount > 0 && (
+                  <Badge
+                    bg="danger"
+                    pill
+                    className="position-absolute top-0 start-100 translate-middle"
+                    style={{ fontSize: "0.6em", padding: "0.4em 0.6em" }}
+                  >
+                    {cartItemCount > 20 ? "20+" : cartItemCount}
+                  </Badge>
+                )}
+              </Nav.Link>
+              {/* <Nav.Link className="postion-relative">
               {theme == "light" ? <>
               <Moon onClick={() => {
                 updateTheme("dark")
@@ -331,118 +350,94 @@ function NavbarFinal() {
                 }}></Sun>
               </>}
             </Nav.Link> */}
-            <Nav.Link className="position-relative">
-              <AnimatePresence mode="wait" initial={false}>
-                {theme === "light" ? (
-                  <motion.div
-                    key="moon"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                  >
-                    <Moon
-                      size={22}
-                      onClick={() => updateTheme("dark")}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="sun"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                  >
-                    <Sun
-                      size={22}
-                      onClick={() => updateTheme("light")}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </Nav.Link>
+              <Nav.Link className="position-relative">
+                <AnimatePresence mode="wait" initial={false}>
+                  {theme === "light" ? (
+                    <motion.div
+                      key="moon"
+                      initial={{ rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                    >
+                      <Moon
+                        size={22}
+                        onClick={() => updateTheme("dark")}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="sun"
+                      initial={{ rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                    >
+                      <Sun
+                        size={22}
+                        onClick={() => updateTheme("light")}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Nav.Link>
 
-            {renderProfileDropdown()}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-      <Offcanvas
-        show={showSearchCanvas}
-        onHide={() => setSearchCanvas(false)}
-        placement="end"
-        aria-labelledby="search-offcanvas-title"
-      >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title id="search-offcanvas-title">
-            Search Products
-          </Offcanvas.Title>
-        </Offcanvas.Header>
+              {renderProfileDropdown()}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+        <Offcanvas
+          show={showSearchCanvas}
+          onHide={() => setSearchCanvas(false)}
+          placement="end"
+          aria-labelledby="search-offcanvas-title"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title id="search-offcanvas-title">
+              Search Products
+            </Offcanvas.Title>
+          </Offcanvas.Header>
 
-        <Offcanvas.Body>
-          {/* A form to handle the search input */}
-          <Form
-            className="d-flex"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (searchValue) {
-                searchNavigate(`/search?s=${searchValue}`);
-              }
-            }}
-          >
-            <InputGroup>
-              <FormControl
-                type="search"
-                placeholder="What are you looking for?"
-                aria-label="Search"
-                autoFocus
-                value={searchValue}
-                // The handler is now simpler
-                onChange={(e) => setSearchValue(e.target.value)}
-              />
-              <Button variant="primary" type="submit">
-                {/* as={Link} to={`/search?s=${searchValue}`} */}
-                Search
-              </Button>
-            </InputGroup>
-          </Form>
-          {searchValue.trim() === "" ? (
-            // If the search bar is empty, show "Trending"
-            <Container className="mt-4">
-              <p className="fw-bold">Trending Now</p>
-              <ListGroup>
-                {trendingRecommendations.map((p) => (
-                  <Button
-                    as={ListGroup.Item}
-                    key={p}
-                    action
-                    // href={`/search?s=${p}`}
-                    onClick={() => {
-                      searchNavigate(`/search?s=${p}`);
-                    }}
-                  >
-                    {p}
-                  </Button>
-                ))}
-              </ListGroup>
-            </Container>
-          ) : (
-            <Container className="mt-4">
-              <p className="fw-bold">Search Results</p>
-              <ListGroup>
-                {searchRecommendations
-                  // FIX: Made the search fully case-insensitive
-                  .filter((p) =>
-                    p.toLowerCase().includes(searchValue.trim().toLowerCase())
-                  )
-                  // FIX: Correctly returned the JSX by using parentheses () instead of braces {}
-                  .map((p) => (
+          <Offcanvas.Body>
+            {/* A form to handle the search input */}
+            <Form
+              className="d-flex"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchValue) {
+                  searchNavigate(`/search?s=${searchValue}`);
+                }
+              }}
+            >
+              <InputGroup>
+                <FormControl
+                  type="search"
+                  placeholder="What are you looking for?"
+                  aria-label="Search"
+                  autoFocus
+                  value={searchValue}
+                  // The handler is now simpler
+                  onChange={(e) => setSearchValue(e.target.value)}
+                />
+                <Button variant="primary" type="submit">
+                  {/* as={Link} to={`/search?s=${searchValue}`} */}
+                  Search
+                </Button>
+              </InputGroup>
+            </Form>
+            {searchValue.trim() === "" ? (
+              // If the search bar is empty, show "Trending"
+              <Container className="mt-4">
+                <p className="fw-bold">Trending Now</p>
+                <ListGroup>
+                  {trendingRecommendations.map((p) => (
                     <Button
                       as={ListGroup.Item}
                       key={p}
                       action
+                      // href={`/search?s=${p}`}
                       onClick={() => {
                         searchNavigate(`/search?s=${p}`);
                       }}
@@ -450,12 +445,77 @@ function NavbarFinal() {
                       {p}
                     </Button>
                   ))}
-              </ListGroup>
-            </Container>
+                </ListGroup>
+              </Container>
+            ) : (
+              <Container className="mt-4">
+                <p className="fw-bold">Search Results</p>
+                <ListGroup>
+                  {searchRecommendations
+                    // FIX: Made the search fully case-insensitive
+                    .filter((p) =>
+                      p.toLowerCase().includes(searchValue.trim().toLowerCase())
+                    )
+                    // FIX: Correctly returned the JSX by using parentheses () instead of braces {}
+                    .map((p) => (
+                      <Button
+                        as={ListGroup.Item}
+                        key={p}
+                        action
+                        onClick={() => {
+                          searchNavigate(`/search?s=${p}`);
+                        }}
+                      >
+                        {p}
+                      </Button>
+                    ))}
+                </ListGroup>
+              </Container>
+            )}
+          </Offcanvas.Body>
+        </Offcanvas>
+      </Navbar>
+      <Modal show={showSellerModal} onHide={() => setShowSellerModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {(user?.type || "normal") === "seller" ? "Deregister as Seller" : "Register as Seller"}
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          {(user?.type || "normal") === "seller" ? (
+            <p>Are you sure you want to remove seller privileges?</p>
+          ) : (
+            <p>To sell products, you must register as a seller. Do you want to continue?</p>
           )}
-        </Offcanvas.Body>
-      </Offcanvas>
-    </Navbar>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowSellerModal(false)}>
+            Cancel
+          </Button>
+
+          {/* Trigger type update here */}
+          <Button
+            variant={(user?.type || "normal") === "seller" ? "danger" : "success"}
+            onClick={async () => {
+              const newType = (user?.type || "normal") === "seller" ? "normal" : "seller";
+              const backendUpdated = await user.updateType(newType);
+
+              if (backendUpdated) {
+                const refreshed = User.refreshUser(backendUpdated, user);
+                setUser(refreshed);
+              }
+
+              setShowSellerModal(false);
+            }}
+          >
+            {(user?.type || "normal") === "seller" ? "Deregister" : "Register"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+    </>
   );
 }
 

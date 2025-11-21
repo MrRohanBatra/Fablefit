@@ -191,7 +191,7 @@ export class User {
   //     if (updatedUser) {
   //       const refreshUser = User.refreshUser(updatedUser);
   //       console.log("✅ Address updated successfully!");
-        
+
   //       return true;
   //     } else {
   //       this.address = oldAddress;
@@ -205,28 +205,28 @@ export class User {
   //   }
   // }
   async updateAddress(newAddress) {
-  const oldAddress = Array.isArray(this.address) ? [...this.address] : [];
+    const oldAddress = Array.isArray(this.address) ? [...this.address] : [];
 
-  try {
-    if (!Array.isArray(newAddress)) 
-      throw new Error("Address must be an array");
+    try {
+      if (!Array.isArray(newAddress))
+        throw new Error("Address must be an array");
 
-    this.address = newAddress;
+      this.address = newAddress;
 
-    const backendUpdated = await this.userUpdated();
+      const backendUpdated = await this.userUpdated();
 
-    if (!backendUpdated) {
+      if (!backendUpdated) {
+        this.address = oldAddress;
+        return null;  // return null on failure
+      }
+
+      return backendUpdated; // return updated backend data
+    } catch (err) {
+      console.error("❌ Error updating address:", err.message);
       this.address = oldAddress;
-      return null;  // return null on failure
+      return null;
     }
-
-    return backendUpdated; // return updated backend data
-  } catch (err) {
-    console.error("❌ Error updating address:", err.message);
-    this.address = oldAddress;
-    return null;
   }
-}
 
 
   // 📞 Update Phone Number
@@ -246,19 +246,45 @@ export class User {
   //   }
   // }
   async updatePhoneNumber(newNumber) {
-  const oldNumber = this.phone;
-  if (this.phone === newNumber) return null;
+    const oldNumber = this.phone;
+    if (this.phone === newNumber) return null;
 
-  this.phone = newNumber;
-  const backendUser = await this.userUpdated();
+    this.phone = newNumber;
+    const backendUser = await this.userUpdated();
 
-  if (!backendUser) {
-    this.phone = oldNumber;
-    return null;
+    if (!backendUser) {
+      this.phone = oldNumber;
+      return null;
+    }
+
+    return backendUser; // <-- return backend user data
   }
+  // 🏷️ Update User Type
+  async updateType(newType) {
+    const oldType = this.type;
 
-  return backendUser; // <-- return backend user data
-}
+    try {
+      if (!newType) throw new Error("Invalid user type");
+      if (this.type === newType) return null; // nothing to update
+
+      this.type = newType; // update locally
+
+      const response = await fetch(`/api/users/updatetype/${this.firebaseUser?.uid}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: newType }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+
+      return data.user; // return backend object
+    } catch (error) {
+      console.error("⚠️ Error updating user type:", error.message);
+      this.type = oldType; // revert on failure
+      return null;
+    }
+  }
 
 
   // 🖼️ Update VTON Image URL
@@ -286,26 +312,26 @@ export class User {
   //   }
   // }
   async updateVtonImage(newImageUrl) {
-  const oldImage = this.vton_image;
+    const oldImage = this.vton_image;
 
-  try {
-    if (!newImageUrl) throw new Error("Invalid image URL");
+    try {
+      if (!newImageUrl) throw new Error("Invalid image URL");
 
-    this.vton_image = newImageUrl;
+      this.vton_image = newImageUrl;
 
-    const backendUpdated = await this.userUpdated();
+      const backendUpdated = await this.userUpdated();
 
-    if (!backendUpdated) {
+      if (!backendUpdated) {
+        this.vton_image = oldImage;
+        return null;
+      }
+
+      return backendUpdated; // IMPORTANT
+    } catch (err) {
       this.vton_image = oldImage;
       return null;
     }
-
-    return backendUpdated; // IMPORTANT
-  } catch (err) {
-    this.vton_image = oldImage;
-    return null;
   }
-}
 
 
   // // ♻️ Rebuild user instance safely
@@ -320,16 +346,16 @@ export class User {
   //     type: oldUser.type,
   //   });
   // }
-static refreshUser(fromBackend, prevUser) {
-  if (!fromBackend || !prevUser) return null;
+  static refreshUser(fromBackend, prevUser) {
+    if (!fromBackend || !prevUser) return null;
 
-  return new User({
-    user: prevUser.firebaseUser,     // keep firebase user
-    phone: fromBackend.phone,
-    vton_image: fromBackend.vton_image || "",
-    address: [...fromBackend.address],
-    type: fromBackend.type,
-  });
-}
+    return new User({
+      user: prevUser.firebaseUser,     // keep firebase user
+      phone: fromBackend.phone,
+      vton_image: fromBackend.vton_image || "",
+      address: [...fromBackend.address],
+      type: fromBackend.type,
+    });
+  }
 
 }

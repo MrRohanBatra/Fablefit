@@ -826,17 +826,17 @@ function ProfileDetails() {
                       ? "danger"
                       : toast.variant === "success"
                         ? "success"
-                        : "light"
+                        : "warning"
                   }
                   onClose={() => setToast({ ...toast, show: false })}
-                  className="shadow-lg rounded-3"
+                  className={`shadow-lg rounded-3 ${toast.variant === "danger" || toast.variant==="success" ? "text-white" : "text-dark"}`}
                 >
                   <Toast.Header>
                     <Image src="/react.svg" width={20} className="rounded me-2" />
-                    <strong className="me-auto">FableFit</strong>
+                    <strong className="me-auto text-success">FableFit</strong>
                   </Toast.Header>
                   <Toast.Body
-                    className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
+                    className={`fw-semibold ${toast.variant === "danger" || toast.variant==="success" ? "text-white" : "text-dark"
                       }`}
                   >
                     {toast.message}
