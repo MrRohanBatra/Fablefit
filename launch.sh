@@ -8,4 +8,4 @@ npm run build
 # Move back to server and start it
 echo "🚀 Starting server with nodemon..."
 cd ../backend || exit
-nodemon server.js
+nodemon server_production.js
