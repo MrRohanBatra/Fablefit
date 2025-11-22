@@ -1519,9 +1519,6 @@ function ProfileCart() {
       ) : (
         <Container className="mt-4">
           <h4 className="fw-bold">Your Cart</h4>
-          <button onClick={() => showToast("Hello", "success")}>
-            Test Toast
-          </button>
           <Card className="p-3 mt-3">
             {detailedItems.map(({ item, product }, index) => (
               <Row

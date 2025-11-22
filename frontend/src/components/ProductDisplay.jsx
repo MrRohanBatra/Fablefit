@@ -371,16 +371,19 @@ function ProductDisplay() {
                   </div>
 
                   {/* QUANTITY SELECTOR */}
-                  <div className="mt-4 d-flex align-items-center gap-2">
+                  {(product.stock - 5 )> 0?<div className="mt-4 d-flex align-items-center gap-2">
                     <strong>Quantity:</strong>
                     <Form.Control
                       type="number"
                       value={quantity}
                       min={1}
+                      max={product.stock-5}
                       onChange={(e) => setQuantity(parseInt(e.target.value))}
                       style={{ width: "90px" }}
-                    />
-                  </div>
+                    /> 
+                    {/* <strong>Stock {product.stock-5}</strong> */}
+                  </div> : <div className="mt-4 d-flex align-items-center gap-2 text-danger">
+                  Out of Stock</div>}
 
                   {/* BUTTONS */}
                   <div className="d-flex flex-column flex-md-row gap-3 mt-4">
@@ -389,6 +392,7 @@ function ProductDisplay() {
                       variant="primary"
                       className="flex-grow-1"
                       onClick={handleAddToCart}
+                      disabled={product.stock <= 5}
                     >
                       Add to Cart
                     </Button>
