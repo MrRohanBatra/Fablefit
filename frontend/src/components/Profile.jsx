@@ -13,7 +13,7 @@ import {
   Spinner,
   Toast,
   Image,
-  ProgressBar
+  ProgressBar,
 } from "react-bootstrap";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserContext } from "./FirebaseAuth";
@@ -29,6 +29,7 @@ import { Cart } from "./Product/Cart";
 import { User } from "./User/user";
 import Product from "./Product/Product";
 import Order from "./Product/Order";
+import { ShowToast } from "./ProductDisplay";
 function Profile() {
   const { page } = useParams();
   const navigate = useNavigate();
@@ -181,7 +182,6 @@ function Profile() {
 //     setVtonUrl(newUrl);
 //   }
 // }, [user?.vton_image]);  // NOTICE: only track vton_image, not full user
-
 
 //   // ✅ Keep all hooks above this line
 //   if (!user.firebaseUser) {
@@ -742,7 +742,6 @@ function ProfileDetails() {
 
     setLoadingVton(false);
     setVtonUrl(newUrl);
-
   }, [user]);
 
   // ===================== BLOCK WHILE LOADING ====================
@@ -793,305 +792,337 @@ function ProfileDetails() {
     } finally {
       setSaving(false);
       setEditMode(false);
-      setLoading(true)
+      setLoading(true);
     }
   };
 
   // ===================== RENDER UI =====================
-  return <>
-    {loading && !user && !user?.firebaseUser ? <><Container className="m-4 text-center">
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-      <p className="mt-2">Loading user data...</p>
-    </Container></> : (<>
-      <>
-        {/* === TOAST === */}
-        <div
-          className="position-fixed top-0 end-0 p-3"
-          style={{ marginTop: "70px", zIndex: 1060 }}
-        >
-          <AnimatePresence>
-            {toast.show && (
-              <motion.div
-                key="toast"
-                initial={{ opacity: 0, x: 50, y: -10 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                exit={{ opacity: 0, x: 50, y: -10 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Toast
-                  bg={
-                    toast.variant === "danger"
-                      ? "danger"
-                      : toast.variant === "success"
-                        ? "success"
-                        : "warning"
-                  }
-                  onClose={() => setToast({ ...toast, show: false })}
-                  className={`shadow-lg rounded-3 ${toast.variant === "danger" || toast.variant==="success" ? "text-white" : "text-dark"}`}
-                >
-                  <Toast.Header>
-                    <Image src="/react.svg" width={20} className="rounded me-2" />
-                    <strong className="me-auto text-success">FableFit</strong>
-                  </Toast.Header>
-                  <Toast.Body
-                    className={`fw-semibold ${toast.variant === "danger" || toast.variant==="success" ? "text-white" : "text-dark"
-                      }`}
-                  >
-                    {toast.message}
-                    {saving && toast.variant === "info" && (
-                      <Spinner
-                        animation="border"
-                        size="sm"
-                        className="ms-2"
-                      />
-                    )}
-                  </Toast.Body>
-                </Toast>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* === MAIN === */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-          <Container className="mt-4">
-            <Form className="ms-4">
-              {/* Personal Info */}
-              <h5 className="mt-2">Personal Information</h5>
-              <Row className="mt-3">
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      readOnly={!editMode}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      readOnly={!editMode}
-                    />
-                  </Form.Group>
-                </Col>
-
-                <Col md={12}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Email</Form.Label>
-                    <InputGroup>
-                      <Form.Control
-                        type="email"
-                        value={user?.firebaseUser?.email || ""}
-                        readOnly
-                      />
-                      {user?.firebaseUser?.emailVerified ? (
-                        <InputGroup.Text className="text-success">
-                          Verified
-                        </InputGroup.Text>
-                      ) : (
-                        <InputGroup.Text
-                          className="text-danger"
-                          style={{ cursor: "pointer" }}
-                          onClick={() =>
-                            sendEmailVerification(user).then(() =>
-                              showToast("Verification email sent!", "info")
-                            )
-                          }
-                        >
-                          Not Verified
-                        </InputGroup.Text>
-                      )}
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-
-                <Col md={6}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Phone Number</Form.Label>
-                    <InputGroup>
-                      <InputGroup.Text>+91</InputGroup.Text>
-                      <Form.Control
-                        type="number"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        readOnly={!editMode}
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-              </Row>
-
-              {/* VTON */}
-              <Row className="mt-4">
-                <Col md={12}>
-                  <Card className="shadow-sm border-0 rounded-3 p-3">
-                    <Card.Body>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <h6 className="mb-1">Virtual Try-On Image</h6>
-                          {loadingVton ? (
-                            <Spinner animation="border" size="sm" />
-                          ) : vtonUrl ? (
-                            <small
-                              className="text-success fw-semibold"
-                              style={{ cursor: "pointer" }}
-                              onClick={() => window.open(vtonUrl, "_blank")}
-                            >
-                              ✅ Your VTON image is uploaded.
-                            </small>
-                          ) : (
-                            <small className="text-danger fw-semibold">
-                              ⚠️ No VTON image found.
-                            </small>
-                          )}
-                        </div>
-
-                        <div>
-                          <Button
-                            variant={vtonUrl ? "outline-primary" : "primary"}
-                            onClick={() => setShowUploadModal(true)}
-                          >
-                            {vtonUrl ? "Re-Upload" : "Upload"}
-                          </Button>
-                        </div>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-
-              {/* Buttons */}
-              <motion.div className="mt-3" layout>
-                <Button variant="danger" onClick={handleSignOut}>
-                  Sign Out
-                </Button>
-
-                {!editMode ? (
-                  <Button
-                    variant="primary"
-                    className="ms-4"
-                    onClick={() => {
-                      setEditMode(true);
-                      showToast("Email cannot be changed", "info");
-                    }}
-                  >
-                    Edit Details
-                  </Button>
-                ) : (
-                  <Button
-                    variant="success"
-                    className="ms-4"
-                    onClick={handleSave}
-                    disabled={saving}
-                  >
-                    Save Changes
-                  </Button>
-                )}
-              </motion.div>
-
-              {/* Address Cards */}
-              <Row className="mt-3">
-                {addressList.length > 0 ? (
-                  <>
-                    <AddressCard
-                      type="home"
-                      address={homeAddress}
-                      onAddressChange={setHomeAddress}
-                      isEditing={editAdress}
-                    />
-                    <AddressCard
-                      type="work"
-                      address={workAddress}
-                      onAddressChange={setWorkAddress}
-                      isEditing={editAdress}
-                    />
-                  </>
-                ) : (
-                  <Col md={12}>
-                    <Card className="shadow-sm border-0 rounded-3 p-3 text-center">
-                      <Card.Body>
-                        <h6 className="text-muted mb-0">No address found.</h6>
-                        <p className="text-secondary small mb-3">
-                          Add a delivery address to complete your profile.
-                        </p>
-                        <Button
-                          variant="outline-primary"
-                          onClick={() => setAddAddressModal(true)}
-                        >
-                          Add Address
-                        </Button>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                )}
-              </Row>
-
-              {addressList.length < 2 ? (
-                <Button onClick={() => setAddAddressModal(true)}>
-                  Add Address
-                </Button>
-              ) : (
-                <Button onClick={() => setAddAddressModal(true)}>
-                  Edit Address
-                </Button>
-              )}
-            </Form>
-
-            {/* Upload Modal */}
-            <UploadModal
-              show={showUploadModal}
-              showToast={showToast}
-              onHide={() => setShowUploadModal(false)}
-              onUploadComplete={async (url) => {
-                setVtonUrl(url);
-
-                const backendUpdated = await user.updateVtonImage(url);
-
-                if (backendUpdated) {
-                  const refreshedUser = User.refreshUser(backendUpdated, user);
-                  setUser(refreshedUser);
-                }
-              }}
-
-              user={user}
-            />
-              {/* Address Modal */}
-            <AddAddressModal
-              show={showAddAdressModal}
-              user={user}
-              setUser={setUser}
-              showToast={showToast}
-              onHide={() => setAddAddressModal(false)}
-            />
+  return (
+    <>
+      {loading && !user && !user?.firebaseUser ? (
+        <>
+          <Container className="m-4 text-center">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+            <p className="mt-2">Loading user data...</p>
           </Container>
-        </motion.div>
-      </>
-    </>)}
-  </>;
+        </>
+      ) : (
+        <>
+          <>
+            {/* === TOAST === */}
+            <div
+              className="position-fixed top-0 end-0 p-3"
+              style={{ marginTop: "70px", zIndex: 1060 }}
+            >
+              <AnimatePresence>
+                {toast.show && (
+                  <motion.div
+                    key="toast"
+                    initial={{ opacity: 0, x: 50, y: -10 }}
+                    animate={{ opacity: 1, x: 0, y: 0 }}
+                    exit={{ opacity: 0, x: 50, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Toast
+                      bg={
+                        toast.variant === "danger"
+                          ? "danger"
+                          : toast.variant === "success"
+                          ? "success"
+                          : "warning"
+                      }
+                      onClose={() => setToast({ ...toast, show: false })}
+                      className={`shadow-lg rounded-3 ${
+                        toast.variant === "danger" ||
+                        toast.variant === "success"
+                          ? "text-white"
+                          : "text-dark"
+                      }`}
+                    >
+                      <Toast.Header>
+                        <Image
+                          src="/react.svg"
+                          width={20}
+                          className="rounded me-2"
+                        />
+                        <strong className="me-auto text-success">
+                          FableFit
+                        </strong>
+                      </Toast.Header>
+                      <Toast.Body
+                        className={`fw-semibold ${
+                          toast.variant === "danger" ||
+                          toast.variant === "success"
+                            ? "text-white"
+                            : "text-dark"
+                        }`}
+                      >
+                        {toast.message}
+                        {saving && toast.variant === "info" && (
+                          <Spinner
+                            animation="border"
+                            size="sm"
+                            className="ms-2"
+                          />
+                        )}
+                      </Toast.Body>
+                    </Toast>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* === MAIN === */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <Container className="mt-4">
+                <Form className="ms-4">
+                  {/* Personal Info */}
+                  <h5 className="mt-2">Personal Information</h5>
+                  <Row className="mt-3">
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>First Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          readOnly={!editMode}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Last Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          readOnly={!editMode}
+                        />
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={12}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <InputGroup>
+                          <Form.Control
+                            type="email"
+                            value={user?.firebaseUser?.email || ""}
+                            readOnly
+                          />
+                          {user?.firebaseUser?.emailVerified ? (
+                            <InputGroup.Text className="text-success">
+                              Verified
+                            </InputGroup.Text>
+                          ) : (
+                            <InputGroup.Text
+                              className="text-danger"
+                              style={{ cursor: "pointer" }}
+                              onClick={() =>
+                                sendEmailVerification(user).then(() =>
+                                  showToast("Verification email sent!", "info")
+                                )
+                              }
+                            >
+                              Not Verified
+                            </InputGroup.Text>
+                          )}
+                        </InputGroup>
+                      </Form.Group>
+                    </Col>
+
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Phone Number</Form.Label>
+                        <InputGroup>
+                          <InputGroup.Text>+91</InputGroup.Text>
+                          <Form.Control
+                            type="number"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            readOnly={!editMode}
+                          />
+                        </InputGroup>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  {/* VTON */}
+                  <Row className="mt-4">
+                    <Col md={12}>
+                      <Card className="shadow-sm border-0 rounded-3 p-3">
+                        <Card.Body>
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div>
+                              <h6 className="mb-1">Virtual Try-On Image</h6>
+                              {loadingVton ? (
+                                <Spinner animation="border" size="sm" />
+                              ) : vtonUrl ? (
+                                <small
+                                  className="text-success fw-semibold"
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => window.open(vtonUrl, "_blank")}
+                                >
+                                  ✅ Your VTON image is uploaded.
+                                </small>
+                              ) : (
+                                <small className="text-danger fw-semibold">
+                                  ⚠️ No VTON image found.
+                                </small>
+                              )}
+                            </div>
+
+                            <div>
+                              <Button
+                                variant={
+                                  vtonUrl ? "outline-primary" : "primary"
+                                }
+                                onClick={() => setShowUploadModal(true)}
+                              >
+                                {vtonUrl ? "Re-Upload" : "Upload"}
+                              </Button>
+                            </div>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  </Row>
+
+                  {/* Buttons */}
+                  <motion.div className="mt-3" layout>
+                    <Button variant="danger" onClick={handleSignOut}>
+                      Sign Out
+                    </Button>
+
+                    {!editMode ? (
+                      <Button
+                        variant="primary"
+                        className="ms-4"
+                        onClick={() => {
+                          setEditMode(true);
+                          showToast("Email cannot be changed", "info");
+                        }}
+                      >
+                        Edit Details
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="success"
+                        className="ms-4"
+                        onClick={handleSave}
+                        disabled={saving}
+                      >
+                        Save Changes
+                      </Button>
+                    )}
+                  </motion.div>
+
+                  {/* Address Cards */}
+                  <Row className="mt-3">
+                    {addressList.length > 0 ? (
+                      <>
+                        <AddressCard
+                          type="home"
+                          address={homeAddress}
+                          onAddressChange={setHomeAddress}
+                          isEditing={editAdress}
+                        />
+                        <AddressCard
+                          type="work"
+                          address={workAddress}
+                          onAddressChange={setWorkAddress}
+                          isEditing={editAdress}
+                        />
+                      </>
+                    ) : (
+                      <Col md={12}>
+                        <Card className="shadow-sm border-0 rounded-3 p-3 text-center">
+                          <Card.Body>
+                            <h6 className="text-muted mb-0">
+                              No address found.
+                            </h6>
+                            <p className="text-secondary small mb-3">
+                              Add a delivery address to complete your profile.
+                            </p>
+                            <Button
+                              variant="outline-primary"
+                              onClick={() => setAddAddressModal(true)}
+                            >
+                              Add Address
+                            </Button>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    )}
+                  </Row>
+
+                  {addressList.length < 2 ? (
+                    <Button onClick={() => setAddAddressModal(true)}>
+                      Add Address
+                    </Button>
+                  ) : (
+                    <Button onClick={() => setAddAddressModal(true)}>
+                      Edit Address
+                    </Button>
+                  )}
+                </Form>
+
+                {/* Upload Modal */}
+                <UploadModal
+                  show={showUploadModal}
+                  showToast={showToast}
+                  onHide={() => setShowUploadModal(false)}
+                  onUploadComplete={async (url) => {
+                    setVtonUrl(url);
+
+                    const backendUpdated = await user.updateVtonImage(url);
+
+                    if (backendUpdated) {
+                      const refreshedUser = User.refreshUser(
+                        backendUpdated,
+                        user
+                      );
+                      setUser(refreshedUser);
+                    }
+                  }}
+                  user={user}
+                />
+                {/* Address Modal */}
+                <AddAddressModal
+                  show={showAddAdressModal}
+                  user={user}
+                  setUser={setUser}
+                  showToast={showToast}
+                  onHide={() => setAddAddressModal(false)}
+                />
+              </Container>
+            </motion.div>
+          </>
+        </>
+      )}
+    </>
+  );
 }
 
 function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
   const [file, setFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [preview,setPreview]=useState(null);
-  useEffect(()=>{
-    if(!file){
+  const [preview, setPreview] = useState(null);
+  useEffect(() => {
+    if (!file) {
       setPreview(null);
       return;
     }
-    const objectUrl=URL.createObjectURL(file);
+    const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
-    return ()=>URL.revokeObjectURL(objectUrl);
-  },[file]);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   const handleUpload = async () => {
     if (!file) {
@@ -1105,13 +1136,10 @@ function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
       formData.append("image", file);
       formData.append("uid", user.firebaseUser.uid);
 
-      const response = await fetch(
-        "/api/users/uploadimage",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("/api/users/uploadimage", {
+        method: "POST",
+        body: formData,
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -1146,13 +1174,21 @@ function UploadModal({ show, onHide, onUploadComplete, showToast, user }) {
         </Form.Group>
 
         {file && (
-          <><p className="text-muted small mb-0">
-            Selected: <strong>{file.name}</strong>
-          </p>
-          <Image src={preview} alt="Preview" fluid rounded className="mt-3" width="120"
-                      height="120"/>
-        </>
-      )}
+          <>
+            <p className="text-muted small mb-0">
+              Selected: <strong>{file.name}</strong>
+            </p>
+            <Image
+              src={preview}
+              alt="Preview"
+              fluid
+              rounded
+              className="mt-3"
+              width="120"
+              height="120"
+            />
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide} disabled={uploading}>
@@ -1207,54 +1243,53 @@ function AddAddressModal({ show, onHide, user, setUser, showToast }) {
   const [addressValue, setAddressValue] = useState("");
   const [loading, setLoading] = useState(false);
 
-const handleSave = async () => {
-  if (!addressValue.trim()) {
-    showToast("Please enter a valid address.", "danger");
-    return;
-  }
-
-  try {
-    setLoading(true);
-
-    const existingAddresses = Array.isArray(user.address)
-      ? [...user.address]
-      : [];
-
-    // build new address object
-    const updatedAddresses = [...existingAddresses];
-    const index = updatedAddresses.findIndex((a) => a[addressType]);
-
-    if (index !== -1) {
-      updatedAddresses[index][addressType] = addressValue;
-    } else {
-      updatedAddresses.push({ [addressType]: addressValue });
-    }
-
-    // 1️⃣ Update backend → get backend updated user
-    const backendUpdated = await user.updateAddress(updatedAddresses);
-
-    // 2️⃣ If backend failed
-    if (!backendUpdated) {
-      showToast("Failed to save address. Try again.", "danger");
+  const handleSave = async () => {
+    if (!addressValue.trim()) {
+      showToast("Please enter a valid address.", "danger");
       return;
     }
 
-    // 3️⃣ Merge backend + firebase user → correct new User instance
-    const refreshedUser = User.refreshUser(backendUpdated, user);
+    try {
+      setLoading(true);
 
-    // 4️⃣ Save into context (react)
-    setUser(refreshedUser);
+      const existingAddresses = Array.isArray(user.address)
+        ? [...user.address]
+        : [];
 
-    showToast("Address saved successfully!", "success");
-    onHide();
+      // build new address object
+      const updatedAddresses = [...existingAddresses];
+      const index = updatedAddresses.findIndex((a) => a[addressType]);
 
-  } catch (err) {
-    console.error(err);
-    showToast("Something went wrong!", "danger");
-  } finally {
-    setLoading(false);
-  }
-};
+      if (index !== -1) {
+        updatedAddresses[index][addressType] = addressValue;
+      } else {
+        updatedAddresses.push({ [addressType]: addressValue });
+      }
+
+      // 1️⃣ Update backend → get backend updated user
+      const backendUpdated = await user.updateAddress(updatedAddresses);
+
+      // 2️⃣ If backend failed
+      if (!backendUpdated) {
+        showToast("Failed to save address. Try again.", "danger");
+        return;
+      }
+
+      // 3️⃣ Merge backend + firebase user → correct new User instance
+      const refreshedUser = User.refreshUser(backendUpdated, user);
+
+      // 4️⃣ Save into context (react)
+      setUser(refreshedUser);
+
+      showToast("Address saved successfully!", "success");
+      onHide();
+    } catch (err) {
+      console.error(err);
+      showToast("Something went wrong!", "danger");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -1310,8 +1345,15 @@ function ProfileCart() {
   const [deliveryCharge, setDeliveryCharge] = useState(0);
   const [finalAmount, setFinalAmount] = useState(cart.totalPrice);
   const [selectedAddress, setSelectedAddress] = useState("home");
-
-
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    variant: "info",
+  });
+  const showToast = (message, variant = "info", duration = 2500) => {
+    setToast({ show: true, message, variant });
+    setTimeout(() => setToast((prev) => ({ ...prev, show: false })), duration);
+  };
   const navigate = useNavigate();
   // 🧠 Fetch product details for each cart item
   useEffect(() => {
@@ -1335,9 +1377,7 @@ function ProfileCart() {
 
               if (!productId) throw new Error("Missing product ID");
 
-              const res = await fetch(
-                `/api/products/id/${productId}`
-              );
+              const res = await fetch(`/api/products/id/${productId}`);
 
               if (!res.ok) throw new Error(`Product ${productId} not found`);
               const data = await res.json();
@@ -1368,7 +1408,9 @@ function ProfileCart() {
     try {
       const updated = await cart.removeProduct(productId, size, color);
       setCart(updated);
+      showToast("Removed From Cart", "success", 2500);
     } catch (err) {
+      showToast("Failed to remove product", "danger");
       console.error("❌ Failed to remove product:", err);
     }
   };
@@ -1378,13 +1420,12 @@ function ProfileCart() {
     let charge = 0;
 
     if (cart.totalPrice < 999) {
-      charge = 49 + itemCount * 10; // example: ₹49 base + ₹10 per item
+      charge = 49 + itemCount * 10;
     }
 
     setDeliveryCharge(charge);
     setFinalAmount(cart.totalPrice + charge);
   };
-
 
   // 🔢 Update item quantity
   const handleQuantityChange = async (productId, size, color, newQty) => {
@@ -1397,8 +1438,10 @@ function ProfileCart() {
           color,
           quantity
         );
+        showToast(`Upated Quantity to ${quantity}`, "success", 2500);
         setCart(updated);
       } catch (err) {
+        showToast("Failed to update quantity", "danger", 2500);
         console.error("❌ Failed to update quantity:", err);
       }
     }
@@ -1415,174 +1458,203 @@ function ProfileCart() {
           paymentMethod: "cod",
           cart: {
             ...cart,
-            totalPrice: finalAmount  // include delivery cost
+            totalPrice: finalAmount, // include delivery cost
           },
-          deliveryCharge
-        })
+          deliveryCharge,
+        }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Order failed");
+        showToast(data.message || "Order failed", "danger", 2500);
         return;
       }
-
+      showToast("Successfully placed order", "success", 2500);
       setCart({ items: [], totalPrice: 0 });
       setShowModal(false);
-      navigate("/profile/orders");
+      // navigate("/profile/orders");
     } catch (err) {
+      showToast("Error In placing Order", "danger", 2500);
       console.error("Order error:", err);
     }
   };
 
-
   // ⛔ Empty cart
-  if (!cart || cart.items.length === 0) {
-    return (
-      <Container className="mt-4">
-        <h4>Your Cart</h4>
-        <Card className="p-3 mt-3 text-center">
-          <p className="text-muted mb-0">🛒 No items in your cart yet.</p>
-        </Card>
-      </Container>
-    );
-  }
+  // if (!cart || cart.items.length === 0) {
+  // return (
+  //   <Container className="mt-4">
+  //     <h4>Your Cart</h4>
+  //     <Card className="p-3 mt-3 text-center">
+  //       <p className="text-muted mb-0">🛒 No items in your cart yet.</p>
+  //     </Card>
+  //   </Container>
+  // );
+  // }
 
-  // ⏳ Waiting for product details
-  if (detailedItems.length === 0) {
-    return (
-      <Container className="mt-4 d-flex justify-content-center align-items-center p-5">
-        <Spinner animation="border" variant="primary" />
-      </Container>
-    );
-  }
+  // // ⏳ Waiting for product details
+  // if (detailedItems.length === 0) {
+  //   return (
+  //     <Container className="mt-4 d-flex justify-content-center align-items-center p-5">
+  //       <Spinner animation="border" variant="primary" />
+  //     </Container>
+  //   );
+  // }
 
   // ✅ Display loaded cart
   return (
-    <Container className="mt-4">
-      <h4 className="fw-bold">Your Cart</h4>
-
-      <Card className="p-3 mt-3">
-        {detailedItems.map(({ item, product }, index) => (
-          <Row key={index} className="align-items-center mb-3 border-bottom pb-3">
-            <Col xs={3} md={2}>
-              <Image
-                src={product.firstImage()}
-                alt={product.name}
-                fluid
-                rounded
-                style={{ "cursor": "pointer" }}
-                onClick={() => { navigate(`/product/${product._id}`) }}
-              />
-            </Col>
-
-            <Col xs={9} md={4} >
-              <h6 className="mb-1">{product.name}</h6>
-              <small className="text-muted">{product.companyName}</small>
-              <br />
-              <small>
-                Size: <b>{item.size}</b> | Color: <b>{item.color}</b>
-              </small>
-            </Col>
-
-            <Col xs={12} md={3} className="mt-2 mt-md-0">
-              <Form.Select
-                size="sm"
-                value={item.quantity}
-                onChange={(e) =>
-                  handleQuantityChange(
-                    product._id,
-                    item.size,
-                    item.color,
-                    e.target.value
-                  )
-                }
+    <>
+      <ShowToast toast={toast} setToast={setToast}></ShowToast>
+      {!cart || cart.items.length === 0 ? (
+        <Container className="mt-4">
+          <h4>Your Cart</h4>
+          <Card className="p-3 mt-3 text-center">
+            <p className="text-muted mb-0">🛒 No items in your cart yet.</p>
+          </Card>
+        </Container>
+      ) : detailedItems.length === 0 ? (
+        <Container className="mt-4 d-flex justify-content-center align-items-center p-5">
+          <Spinner animation="border" variant="primary" />
+        </Container>
+      ) : (
+        <Container className="mt-4">
+          <h4 className="fw-bold">Your Cart</h4>
+          <button onClick={() => showToast("Hello", "success")}>
+            Test Toast
+          </button>
+          <Card className="p-3 mt-3">
+            {detailedItems.map(({ item, product }, index) => (
+              <Row
+                key={index}
+                className="align-items-center mb-3 border-bottom pb-3"
               >
-                {[...Array(10).keys()].map((n) => (
-                  <option key={n + 1} value={n + 1}>
-                    {n + 1}
-                  </option>
-                ))}
-              </Form.Select>
-            </Col>
+                <Col xs={3} md={2}>
+                  <Image
+                    src={product.firstImage()}
+                    alt={product.name}
+                    fluid
+                    rounded
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      navigate(`/product/${product._id}`);
+                    }}
+                  />
+                </Col>
 
-            <Col xs={12} md={2} className="text-md-end mt-2 mt-md-0">
-              <p className="mb-1 fw-semibold">
-                ₹{(product.price * item.quantity).toFixed(2)}
-              </p>
-            </Col>
+                <Col xs={9} md={4}>
+                  <h6 className="mb-1">{product.name}</h6>
+                  <small className="text-muted">{product.companyName}</small>
+                  <br />
+                  <small>
+                    Size: <b>{item.size}</b> | Color: <b>{item.color}</b>
+                  </small>
+                </Col>
 
-            <Col xs={12} md={1} className="text-md-end mt-2 mt-md-0">
+                <Col xs={12} md={3} className="mt-2 mt-md-0">
+                  <Form.Select
+                    size="sm"
+                    value={item.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(
+                        product._id,
+                        item.size,
+                        item.color,
+                        e.target.value
+                      )
+                    }
+                  >
+                    {[...Array(10).keys()].map((n) => (
+                      <option key={n + 1} value={n + 1}>
+                        {n + 1}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Col>
+
+                <Col xs={12} md={2} className="text-md-end mt-2 mt-md-0">
+                  <p className="mb-1 fw-semibold">
+                    ₹{(product.price * item.quantity).toFixed(2)}
+                  </p>
+                </Col>
+
+                <Col xs={12} md={1} className="text-md-end mt-2 mt-md-0">
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() =>
+                      handleRemove(product._id, item.size, item.color)
+                    }
+                  >
+                    Remove
+                  </Button>
+                </Col>
+              </Row>
+            ))}
+
+            <div className="text-end mt-3">
+              <h5>Total: ₹{cart.totalPrice.toFixed(2)}</h5>
               <Button
-                variant="outline-danger"
-                size="sm"
-                onClick={() =>
-                  handleRemove(product._id, item.size, item.color)
-                }
+                variant="success"
+                className="mt-2"
+                onClick={() => {
+                  computeDeliveryCharge();
+                  setShowModal(true);
+                }}
               >
-                Remove
+                Proceed to Checkout
               </Button>
-            </Col>
-          </Row>
-        ))}
-
-        <div className="text-end mt-3">
-          <h5>Total: ₹{cart.totalPrice.toFixed(2)}</h5>
-          <Button variant="success" className="mt-2"
-            onClick={() => {
-              computeDeliveryCharge();
-              setShowModal(true);
-            }}>
-            Proceed to Checkout
-          </Button>
-        </div>
-      </Card>
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Your Order</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          {/* ADDRESS SELECTOR */}
-          <Form.Group className="mb-3">
-            <Form.Label>Select Delivery Address</Form.Label>
-            <Form.Select
-              value={selectedAddress}
-              onChange={(e) => setSelectedAddress(e.target.value)}
-            >
-              <option value="home">Home</option>
-              <option value="work">Work</option>
-            </Form.Select>
-          </Form.Group>
-
-          {/* DISPLAY SELECTED ADDRESS */}
-          <Card className="p-2 mb-3">
-            <small className="text-muted">Deliver To:</small>
-            <div className="fw-semibold">
-              {user?.getAddress(selectedAddress) || "Address not available"}
             </div>
           </Card>
+          <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Your Order</Modal.Title>
+            </Modal.Header>
 
-          {/* PRICE SECTION */}
-          <p>Items Total: <b>₹{cart.totalPrice.toFixed(2)}</b></p>
-          <p>Delivery Charge: <b>₹{deliveryCharge}</b></p>
-          <hr />
-          <h5>Final Amount: ₹{finalAmount.toFixed(2)}</h5>
-          <small className="text-muted">Free delivery above ₹999</small>
-        </Modal.Body>
+            <Modal.Body>
+              {/* ADDRESS SELECTOR */}
+              <Form.Group className="mb-3">
+                <Form.Label>Select Delivery Address</Form.Label>
+                <Form.Select
+                  value={selectedAddress}
+                  onChange={(e) => setSelectedAddress(e.target.value)}
+                >
+                  <option value="home">Home</option>
+                  <option value="work">Work</option>
+                </Form.Select>
+              </Form.Group>
 
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="success" onClick={handleConfirmOrder}>
-            Confirm Order
-          </Button>
-        </Modal.Footer>
-      </Modal>
+              {/* DISPLAY SELECTED ADDRESS */}
+              <Card className="p-2 mb-3">
+                <small className="text-muted">Deliver To:</small>
+                <div className="fw-semibold">
+                  {user?.getAddress(selectedAddress) || "Address not available"}
+                </div>
+              </Card>
 
-    </Container>
+              {/* PRICE SECTION */}
+              <p>
+                Items Total: <b>₹{cart.totalPrice.toFixed(2)}</b>
+              </p>
+              <p>
+                Delivery Charge: <b>₹{deliveryCharge}</b>
+              </p>
+              <hr />
+              <h5>Final Amount: ₹{finalAmount.toFixed(2)}</h5>
+              <small className="text-muted">Free delivery above ₹999</small>
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="success" onClick={handleConfirmOrder}>
+                Confirm Order
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Container>
+      )}
+    </>
   );
 }
 function ProfileOrders() {
@@ -1590,15 +1662,12 @@ function ProfileOrders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     if (!user?.firebaseUser?.uid) return;
 
     const loadOrders = async () => {
       try {
-        const res = await fetch(
-          `/api/orders/user/${user.firebaseUser.uid}`
-        );
+        const res = await fetch(`/api/orders/user/${user.firebaseUser.uid}`);
 
         const data = await res.json();
 
@@ -1638,65 +1707,70 @@ function ProfileOrders() {
   }
 
   return (
-    <Container className="mt-4">
-      <h4>Your Orders</h4>
+    <>
+      <Container className="mt-4">
+        <h4>Your Orders</h4>
 
-      {orders.map((order) => (
-        <Card key={order._id} className="p-3 mt-3 shadow-sm">
-          <h5 className="mb-1">
-            Order #{order._id.slice(-6)}
-          </h5>
-          <small className="text-muted">
-            Ordered on {new Date(order.createdAt).toDateString()}
-          </small>
+        {orders.map((order) => (
+          <Card key={order._id} className="p-3 mt-3 shadow-sm">
+            <h5 className="mb-1">Order #{order._id.slice(-6)}</h5>
+            <small className="text-muted">
+              Ordered on {new Date(order.createdAt).toDateString()}
+            </small>
 
-          <Row className="mt-3">
-            {order.items.map((it, i) => {
-              const prod = new Product(it.product);
-              return (
-                <Col xs={12} md={6} key={i} className="d-flex align-items-center mb-3">
-                  <Image
-                    src={prod.firstImage()}
-                    alt={prod.name}
-                    width={70}
-                    height={70}
-                    rounded
-                    className="me-3"
-                    style={{ cursor: "pointer", objectFit: "cover" }}
-                    onClick={() => navigate(`/product/${prod._id}`)}
-                  />
-                  <div>
-                    <strong>{prod.name}</strong>
-                    <br />
-                    Size: {it.size} | Color: {it.color}
-                    <br />
-                    Qty: {it.quantity}
-                    <br />
-                    Price: ₹{it.price}
-                  </div>
-                </Col>
-              );
-            })}
-          </Row>
+            <Row className="mt-3">
+              {order.items.map((it, i) => {
+                const prod = new Product(it.product);
+                return (
+                  <Col
+                    xs={12}
+                    md={6}
+                    key={i}
+                    className="d-flex align-items-center mb-3"
+                  >
+                    <Image
+                      src={prod.firstImage()}
+                      alt={prod.name}
+                      width={70}
+                      height={70}
+                      rounded
+                      className="me-3"
+                      style={{ cursor: "pointer", objectFit: "cover" }}
+                      onClick={() => navigate(`/product/${prod._id}`)}
+                    />
+                    <div>
+                      <strong>{prod.name}</strong>
+                      <br />
+                      Size: {it.size} | Color: {it.color}
+                      <br />
+                      Qty: {it.quantity}
+                      <br />
+                      Price: ₹{it.price}
+                    </div>
+                  </Col>
+                );
+              })}
+            </Row>
 
-          {/* Delivery progress */}
-          <ProgressBar
-            now={order.statusProgress()}
-            label={order.statusLabel()}
-            className="my-3"
-            animated
-          />
+            {/* Delivery progress */}
+            <ProgressBar
+              now={order.statusProgress()}
+              label={order.statusLabel()}
+              className="my-3"
+              animated
+            />
 
-          <p className="mb-0">
-            <b>Total Paid:</b> ₹{order.totalPrice}
-          </p>
+            <p className="mb-0">
+              <b>Total Paid:</b> ₹{order.totalPrice}
+            </p>
 
-          <p className="text-muted">
-            Expected Delivery: {new Date(order.deliveryDate).toDateString()}
-          </p>
-        </Card>
-      ))}
-    </Container>
+            <p className="text-muted">
+              Expected Delivery: {new Date(order.deliveryDate).toDateString()}
+            </p>
+          </Card>
+        ))}
+      </Container>
+    </>
   );
 }
 export default Profile;

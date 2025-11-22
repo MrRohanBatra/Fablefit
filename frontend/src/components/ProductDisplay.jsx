@@ -1,4 +1,3 @@
-
 import { useContext, useEffect, useState } from "react";
 import {
   Container,
@@ -46,7 +45,6 @@ async function checkImageExists(url) {
     return false;
   }
 }
-
 
 function ProductDisplay() {
   const { id } = useParams();
@@ -159,12 +157,18 @@ function ProductDisplay() {
       }
 
       if (!(await checkImageExists(userImg))) {
-        showToast("⚠️ Your photo cannot be accessed. Please re-upload in Profile.", "danger");
+        showToast(
+          "⚠️ Your photo cannot be accessed. Please re-upload in Profile.",
+          "danger"
+        );
         throw new Error("User image not found");
       }
 
       if (!(await checkImageExists(productImg))) {
-        showToast("⚠️ This product cannot be tried-on due to image issue.", "danger");
+        showToast(
+          "⚠️ This product cannot be tried-on due to image issue.",
+          "danger"
+        );
         throw new Error("Product image not found");
       }
 
@@ -185,7 +189,6 @@ function ProductDisplay() {
       setHeroImage(product.images.length);
       setVtonStatus("✅ Done!");
       showToast("🎉 Try-on complete!", "success");
-
     } catch (err) {
       console.error("❌ Try-on failed:", err);
       setVtonStatus("❌ Error during try-on");
@@ -193,7 +196,6 @@ function ProductDisplay() {
       setTryOnLoading(false);
     }
   };
-
 
   const handleAddToCart = async () => {
     if (!selectedSize) {
@@ -214,7 +216,11 @@ function ProductDisplay() {
       showToast(`${quantityToAdd} item(s) added to cart!`, "success", 2000);
     } catch (err) {
       console.error("❌ Failed to add to cart:", err);
-      showToast("Failed to add item to cart. Please try again.", "danger", 2000);
+      showToast(
+        "Failed to add item to cart. Please try again.",
+        "danger",
+        2000
+      );
     }
   };
 
@@ -250,8 +256,8 @@ function ProductDisplay() {
                   toast.variant === "danger"
                     ? "danger"
                     : toast.variant === "success"
-                      ? "success"
-                      : "light"
+                    ? "success"
+                    : "light"
                 }
                 onClose={() => setToast({ ...toast, show: false })}
                 className="shadow-lg rounded-3"
@@ -267,8 +273,9 @@ function ProductDisplay() {
                   </div>
                 </Toast.Header>
                 <Toast.Body
-                  className={`fw-semibold ${toast.variant === "danger" ? "text-white" : ""
-                    }`}
+                  className={`fw-semibold ${
+                    toast.variant === "danger" ? "text-white" : ""
+                  }`}
                 >
                   {toast.message}
                   {/* {toast.variant === "info" && (
@@ -310,10 +317,11 @@ function ProductDisplay() {
                         src={stripLocalhost(img)}
                         alt={`thumb-${index}`}
                         onClick={() => setHeroImage(index)}
-                        className={`rounded-3 thumb ${heroImage === index
-                          ? "border border-primary border-3"
-                          : ""
-                          }`}
+                        className={`rounded-3 thumb ${
+                          heroImage === index
+                            ? "border border-primary border-3"
+                            : ""
+                        }`}
                         style={{
                           height: "80px",
                           width: "70px",
@@ -470,3 +478,57 @@ function ProductDisplay() {
 }
 
 export default ProductDisplay;
+export function ShowToast({toast,setToast}) {
+  return (
+    <div
+      className="position-fixed top-0 end-0 p-3"
+      style={{ marginTop: "70px", zIndex: 1060 }}
+    >
+      <AnimatePresence>
+        {toast.show && (
+          <motion.div
+            key="toast"
+            initial={{ opacity: 0, x: 50, y: -10 }}
+            animate={{ opacity: 1, x: 0, y: 0 }}
+            exit={{ opacity: 0, x: 50, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Toast
+              bg={
+                toast.variant === "danger"
+                  ? "danger"
+                  : toast.variant === "success"
+                  ? "success"
+                  : "light"
+              }
+              onClose={() => setToast({ ...toast, show: false })}
+              className="shadow-lg rounded-3"
+            >
+              <Toast.Header className="d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  <Image src="/react.svg" width={20} className="rounded me-2" />
+                  <strong className="me-auto">FableFit</strong>
+                </div>
+              </Toast.Header>
+              <Toast.Body
+                className={`fw-semibold ${
+                  toast.variant === "danger" ? "text-white" : ""
+                }`}
+              >
+                {toast.message}
+                {/* {toast.variant === "info" && (
+                    <Spinner
+                      animation="border"
+                      size="sm"
+                      variant="primary"
+                      className="ms-2"
+                    />
+                  )} */}
+              </Toast.Body>
+            </Toast>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
