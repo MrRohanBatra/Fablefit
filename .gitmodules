@@ -1,4 +1,0 @@
-[submodule "backend"]
-	path = backend
-	url = https://github.com/MrRohanBatra/Fablefit.git
-	branch = backend-ayush
