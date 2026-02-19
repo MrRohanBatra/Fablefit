@@ -12,8 +12,6 @@ if not MONGO_URI:
 
 client = AsyncIOMotorClient(MONGO_URI)
 
-# 2. Bracket Notation: Safer than dot notation (client.fablefit) 
-# because it prevents errors if your database name ever matches a built-in Python or Motor method.
 db = client["fablefit"]
 
 print("Mongo async client created successfully")

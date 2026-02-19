@@ -5,3 +5,5 @@ motor
 python-dotenv
 pydantic
 python-multipart
+transformers
+pillow
