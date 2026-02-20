@@ -42,3 +42,4 @@ build/
 
 # Uploaded files (if you store locally)
 uploads/
+images/*

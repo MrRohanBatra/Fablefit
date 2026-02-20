@@ -14,4 +14,7 @@ client = AsyncIOMotorClient(MONGO_URI)
 
 db = client["fablefit"]
 
+
+async def get_db():
+    return db
 print("Mongo async client created successfully")

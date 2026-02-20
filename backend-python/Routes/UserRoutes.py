@@ -1,17 +1,21 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from fastapi import APIRouter, Depends, UploadFile, File, Form
-from database import db
+
+from database import db,get_db
+
 from helpers.Utilities import Utils
 from datetime import datetime, timezone
 from databaseSchemas.UserSchema import User
 import os
 import shutil
 
-UserRouter = APIRouter(prefix="/user")
+UserRouter = APIRouter(prefix="/users")
 Tools = Utils()
 
 
-async def get_db():
-    return db
+
 @UserRouter.post("/add")
 async def add_user(user: User, database=Depends(get_db)):
 
@@ -104,7 +108,7 @@ async def upload_image(
     upload_dir = "images"
     os.makedirs(upload_dir, exist_ok=True)
 
-    ext = os.path.splitext(image.filename)[1]
+    ext = os.path.splitext(image.filename)[1] # type: ignore
     filename = f"{uid}_{int(datetime.now().timestamp())}{ext}"
     filepath = os.path.join(upload_dir, filename)
 
