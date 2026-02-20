@@ -5,6 +5,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -38,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -53,6 +59,9 @@ import com.rohan.fablefit.Screen.HomeScreen
 import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.rohan.fablefit.Screen.SearchScreen
 
 
@@ -100,6 +109,14 @@ fun MainECommerceScaffold() {
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = { Image(
+                    painterResource(R.drawable.icon),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                ) },
                 title = {
                     Text(
                         when (currentRoute) {
@@ -108,7 +125,9 @@ fun MainECommerceScaffold() {
                             BottomRoute.Cart.route -> "My Cart"
                             BottomRoute.Profile.route -> "Profile"
                             else -> ""
-                        }
+                        },
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.SemiBold
                     )
                 },
                 actions = {
@@ -123,14 +142,13 @@ fun MainECommerceScaffold() {
                             ) {
                                 Icon(
                                     Icons.Default.Search,
+
                                     contentDescription = "Search"
                                 )
                             }
                         }
 
                         BottomRoute.Cart.route -> {
-                            // Example future action
-                            // IconButton { ... }
                         }
 
                         BottomRoute.Profile.route -> {
@@ -185,7 +203,9 @@ fun MainECommerceScaffold() {
         NavHost(
             navController = navController,
             startDestination = BottomRoute.Home.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            enterTransition = { fadeIn(tween(200)) },
+            exitTransition = { fadeOut(tween(200)) },
         ) {
 
             composable(BottomRoute.Home.route) {
