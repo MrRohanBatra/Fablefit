@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "567522622987",
+    "project_id": "fablefit-81e44",
+    "storage_bucket": "fablefit-81e44.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567522622987:android:2ab57ee3fe68434064510e",
+        "android_client_info": {
+          "package_name": "com.rohan.fablefit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567522622987-ehr1qvn0h9ckhdpf184rnf97habsl6di.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxsRQnJEuw4RCXVvncdk4LmJDn7b84BOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567522622987-ehr1qvn0h9ckhdpf184rnf97habsl6di.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
