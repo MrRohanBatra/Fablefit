@@ -1,5 +1,6 @@
 package com.rohan.fablefit
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,16 +13,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +52,8 @@ import com.rohan.fablefit.ui.theme.FablefitTheme
 import com.rohan.fablefit.Screen.HomeScreen
 import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.ProfileScreen
+import androidx.compose.ui.res.stringResource
+import com.rohan.fablefit.Screen.SearchScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -74,12 +82,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainECommerceScaffold() {
 
     val navController = rememberNavController()
-
+    val currentRoute =
+        navController.currentBackStackEntryAsState()
+            .value?.destination?.route
     val screens = listOf(
         BottomRoute.Home,
         BottomRoute.Search,
@@ -88,6 +98,48 @@ fun MainECommerceScaffold() {
     )
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        when (currentRoute) {
+                            BottomRoute.Home.route -> stringResource(R.string.app_name)
+                            BottomRoute.Search.route -> "Search"
+                            BottomRoute.Cart.route -> "My Cart"
+                            BottomRoute.Profile.route -> "Profile"
+                            else -> ""
+                        }
+                    )
+                },
+                actions = {
+
+                    when (currentRoute) {
+
+                        BottomRoute.Home.route -> {
+                            IconButton(
+                                onClick = {
+                                    navController.navigate(BottomRoute.Search.route)
+                                }
+                            ) {
+                                Icon(
+                                    Icons.Default.Search,
+                                    contentDescription = "Search"
+                                )
+                            }
+                        }
+
+                        BottomRoute.Cart.route -> {
+                            // Example future action
+                            // IconButton { ... }
+                        }
+
+                        BottomRoute.Profile.route -> {
+                            // Settings icon maybe later
+                        }
+                    }
+                }
+            )
+        },
         bottomBar = {
             NavigationBar(
                 modifier = Modifier
@@ -109,9 +161,7 @@ fun MainECommerceScaffold() {
                 tonalElevation = 8.dp
             ){
 
-                val currentRoute =
-                    navController.currentBackStackEntryAsState()
-                        .value?.destination?.route
+
 
                 screens.forEach { screen ->
 
@@ -142,7 +192,7 @@ fun MainECommerceScaffold() {
                 HomeScreen()
             }
             composable(BottomRoute.Search.route) {
-                CartScreen()
+                SearchScreen()
             }
             composable(BottomRoute.Cart.route) {
                 CartScreen()
