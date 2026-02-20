@@ -1,11 +1,14 @@
 package com.rohan.fablefit.Screen
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,15 +36,17 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.rohan.fablefit.R
 import com.rohan.fablefit.ui.model.BannerUiModel
+import com.rohan.fablefit.ui.model.CategorySectionModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(){
+    val context=LocalContext.current;
     val banners = listOf(
 
         BannerUiModel(
             id = "ai_style",
-            imageUrl = "https://images.unsplash.com/photo-1520975922323-6a6a6f3f4f36?auto=format&fit=crop&w=1200&q=80",
+            imageUrl ="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80" ,
             title = "AI Style Assistant"
         ),
 
@@ -69,98 +75,93 @@ fun HomeScreen(){
         )
     )
     Column() {
-        Row() {
-            HomeCarousel(
-                items=banners,
-                onBannerClick = {}
-            )
-        }
+        HomeCarousel(
+            items=banners,
+            onBannerClick = {i->
+                Toast.makeText(context,i.title, Toast.LENGTH_SHORT).show()
+            }
+        )
+        Spacer(modifier= Modifier.height(16.dp))
+//        CategorySection()
     }
 
 
 }
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeCarousel(
     items: List<BannerUiModel>,
     onBannerClick: (BannerUiModel) -> Unit,
 ) {
-    val shape = RoundedCornerShape(24.dp) // Define shape once for consistency
-
     HorizontalMultiBrowseCarousel(
         state = rememberCarouselState { items.count() },
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(vertical = 16.dp)
-            .height(240.dp),
+            .height(220.dp), // Set fixed height for the carousel container
         preferredItemWidth = 186.dp,
         itemSpacing = 8.dp,
         contentPadding = PaddingValues(horizontal = 16.dp)
     ) { i ->
         val item = items[i]
-
-        ElevatedCard(
-            // Fix 1: Ensure the card itself clips its children
-            modifier = Modifier.clip(shape),
-            shape = shape,
-            onClick = { onBannerClick(item) }
+        Box(
+            modifier = Modifier
+                .height(200.dp)
+                .maskClip(MaterialTheme.shapes.extraLarge)
+                .background(Color.LightGray) // Fallback background
+                .clickable { onBannerClick(item) }
         ) {
-            Box(
-                // Fix 2: Explicitly clip the Box to ensure the image follows the curve
-                modifier = Modifier.fillMaxSize().clip(shape)
-            ) {
-                when {
-                    item.imageRes != null -> {
-                        Image(
-                            painter = painterResource(item.imageRes),
-                            contentDescription = item.title,
-                            modifier = Modifier
-                                .height(200.dp)
-                                .fillMaxWidth(),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    item.imageUrl != null -> {
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(item.imageUrl)
-                                .crossfade(true)
-                                .build(),
-                            contentDescription = item.title,
-                            placeholder = painterResource(R.drawable.placeholder),
-                            error = painterResource(R.drawable.error_image),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                }
+            if (item.imageUrl != null) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(item.imageUrl)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = item.title,
+                    placeholder = painterResource(R.drawable.placeholder),
+                    error = painterResource(R.drawable.error_image),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            } else if (item.imageRes != null) {
+                Image(
+                    painter = painterResource(item.imageRes),
+                    contentDescription = item.title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
 
-                item.title?.let {
-                    Box(
-                        modifier = Modifier
-                            .matchParentSize()
-                            .background(
-                                brush = Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
-                                    startY = 300f // Adjust to start gradient near the bottom
-                                )
+            // Text Overlay with simple gradient for readability
+            item.title?.let {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.5f)),
+                                startY = 300f
                             )
-                    )
-                    Text(
-                        text = it,
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .padding(16.dp),
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = Color.White
-                    )
-                }
+                        )
+
+                )
+                Text(
+                    text = it,
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(12.dp),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White
+                )
             }
         }
     }
+}
+
+@Composable
+fun CategorySection(
+    items:List<CategorySectionModel>,
+    onBannerClick: (CategorySectionModel) -> Unit
+){
 }
