@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearWavyProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -27,19 +29,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.rohan.fablefit.Interface.ScreenInterFace
-import com.rohan.fablefit.Screen.CartScreen
-import com.rohan.fablefit.Screen.HomeScreen
-import com.rohan.fablefit.Screen.ProfileScreen
 import com.rohan.fablefit.auth.AuthScreen
 import com.rohan.fablefit.auth.AuthViewModel
+import com.rohan.fablefit.navigation.BottomRoute
 import com.rohan.fablefit.ui.theme.FablefitTheme
-import org.jetbrains.annotations.ApiStatus
+import com.rohan.fablefit.Screen.HomeScreen
+import com.rohan.fablefit.Screen.CartScreen
+import com.rohan.fablefit.Screen.ProfileScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,21 +54,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FablefitTheme {
-                // Check if the user is already logged in when the app starts
                 var isAuthenticated by remember {
                     mutableStateOf(FirebaseAuth.getInstance().currentUser != null)
                 }
 
                 if (!isAuthenticated) {
-                    // Show Login Screen
                     AuthScreen(
                         context = LocalContext.current,
-                        onLoginSuccess = { isAuthenticated = true } // Switch to main app on success
+                        onLoginSuccess = { isAuthenticated = true }
                     )
                 } else {
-                    // Show Main E-commerce App
                     MainECommerceScaffold()
                 }
+//                AuthScreen(
+//                    context = LocalContext.current,
+//                    onLoginSuccess = {isAuthenticated=false}
+//                )
             }
         }
     }
@@ -69,66 +77,80 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun MainECommerceScaffold() {
-    val screens = listOf<ScreenInterFace>(
-        HomeScreen,
-        CartScreen,
-        ProfileScreen,
+
+    val navController = rememberNavController()
+
+    val screens = listOf(
+        BottomRoute.Home,
+        BottomRoute.Search,
+        BottomRoute.Cart,
+        BottomRoute.Profile
     )
-    var authViewModel: AuthViewModel= viewModel();
-    var selectedScreen by remember { mutableStateOf(screens[0]) }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
         bottomBar = {
-            NAVBAR(
-                screens = screens,
-                selectedScreen = selectedScreen,
-                onTabSelected = { selectedScreen = it }
-            )
-        }
-    ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                selectedScreen.UI()
+            NavigationBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 28.dp,
+                            topEnd = 28.dp
+                        )
+                    )
+                    .border(
+                        width = 0.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        shape = RoundedCornerShape(
+                            topStart = 28.dp,
+                            topEnd = 28.dp
+                        )
+                    ),
+                tonalElevation = 8.dp
+            ){
 
-                Button(onClick = {
-                    authViewModel.logOut()
-                }) {
-                    Text("logOut")
+                val currentRoute =
+                    navController.currentBackStackEntryAsState()
+                        .value?.destination?.route
+
+                screens.forEach { screen ->
+
+                    NavigationBarItem(
+                        selected = currentRoute == screen.route,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.startDestinationId)
+                                launchSingleTop = true
+                            }
+                        },
+                        icon = { Icon(screen.icon, screen.title) },
+                        label = { Text(screen.title) },
+                        alwaysShowLabel = false,
+                    )
                 }
-                CircularWavyProgressIndicator()
-                LinearWavyProgressIndicator()
-                // Swapped the standard indicator for the built-in wavy one!
-
             }
         }
-    }
-}
+    ) { innerPadding ->
 
-@Composable
-fun NAVBAR(
-    screens: List<ScreenInterFace>,
-    selectedScreen: ScreenInterFace,
-    onTabSelected: (ScreenInterFace) -> Unit
-) {
-    NavigationBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(30.dp)),
-        tonalElevation = 10.dp,
-    ) {
-        screens.forEach { screen ->
-            NavigationBarItem(
-                selected = selectedScreen == screen,
-                onClick = { onTabSelected(screen) },
-                icon = { Icon(screen.icon, screen.title) },
-                label = { Text(screen.title) },
-                alwaysShowLabel = false,
-            )
+        NavHost(
+            navController = navController,
+            startDestination = BottomRoute.Home.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+
+            composable(BottomRoute.Home.route) {
+                HomeScreen()
+            }
+            composable(BottomRoute.Search.route) {
+                CartScreen()
+            }
+            composable(BottomRoute.Cart.route) {
+                CartScreen()
+            }
+
+            composable(BottomRoute.Profile.route) {
+                ProfileScreen()
+            }
         }
     }
 }
