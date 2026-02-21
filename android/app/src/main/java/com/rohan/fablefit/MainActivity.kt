@@ -5,9 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -20,13 +22,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularWavyProgressIndicator
+
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearWavyProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -75,49 +75,78 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 //            FablefitTheme {
-//                var isAuthenticated by remember {
-//                    mutableStateOf(FirebaseAuth.getInstance().currentUser != null)
+//                // 1. Start with a 'null' or 'Loading' state
+//                var authChecked by remember { mutableStateOf(false) }
+//                var user by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
+//
+//                // 2. Use a LaunchedEffect to verify the user once on startup
+//                LaunchedEffect(Unit) {
+//                    // This ensures the SDK has a moment to initialize
+//                    user = FirebaseAuth.getInstance().currentUser
+//                    authChecked = true
 //                }
 //
-//                if (!isAuthenticated) {
-//                    AuthScreen(
-//                        context = LocalContext.current,
-//                        onLoginSuccess = { isAuthenticated = true }
-//                    )
+//                // 3. Handle the UI based on the check status
+//                if (!authChecked) {
+//
+//                    SplashScreen()
 //                } else {
-//                    MainECommerceScaffold()
+//                    if (user == null) {
+//                        AuthScreen(
+//                            context = LocalContext.current,
+//                            onLoginSuccess = {
+//                                user = FirebaseAuth.getInstance().currentUser
+//                            }
+//                        )
+//                    } else {
+//                        MainECommerceScaffold()
+//                    }
 //                }
-////                AuthScreen(
-////                    context = LocalContext.current,
-////                    onLoginSuccess = {isAuthenticated=false}
-////                )
 //            }
             FablefitTheme {
-                // 1. Start with a 'null' or 'Loading' state
-                var authChecked by remember { mutableStateOf(false) }
-                var user by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
+                // 1. Define states for the check
+                var isCheckingAuth by remember { mutableStateOf(true) }
+                var isAuthenticated by remember { mutableStateOf(false) }
 
-                // 2. Use a LaunchedEffect to verify the user once on startup
+                // 2. Perform the background check on startup
                 LaunchedEffect(Unit) {
-                    // This ensures the SDK has a moment to initialize
-                    user = FirebaseAuth.getInstance().currentUser
-                    authChecked = true
+                    val startTime= System.currentTimeMillis();
+                    // Check Firebase for an existing session
+                    val currentUser = FirebaseAuth.getInstance().currentUser
+                    isAuthenticated = currentUser != null
+                    val elapsed = System.currentTimeMillis() - startTime
+                    if (elapsed < 800) kotlinx.coroutines.delay(800 - elapsed)
+                    kotlinx.coroutines.delay(300)
+                    isCheckingAuth = false
                 }
 
-                // 3. Handle the UI based on the check status
-                if (!authChecked) {
-                    // Show a Splash Screen or a simple Loading Spinner
-                    SplashScreen()
-                } else {
-                    if (user == null) {
-                        AuthScreen(
-                            context = LocalContext.current,
-                            onLoginSuccess = {
-                                user = FirebaseAuth.getInstance().currentUser
-                            }
-                        )
-                    } else {
-                        MainECommerceScaffold()
+                // 3. Navigation Switchboard
+                Surface(color = MaterialTheme.colorScheme.background) {
+
+                    val targetState = when {
+                        isCheckingAuth -> "SPLASH"
+                        !isAuthenticated -> "AUTH"
+                        else -> "MAIN"
+                    }
+
+                    AnimatedContent(
+                        targetState = targetState,
+                        transitionSpec = {
+                            fadeIn(tween(500)) togetherWith fadeOut(tween(800))
+                        },
+                        label = "AppStartTransition"
+                    ) { state ->
+
+                        when (state) {
+                            "SPLASH" -> SplashScreen()
+
+                            "AUTH" -> AuthScreen(
+                                context = LocalContext.current,
+                                onLoginSuccess = { isAuthenticated = true }
+                            )
+
+                            "MAIN" -> MainECommerceScaffold()
+                        }
                     }
                 }
             }
@@ -141,12 +170,13 @@ fun MainECommerceScaffold() {
 
     Scaffold(
         topBar = {
+
             TopAppBar(
                 navigationIcon = { Image(
                     painterResource(R.drawable.icon),
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(start = 12.dp)
+                        .padding(start = 12.dp, end = 12.dp)
                         .size(32.dp)
                         .clip(RoundedCornerShape(8.dp))
                 ) },
