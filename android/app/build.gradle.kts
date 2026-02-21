@@ -46,7 +46,7 @@ android {
 
         debug {
             // Debug usually uses the default debug.keystore automatically
-            applicationIdSuffix = ".debug"
+//            applicationIdSuffix = ".debug"
         }
     }
 

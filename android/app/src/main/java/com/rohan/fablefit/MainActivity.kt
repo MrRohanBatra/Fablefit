@@ -31,9 +31,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -63,6 +66,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.rohan.fablefit.Screen.SearchScreen
+import com.rohan.fablefit.auth.SplashScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -70,23 +74,52 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+//            FablefitTheme {
+//                var isAuthenticated by remember {
+//                    mutableStateOf(FirebaseAuth.getInstance().currentUser != null)
+//                }
+//
+//                if (!isAuthenticated) {
+//                    AuthScreen(
+//                        context = LocalContext.current,
+//                        onLoginSuccess = { isAuthenticated = true }
+//                    )
+//                } else {
+//                    MainECommerceScaffold()
+//                }
+////                AuthScreen(
+////                    context = LocalContext.current,
+////                    onLoginSuccess = {isAuthenticated=false}
+////                )
+//            }
             FablefitTheme {
-                var isAuthenticated by remember {
-                    mutableStateOf(FirebaseAuth.getInstance().currentUser != null)
+                // 1. Start with a 'null' or 'Loading' state
+                var authChecked by remember { mutableStateOf(false) }
+                var user by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
+
+                // 2. Use a LaunchedEffect to verify the user once on startup
+                LaunchedEffect(Unit) {
+                    // This ensures the SDK has a moment to initialize
+                    user = FirebaseAuth.getInstance().currentUser
+                    authChecked = true
                 }
 
-                if (!isAuthenticated) {
-                    AuthScreen(
-                        context = LocalContext.current,
-                        onLoginSuccess = { isAuthenticated = true }
-                    )
+                // 3. Handle the UI based on the check status
+                if (!authChecked) {
+                    // Show a Splash Screen or a simple Loading Spinner
+                    SplashScreen()
                 } else {
-                    MainECommerceScaffold()
+                    if (user == null) {
+                        AuthScreen(
+                            context = LocalContext.current,
+                            onLoginSuccess = {
+                                user = FirebaseAuth.getInstance().currentUser
+                            }
+                        )
+                    } else {
+                        MainECommerceScaffold()
+                    }
                 }
-//                AuthScreen(
-//                    context = LocalContext.current,
-//                    onLoginSuccess = {isAuthenticated=false}
-//                )
             }
         }
     }
@@ -159,42 +192,49 @@ fun MainECommerceScaffold() {
             )
         },
         bottomBar = {
-            NavigationBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 28.dp,
-                            topEnd = 28.dp
-                        )
-                    )
-                    .border(
-                        width = 0.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        shape = RoundedCornerShape(
-                            topStart = 28.dp,
-                            topEnd = 28.dp
-                        )
-                    ),
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+                color = Color.Transparent, // Makes the 'box' corners invisible
                 tonalElevation = 8.dp
-            ){
+            ) {
+                NavigationBar(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .clip(
+//                            RoundedCornerShape(
+//                                topStart = 28.dp,
+//                                topEnd = 28.dp
+//                            )
+//                        )
+//                    //                    .border(
+//                    //                        width = 0.dp,
+//                    //                        color = MaterialTheme.colorScheme.outlineVariant,
+//                    //                        shape = RoundedCornerShape(
+//                    //                            topStart = 28.dp,
+//                    //                            topEnd = 28.dp
+//                    //                        )
+//                    //                    )
+//                    ,
+                    tonalElevation = 8.dp
+                ) {
 
 
+                    screens.forEach { screen ->
 
-                screens.forEach { screen ->
-
-                    NavigationBarItem(
-                        selected = currentRoute == screen.route,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.startDestinationId)
-                                launchSingleTop = true
-                            }
-                        },
-                        icon = { Icon(screen.icon, screen.title) },
-                        label = { Text(screen.title) },
-                        alwaysShowLabel = false,
-                    )
+                        NavigationBarItem(
+                            selected = currentRoute == screen.route,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true
+                                }
+                            },
+                            icon = { Icon(screen.icon, screen.title) },
+                            label = { Text(screen.title) },
+                            alwaysShowLabel = false,
+                        )
+                    }
                 }
             }
         }
