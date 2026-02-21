@@ -242,8 +242,8 @@ fun AuthScreen(
                 .padding(3.dp),
             contentAlignment = Alignment.Center,
         ){
-            LoadingIndicator()
-
+//            LoadingIndicator()
+            SplashScreen()
         }
     }
 }

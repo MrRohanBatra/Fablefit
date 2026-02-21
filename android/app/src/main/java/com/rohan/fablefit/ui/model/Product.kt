@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -26,6 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.rohan.fablefit.ui.theme.FablefitTheme
 
 import java.util.Date
@@ -58,6 +61,7 @@ data class Product(
         @SuppressLint("DefaultLocale")
         get() = "₹${String.format("%.2f", price)}"
 }
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProductCard(
     product: Product,
@@ -75,11 +79,21 @@ fun ProductCard(
     ) {
         Column {
             Box(modifier = Modifier.height(200.dp).fillMaxWidth()) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = product.images.firstOrNull(),
                     contentDescription = product.name,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    loading = {
+
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            LoadingIndicator()
+                        }
+                    },
+                    error = {
+                        // If it shows RED, the URL or Network is the problem
+                        Box(Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.3f)))
+                    }
                 )
 
                 if (product.vton_category != null) {
@@ -99,7 +113,7 @@ fun ProductCard(
                 }
             }
 
-            // Using SurfaceVariant for a slight background distinction in the text area
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -122,7 +136,7 @@ fun ProductCard(
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = product.formattedPrice, // Changed to Int for cleaner price
+                    text = product.formattedPrice,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.ExtraBold

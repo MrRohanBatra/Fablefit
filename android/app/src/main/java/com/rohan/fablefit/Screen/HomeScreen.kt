@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
+import com.google.android.gms.common.Feature
 import com.rohan.fablefit.ui.model.BannerUiModel
 import com.rohan.fablefit.ui.model.CategorySectionModel
 import com.rohan.fablefit.ui.model.Product
@@ -153,6 +154,43 @@ fun HomeScreen(){
             vton_category = "top"
         )
     )}
+    val featuredProducts = remember { listOf(
+        Product(
+            name = "Apex Runner Snkrs",
+            description = "Lightweight performance sneakers with mesh breathability.",
+            category = "Footwear",
+            price = 3999.0,
+            companyName = "Fablefit Origin",
+            images = listOf("https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"),
+            vton_category = "shoes"
+        ),
+        Product(
+            name = "Core Denim Jacket",
+            description = "Vintage wash denim with a relaxed fit.",
+            category = "Uppers",
+            price = 2999.0,
+            companyName = "Heritage Co.",
+            images = listOf("https://images.unsplash.com/photo-1576871333019-220ef346dd8b?q=80&w=400"),
+            vton_category = "top"
+        ),
+        Product(
+            name = "Athletic Joggers",
+            description = "Tapered fit sweatpants with moisture-wicking fabric.",
+            category = "Lowers",
+            price = 1799.0,
+            companyName = "Fablefit Origin",
+            images = listOf("https://images.unsplash.com/photo-1580487212156-780bbad991f1?q=80&w=400")
+        ),
+        Product(
+            name = "Street Flannel Shirt",
+            description = "Checkered heavy flannel for layering.",
+            category = "Uppers",
+            price = 1599.0,
+            companyName = "Urban Loft",
+            images = listOf("https://images.unsplash.com/photo-1503342392331-0425028af4e9?q=80&w=400"),
+            vton_category = "top"
+        )
+    )}
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -169,6 +207,7 @@ fun HomeScreen(){
 
         CategorySection(categories)
         TrendingSection(products = trendingProducts)
+        FeaturedSection(products = featuredProducts)
     }
 
 
@@ -342,6 +381,27 @@ fun TrendingSection(products: List<Product>) {
     }
 }
 
+
+@Composable
+fun FeaturedSection(products: List<Product>){
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+        SectionHeader(title = "Featured")
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(products) { product ->
+                ProductCard(
+                    product = product,
+                    modifier = Modifier.width(160.dp),
+                    onProductClick = { /* Handle Navigation */ }
+                )
+            }
+        }
+    }
+}
+
 @Composable
 fun SectionHeader(title: String) {
     Row(
@@ -350,6 +410,6 @@ fun SectionHeader(title: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-        Text(text = "See All", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+//        Text(text = "See All", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
     }
 }
