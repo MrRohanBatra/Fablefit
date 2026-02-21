@@ -1,5 +1,8 @@
 [versions]
 agp = "9.0.1"
+coilCompose = "3.3.0"
+coilNetworkOkhttp = "3.3.0"
+compose = "1.0.0-beta08"
 credentialsPlayServicesAuth = "1.5.0"
 credentialsVersion = "1.5.0"
 googleidVersion = "1.2.0"
@@ -25,6 +28,10 @@ material3 = "1.5.0-alpha14"
 material3Version = "1.4.0"
 foundationLayout = "1.10.3"
 uiText = "1.10.3"
+foundation = "1.10.3"
+glide = "4.16.0"
+glide-compose = "1.0.0-beta01"
+runtime = "1.10.3"
 
 [libraries]
 
@@ -50,7 +57,10 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 
 # ----------------- MATERIAL 3 -----------------
 #androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
+glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide-compose" }
 # ----------------- MATERIAL ICONS -----------------
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
@@ -58,6 +68,7 @@ androidx-compose-material-icons-extended = { group = "androidx.compose.material"
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 # ----------------- FIREBASE -----------------
+compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 
@@ -75,6 +86,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3",
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3Version" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout", version.ref = "foundationLayout" }
 androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
+androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
