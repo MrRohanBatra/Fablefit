@@ -1,6 +1,12 @@
 package com.rohan.fablefit.Screen
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,11 +20,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -31,9 +44,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -47,8 +65,10 @@ import coil3.compose.SubcomposeAsyncImage
 import com.google.android.gms.common.Feature
 import com.rohan.fablefit.ui.model.BannerUiModel
 import com.rohan.fablefit.ui.model.CategorySectionModel
+import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.ProductCard
+import com.rohan.fablefit.ui.model.SectionType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -191,23 +211,121 @@ fun HomeScreen(){
             vton_category = "top"
         )
     )}
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        HomeCarousel(
-            items=banners,
-            onBannerClick = {i->
-                Toast.makeText(context,i.title, Toast.LENGTH_SHORT).show()
-            }
-        )
-        Spacer(modifier= Modifier.height(16.dp))
+    val sections = remember {
+        listOf(
 
-        CategorySection(categories)
-        TrendingSection(products = trendingProducts)
-        FeaturedSection(products = featuredProducts)
+            // 🔹 Existing 3
+            HomeSection(
+                id = "trending",
+                title = "Trending Now",
+                type = SectionType.HORIZONTAL_LIST,
+                products = trendingProducts
+            ),
+            HomeSection(
+                id = "flash_sale",
+                title = "Flash Sale 🔥",
+                type = SectionType.GRID,
+                products = featuredProducts
+            ),
+            HomeSection(
+                id = "editors_pick",
+                title = "Editor’s Pick",
+                type = SectionType.FEATURED,
+                products = trendingProducts
+            ),
+
+            // 🔹 10 New Sections
+
+            HomeSection(
+                id = "recommended",
+                title = "Recommended For You",
+                type = SectionType.HORIZONTAL_LIST,
+                products = featuredProducts
+            ),
+
+            HomeSection(
+                id = "new_arrivals",
+                title = "New Arrivals",
+                type = SectionType.GRID,
+                products = trendingProducts
+            ),
+
+            HomeSection(
+                id = "best_sellers",
+                title = "Best Sellers",
+                type = SectionType.HORIZONTAL_LIST,
+                products = featuredProducts
+            ),
+
+            HomeSection(
+                id = "under_1999",
+                title = "Under ₹1999",
+                type = SectionType.GRID,
+                products = trendingProducts
+            ),
+
+            HomeSection(
+                id = "winter_special",
+                title = "Winter Specials ❄️",
+                type = SectionType.HORIZONTAL_LIST,
+                products = featuredProducts
+            ),
+
+            HomeSection(
+                id = "top_rated",
+                title = "Top Rated",
+                type = SectionType.GRID,
+                products = trendingProducts
+            ),
+
+            HomeSection(
+                id = "limited_drop",
+                title = "Limited Drop",
+                type = SectionType.FEATURED,
+                products = featuredProducts
+            ),
+
+            HomeSection(
+                id = "streetwear",
+                title = "Streetwear Collection",
+                type = SectionType.HORIZONTAL_LIST,
+                products = trendingProducts
+            ),
+
+            HomeSection(
+                id = "athleisure",
+                title = "Athleisure Picks",
+                type = SectionType.GRID,
+                products = featuredProducts
+            ),
+
+            HomeSection(
+                id = "style_bundle",
+                title = "Complete The Look",
+                type = SectionType.HORIZONTAL_LIST,
+                products = trendingProducts
+            )
+        )
+    }
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ){
+        item {
+            HomeCarousel(
+                items = banners,
+                onBannerClick = { i ->
+                    Toast.makeText(context, i.title, Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
+        item {
+            CategorySection(categories)
+        }
+        items(sections) { section ->
+
+            DynamicSection(section)
+        }
     }
 
 
@@ -239,11 +357,16 @@ fun HomeCarousel(
                 .clickable { onBannerClick(item) }
         ) {
             if (item.imageUrl != null) {
-                AsyncImage(
+                SubcomposeAsyncImage(
                     model = item.imageUrl,
                     contentDescription = item.title,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    loading = {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            LoadingIndicator()
+                        }
+                    }
                 )
 
             } else if (item.imageRes != null) {
@@ -325,7 +448,11 @@ fun CategoryItem(category: CategorySectionModel) {
                 .size(72.dp)
                 .clip(CircleShape)
                 .then(
-                    if (isSale) Modifier.border(2.dp, MaterialTheme.colorScheme.errorContainer, CircleShape)
+                    if (isSale) Modifier.border(
+                        2.dp,
+                        MaterialTheme.colorScheme.errorContainer,
+                        CircleShape
+                    )
                     else Modifier
                 )
                 .background(MaterialTheme.colorScheme.surfaceVariant),
@@ -343,7 +470,9 @@ fun CategoryItem(category: CategorySectionModel) {
                 },
                 error = {
                     // If it shows RED, the URL or Network is the problem
-                    Box(Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.3f)))
+                    Box(Modifier
+                        .fillMaxSize()
+                        .background(Color.Red.copy(alpha = 0.3f)))
                 }
             )
         }
@@ -363,7 +492,9 @@ fun CategoryItem(category: CategorySectionModel) {
 
 @Composable
 fun TrendingSection(products: List<Product>) {
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 16.dp)) {
         SectionHeader(title = "Trending Now")
 
         LazyRow(
@@ -384,7 +515,9 @@ fun TrendingSection(products: List<Product>) {
 
 @Composable
 fun FeaturedSection(products: List<Product>){
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 16.dp)) {
         SectionHeader(title = "Featured")
 
         LazyRow(
@@ -405,11 +538,86 @@ fun FeaturedSection(products: List<Product>){
 @Composable
 fun SectionHeader(title: String) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
 //        Text(text = "See All", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun DynamicSection(section: HomeSection) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+    ) {
+
+        SectionHeader(title = section.title)
+
+        when (section.type) {
+
+            SectionType.HORIZONTAL_LIST -> {
+                LazyRow(
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(section.products) { product ->
+                        ProductCard(
+                                product = product,
+                                modifier = Modifier.width(160.dp),
+                                onProductClick = { }
+                        )
+                    }
+                }
+            }
+
+            SectionType.GRID -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 600.dp), // prevent infinite height inside LazyColumn
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(section.products) { product ->
+
+                            ProductCard(
+                                product = product,
+                                modifier = Modifier.width(160.dp),
+                                onProductClick = { }
+                            )
+
+                    }
+                }
+            }
+
+            // 🔹 3. FEATURED (Big Card Style)
+            SectionType.FEATURED -> {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    section.products.take(1).forEach { product ->
+                        ProductCard(
+                            product = product,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(260.dp),
+                            onProductClick = { }
+                        )
+                    }
+                }
+            }
+        }
+
     }
 }
