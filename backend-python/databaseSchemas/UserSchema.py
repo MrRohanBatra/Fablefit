@@ -1,21 +1,24 @@
-from typing import List, Optional, Any
-from pydantic import BaseModel, Field
+from typing import List, Optional, Any, Literal
+from pydantic import Field
 from datetime import datetime, timezone
+from beanie import Document
 
-
-class User(BaseModel):
-    uid: str  # Firebase UID
+class User(Document):
+    # 🔹 Standard string, indexing removed for now
+    uid: str 
 
     phone: Optional[str] = None
 
-    # Address as list of mixed objects (same as mongoose Mixed[])
+    # Address as list of mixed objects
     address: List[Any] = Field(default_factory=list)
 
-    # Virtual try-on image URL/path
     vton_image: Optional[str] = None
 
-    # normal | seller
-    type: str = "normal"
+
+    type: Literal["normal", "seller"] = "normal"
 
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Settings:
+        name = "users"

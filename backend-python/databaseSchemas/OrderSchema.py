@@ -1,20 +1,21 @@
 from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
 from datetime import datetime, timedelta, timezone
+from beanie import Document, PydanticObjectId
 
-
-# 🔹 Order Item Model
+# 🔹 Order Item Model (Embedded)
 class OrderItem(BaseModel):
-    product: str  # ObjectId as string
+    # Matches mongoose.Schema.Types.ObjectId
+    product: PydanticObjectId 
     size: str
     color: Optional[str] = None
     quantity: int = Field(..., ge=1)
-    price: float  # snapshot price
+    price: float  # Snapshot price at the time of purchase
 
-
-# 🔹 Order Model
-class Order(BaseModel):
-    userId: str  # Firebase UID (string)
+# 🔹 Order Model (Main Collection)
+class Order(Document):
+    # Firebase UID as a string
+    userId: str 
 
     items: List[OrderItem] = Field(default_factory=list)
 
@@ -36,9 +37,13 @@ class Order(BaseModel):
 
     paidAt: Optional[datetime] = None
 
+    # Default delivery date set to 8 days from now
     deliveryDate: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=8)
     )
 
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    class Settings:
+        name = "orders" # The MongoDB collection name

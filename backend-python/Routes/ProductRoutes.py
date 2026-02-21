@@ -2,61 +2,65 @@ import random
 import shutil
 from typing import Any
 import uuid
+from bson.errors import InvalidId
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+import sys, os
 
-from bson import ObjectId
-from fastapi import APIRouter,Depends, File, HTTPException, UploadFile
-import sys,os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from databaseSchemas.ProductSchema import Product
-from database import db,get_db
 from helpers.Utilities import Utils
 from helpers.ClipService import ClipServiceModel
-Tools=Utils()
 
-ProductRouter=APIRouter(prefix="/products")
+Tools = Utils()
+
+ProductRouter = APIRouter(prefix="/products")
 
 @ProductRouter.post("/add")
-async def add_product(product: Product, database=Depends(get_db)):
-    products = database["products"]
-    product_dict = product.model_dump()
+async def add_product(product: Product):
+    # 1. Generate embedding
     embedding = ClipServiceModel.generate_embedding(product)
-    product_dict["embedding"] = embedding
-    result = await products.insert_one(product_dict)
-    saved = await products.find_one({"_id": result.inserted_id})
+    product.embedding = embedding
+    
+    # 2. Save using Beanie
+    await product.insert()
+    
+    # 3. Convert back to dict with '_id' to match old PyMongo output exactly
+    saved_dict = product.model_dump(by_alias=True)
+    
     return {
         "success": True,
         "message": "Product added successfully",
-        "product": Tools.serializeDoc(saved)
+        "product": Tools.serializeDoc(saved_dict)
     }
 
 @ProductRouter.get("/id/{id}")
-async def get_product_by_id(id: str, database=Depends(get_db)):
-    products = database["products"]
+async def get_product_by_id(id: str):
     print("Product id", id)
     try:
-        product = await products.find_one({"_id": ObjectId(id)})
-    except:
+        # Beanie's .get() automatically handles ObjectId parsing
+        product = await Product.get(id)
+    except Exception: # Catches invalid hex strings exactly like the old cod
         raise HTTPException(status_code=400, detail="Invalid product id")
+        
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
-    product = Tools.serializeDoc(product)
-    return product
+        
+    # Convert back to dict so serializeDoc works perfectly
+    product_dict = product.model_dump(by_alias=True)
+    return Tools.serializeDoc(product_dict)
 
 
 @ProductRouter.get("/search")
-async def vector_search_products(s: str, limit: int = 20, database=Depends(get_db)):
-
+async def vector_search_products(s: str, limit: int = 20):
     query = s.strip()
     if not query:
         raise HTTPException(status_code=400, detail="Missing search query")
 
-    collection = database["products"]
     gender = Tools.detect_gender(query)
-
     expanded_query = Tools.expand_query(query)
-
     query_embedding = ClipServiceModel.generate_text_embedding(expanded_query)
-    match_filter:dict[str, Any] = {"stock": {"$gt": 0}}
+    
+    match_filter: dict[str, Any] = {"stock": {"$gt": 0}}
 
     if gender:
         match_filter["category"] = {"$regex": gender, "$options": "i"}
@@ -90,9 +94,11 @@ async def vector_search_products(s: str, limit: int = 20, database=Depends(get_d
         }
     ]
 
+    # Use Beanie's aggregate method directly on the class
+    # gate(pipeline).to_list()
+    collection = Product.get_pymongo_collection()
     cursor = collection.aggregate(pipeline)
     results = await cursor.to_list(length=limit)
-
     print(f'Semantic searched "{query}" → {len(results)} results')
 
     random.shuffle(results)
@@ -101,7 +107,6 @@ async def vector_search_products(s: str, limit: int = 20, database=Depends(get_d
 
 @ProductRouter.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
-
     BASE_IMAGE_DIR = "images"
     PRODUCT_IMAGE_DIR = os.path.join(BASE_IMAGE_DIR, "100")
 

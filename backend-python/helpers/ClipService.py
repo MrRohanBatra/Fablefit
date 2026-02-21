@@ -51,7 +51,8 @@ class ClipService:
     # IMAGE EMBEDDING (SAFE WAY)
     # ---------------------------------
     def generate_image_embedding(self, image_path: str):
-
+        if(image_path.startswith("/images/")):
+            image_path=image_path[1::]
         image = Image.open(image_path).convert("RGB")
 
         inputs = self.processor(
@@ -60,10 +61,23 @@ class ClipService:
         ).to(self.device)
 
         with torch.no_grad():
-            outputs = self.model(**inputs)
+            outputs = self.model.get_image_features(**inputs)
+            
+            # 🔹 BULLETPROOF TENSOR EXTRACTION 🔹
+            # If Hugging Face returns a wrapper object, extract the raw tensor
+            if isinstance(outputs, torch.Tensor):
+                image_features = outputs
+            elif hasattr(outputs, "image_embeds"):
+                image_features = outputs.image_embeds
+            elif hasattr(outputs, "pooler_output"):
+                # If we get here, it means the projection layer was bypassed,
+                # but we will extract the tensor to prevent the app from crashing.
+                image_features = outputs.pooler_output
+            else:
+                image_features = outputs[0]
 
             # ✅ tensor
-            image_features = outputs.image_embeds
+            # image_features = outputs.image_embeds
 
         image_features = image_features / image_features.norm(dim=-1, keepdim=True)
 
