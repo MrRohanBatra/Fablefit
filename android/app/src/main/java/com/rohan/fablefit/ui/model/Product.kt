@@ -1,6 +1,7 @@
 package com.rohan.fablefit.ui.model
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import java.util.Date
 
 data class Product(
@@ -53,9 +56,9 @@ data class Product(
     @SerializedName("vton_category")
     val vton_category: String? = null,
 
-    val createdAt: Date? = null,
-    val updatedAt: Date? = null
-) {
+//    val createdAt: Date? = null,
+//    val updatedAt: Date? = null
+){
 
     // Safe thumbnail
     val thumbnail: String
@@ -78,6 +81,7 @@ data class Product(
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProductCard(
+    baseUrl: String="https://testserver.rohan.org.in",
     product: Product,
     modifier: Modifier = Modifier,
     onProductClick: (Product) -> Unit
@@ -89,15 +93,16 @@ fun ProductCard(
         ),
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
             .clickable { onProductClick(product) }
     ) {
         Column {
             Box(modifier = Modifier.height(200.dp).fillMaxWidth()) {
                 SubcomposeAsyncImage(
-                    model = product.images.firstOrNull(),
+                    model = product.thumbnail.let{"$baseUrl/$it"},
                     contentDescription = product.name,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Fit,
                     loading = {
 
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -105,7 +110,6 @@ fun ProductCard(
                         }
                     },
                     error = {
-                        // If it shows RED, the URL or Network is the problem
                         Box(Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.3f)))
                     }
                 )
@@ -126,8 +130,6 @@ fun ProductCard(
                     )
                 }
             }
-
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

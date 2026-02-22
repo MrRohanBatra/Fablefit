@@ -3,6 +3,7 @@ package com.rohan.fablefit.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -16,4 +17,5 @@ sealed class BottomRoute(
     object Search: BottomRoute(route = "search","Search",Icons.Default.Search)
     object Cart : BottomRoute("cart", "Cart", Icons.Default.ShoppingCart)
     object Profile : BottomRoute("profile", "Profile", Icons.Default.Person)
+    object ProductDisplay: BottomRoute(route = "productdisplay", title = "Product Display", icon = Icons.Default.Preview)
 }

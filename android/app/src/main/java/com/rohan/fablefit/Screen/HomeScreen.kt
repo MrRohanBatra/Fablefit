@@ -35,6 +35,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -60,12 +63,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.internal.NavContext
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import com.google.android.gms.common.Feature
 import com.rohan.fablefit.navigation.BottomRoute
+import com.rohan.fablefit.ui.Home.HomeSectionsViewModel
+import com.rohan.fablefit.ui.Home.HomeUiState
 import com.rohan.fablefit.ui.model.BannerUiModel
 import com.rohan.fablefit.ui.model.CategorySectionModel
 import com.rohan.fablefit.ui.model.HomeSection
@@ -74,11 +80,10 @@ import com.rohan.fablefit.ui.model.ProductCard
 import com.rohan.fablefit.ui.model.SearchFilters
 import com.rohan.fablefit.ui.model.SectionType
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HomeScreen(navController: NavController){
+fun HomeScreen(navController: NavController,homeViewModel: HomeSectionsViewModel= viewModel()){
     val context=LocalContext.current;
-    val scrollState= rememberScrollState();
     val banners = remember {  listOf(
 
         BannerUiModel(
@@ -162,167 +167,7 @@ fun HomeScreen(navController: NavController){
             )
         )
     }
-    val trendingProducts = remember { listOf(
-        Product(
-            name = "Oversized Graphic Tee",
-            description = "Heavyweight cotton tee with street art print.",
-            category = "Uppers",
-            price = 1499.0,
-            companyName = "Fablefit Origin",
-            images = listOf("https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=400"),
-            vton_category = "top"
-        ),
-        Product(
-            name = "Urban Cargo Pants",
-            description = "Multi-pocket techwear cargos.",
-            category = "Lowers",
-            price = 2499.0,
-            companyName = "TechStyle",
-            images = listOf("https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=400")
-        ),
-        Product(
-            name = "Minimalist Hoodie",
-            description = "Clean aesthetic hoodie for daily wear.",
-            category = "Uppers",
-            price = 1999.0,
-            companyName = "Fablefit Origin",
-            images = listOf("https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=400"),
-            vton_category = "top"
-        )
-    )}
-    val featuredProducts = remember { listOf(
-        Product(
-            name = "Apex Runner Snkrs",
-            description = "Lightweight performance sneakers with mesh breathability.",
-            category = "Footwear",
-            price = 3999.0,
-            companyName = "Fablefit Origin",
-            images = listOf("https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400"),
-            vton_category = "shoes"
-        ),
-        Product(
-            name = "Core Denim Jacket",
-            description = "Vintage wash denim with a relaxed fit.",
-            category = "Uppers",
-            price = 2999.0,
-            companyName = "Heritage Co.",
-            images = listOf("https://images.unsplash.com/photo-1576871333019-220ef346dd8b?q=80&w=400"),
-            vton_category = "top"
-        ),
-        Product(
-            name = "Athletic Joggers",
-            description = "Tapered fit sweatpants with moisture-wicking fabric.",
-            category = "Lowers",
-            price = 1799.0,
-            companyName = "Fablefit Origin",
-            images = listOf("https://images.unsplash.com/photo-1580487212156-780bbad991f1?q=80&w=400")
-        ),
-        Product(
-            name = "Street Flannel Shirt",
-            description = "Checkered heavy flannel for layering.",
-            category = "Uppers",
-            price = 1599.0,
-            companyName = "Urban Loft",
-            images = listOf("https://images.unsplash.com/photo-1503342392331-0425028af4e9?q=80&w=400"),
-            vton_category = "top"
-        )
-    )}
-    val sections = remember {
-        listOf(
-
-            // 🔹 Existing 3
-            HomeSection(
-                id = "trending",
-                title = "Trending Now",
-                type = SectionType.HORIZONTAL_LIST,
-                products = trendingProducts
-            ),
-            HomeSection(
-                id = "flash_sale",
-                title = "Flash Sale 🔥",
-                type = SectionType.GRID,
-                products = featuredProducts
-            ),
-            HomeSection(
-                id = "editors_pick",
-                title = "Editor’s Pick",
-                type = SectionType.FEATURED,
-                products = trendingProducts
-            ),
-
-            // 🔹 10 New Sections
-
-            HomeSection(
-                id = "recommended",
-                title = "Recommended For You",
-                type = SectionType.HORIZONTAL_LIST,
-                products = featuredProducts
-            ),
-
-            HomeSection(
-                id = "new_arrivals",
-                title = "New Arrivals",
-                type = SectionType.GRID,
-                products = trendingProducts
-            ),
-
-            HomeSection(
-                id = "best_sellers",
-                title = "Best Sellers",
-                type = SectionType.HORIZONTAL_LIST,
-                products = featuredProducts
-            ),
-
-            HomeSection(
-                id = "under_1999",
-                title = "Under ₹1999",
-                type = SectionType.GRID,
-                products = trendingProducts
-            ),
-
-            HomeSection(
-                id = "winter_special",
-                title = "Winter Specials ❄️",
-                type = SectionType.HORIZONTAL_LIST,
-                products = featuredProducts
-            ),
-
-            HomeSection(
-                id = "top_rated",
-                title = "Top Rated",
-                type = SectionType.GRID,
-                products = trendingProducts
-            ),
-
-            HomeSection(
-                id = "limited_drop",
-                title = "Limited Drop",
-                type = SectionType.FEATURED,
-                products = featuredProducts
-            ),
-
-            HomeSection(
-                id = "streetwear",
-                title = "Streetwear Collection",
-                type = SectionType.HORIZONTAL_LIST,
-                products = trendingProducts
-            ),
-
-            HomeSection(
-                id = "athleisure",
-                title = "Athleisure Picks",
-                type = SectionType.GRID,
-                products = featuredProducts
-            ),
-
-            HomeSection(
-                id = "style_bundle",
-                title = "Complete The Look",
-                type = SectionType.HORIZONTAL_LIST,
-                products = trendingProducts
-            )
-        )
-    }
+    val state= homeViewModel.uiState
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -338,9 +183,48 @@ fun HomeScreen(navController: NavController){
         item {
             CategorySection(categories)
         }
-        items(sections) { section ->
+        when(state){
+            is HomeUiState.Loading->{
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ){
+                            CircularWavyProgressIndicator()
+                        }
+                    }
+            }
+            is HomeUiState.Success->{
+                items(items = state.sections){
+                    DynamicSection(
+                        section = it,
+                        onProductClick = {
+                                product ->
 
-            DynamicSection(section)
+                            navController.navigate(
+                                "productdisplay/${product.id}"
+                            )
+                        }
+                    )
+                }
+            }
+            is HomeUiState.Error->{
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(state.message)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Button(onClick = { homeViewModel.loadHome() }) {
+                            Text("Retry")
+                        }
+                    }
+                }
+            }
+
         }
     }
 
@@ -504,53 +388,6 @@ fun CategoryItem(category: CategorySectionModel) {
     }
 }
 
-
-
-@Composable
-fun TrendingSection(products: List<Product>) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 16.dp)) {
-        SectionHeader(title = "Trending Now")
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(products) { product ->
-                ProductCard(
-                    product = product,
-                    modifier = Modifier.width(160.dp),
-                    onProductClick = { /* Handle Navigation */ }
-                )
-            }
-        }
-    }
-}
-
-
-@Composable
-fun FeaturedSection(products: List<Product>){
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 16.dp)) {
-        SectionHeader(title = "Featured")
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(products) { product ->
-                ProductCard(
-                    product = product,
-                    modifier = Modifier.width(160.dp),
-                    onProductClick = { /* Handle Navigation */ }
-                )
-            }
-        }
-    }
-}
-
 @Composable
 fun SectionHeader(title: String) {
     Row(
@@ -567,7 +404,7 @@ fun SectionHeader(title: String) {
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun DynamicSection(section: HomeSection) {
+fun DynamicSection(section: HomeSection,onProductClick:(Product)-> Unit) {
 
     Column(
         modifier = Modifier
@@ -588,7 +425,7 @@ fun DynamicSection(section: HomeSection) {
                         ProductCard(
                                 product = product,
                                 modifier = Modifier.width(160.dp),
-                                onProductClick = { }
+                                onProductClick = {onProductClick(product)}
                         )
                     }
                 }
@@ -609,7 +446,7 @@ fun DynamicSection(section: HomeSection) {
                             ProductCard(
                                 product = product,
                                 modifier = Modifier.width(160.dp),
-                                onProductClick = { }
+                                onProductClick = { onProductClick(product)}
                             )
 
                     }
@@ -628,7 +465,7 @@ fun DynamicSection(section: HomeSection) {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(260.dp),
-                            onProductClick = { }
+                            onProductClick = { onProductClick(product)}
                         )
                     }
                 }
