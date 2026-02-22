@@ -1,12 +1,12 @@
 import os
 import traceback
 from contextlib import asynccontextmanager  # 🔹 1. Import this for the startup event
-
 from fastapi import Depends, FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from beanie import init_beanie              # 🔹 2. Import Beanie initialization
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from Routes import UiRouter
 from Routes.ProductRoutes import ProductRouter
 from database import db, get_db             # We can use your existing 'db' variable
 from databaseSchemas.UserSchema import User
@@ -18,13 +18,14 @@ from Routes.UserRoutes import UserRouter
 from pymongo.errors import PyMongoError
 from Routes.CartRoutes import cartRouter
 from Routes.orderRoute import orderRouter
-# 🔹 3. Create the startup event
+from Routes.UiRouter import uiRouter
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # ADD THIS PRINT STATEMENT
 
     await init_beanie(
-        database=db, 
+        database=db,  # type: ignore
         document_models=[Product,User,Cart,Order]
     )
     print("✅ Beanie initialized successfully")
@@ -65,21 +66,32 @@ async def global_exception_handler(request: Request, exc: Exception):
         },
     )
 os.makedirs("images", exist_ok=True)
-app.mount("/images", StaticFiles(directory="images"), name="images")
+# app.mount("/images", StaticFiles(directory="images"), name="images")
 app.include_router(UserRouter)
 app.include_router(ProductRouter)
 app.include_router(cartRouter)
 app.include_router(orderRouter)
+app.include_router(uiRouter)
+
 CACHE_TIME = 31536000
-
 # Matches: app.use("/images", express.static(...))
-app.mount(
-    "/images", 
-    StaticFiles(directory="images", html=False), 
-    name="images"
-)
+# app.mount(
+#     "/images", 
+#     StaticFiles(directory="images", html=False), 
+#     name="images"
+# )
+DEFAULT_IMAGE = os.path.join(os.getcwd(),"default.png")
 
-# To add the "Heavy Caching" headers, we override the default response
+@app.get("/images/{image_name}")
+async def get_image(image_name: str):
+    image_path = os.path.join("images", image_name)
+
+    if os.path.exists(image_path):
+        return FileResponse(image_path)
+
+    # fallback
+    return FileResponse(DEFAULT_IMAGE)
+
 @app.middleware("http")
 async def add_cache_headers(request: Request, call_next):
     response = await call_next(request)
