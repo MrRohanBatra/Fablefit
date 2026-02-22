@@ -15,7 +15,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LoadingIndicator
-import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,39 +26,54 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
-import com.rohan.fablefit.ui.theme.FablefitTheme
 
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 data class Product(
-    val name: String,
-    val description: String,
-    val category: String,
-    val price: Double,
+
+    @SerializedName("_id")
+    val id: String = "",
+
+    val name: String = "",
+    val description: String = "",
+    val category: String = "",
+
+    val price: Double = 0.0,
+
     val sizes: List<String> = emptyList(),
     val color: String = "unknown",
     val stock: Int = 0,
-    val companyName: String,
-    val images: List<String> = emptyList(),
-    val vton_category: String? = null,
-    // Note: 'embedding' is excluded as per your requirement
-    val createdAt: Date = Date(),
-    val updatedAt: Date = Date()
-) {
-    /**
-     * Returns the first image URL or a placeholder if the list is empty.
-     */
-    val thumbnail: String
-        get() = images.firstOrNull() ?: "https://via.placeholder.com/150"
 
-    /**
-     * Formats the price for display (e.g., ₹499.00)
-     */
+    val companyName: String = "",
+
+    val images: List<String> = emptyList(),
+
+    @SerializedName("vton_category")
+    val vton_category: String? = null,
+
+    val createdAt: Date? = null,
+    val updatedAt: Date? = null
+) {
+
+    // Safe thumbnail
+    val thumbnail: String
+        get() = images.firstOrNull()
+            ?: "https://via.placeholder.com/300"
+
+    // Safe formatted price
     val formattedPrice: String
         @SuppressLint("DefaultLocale")
         get() = "₹${String.format("%.2f", price)}"
+
+    // Helper for stock
+    val isInStock: Boolean
+        get() = stock > 0
+
+    // Helper for try-on
+    val supportsTryOn: Boolean
+        get() = vton_category != null
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable

@@ -6,6 +6,7 @@ compose = "1.0.0-beta08"
 credentialsPlayServicesAuth = "1.5.0"
 credentialsVersion = "1.5.0"
 googleidVersion = "1.2.0"
+gson = "2.13.2"
 kotlin = "2.3.10"
 
 coreKtx = "1.17.0"
@@ -79,6 +80,7 @@ google-id = { module = "com.google.android.libraries.identity.googleid:googleid"
 
 # ----------------- TESTING -----------------
 googleid-v111 = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleidVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

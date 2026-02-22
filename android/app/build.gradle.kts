@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -112,6 +113,6 @@ dependencies {
 //    implementation(libs.glide.compose)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
-
+    implementation(libs.gson)
 
 }
