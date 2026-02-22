@@ -98,7 +98,7 @@ async def vector_search_products(s: str, limit: int = 20):
     # gate(pipeline).to_list()
     collection = Product.get_pymongo_collection()
     cursor = collection.aggregate(pipeline)
-    results = await cursor.to_list(length=limit)
+    results = await cursor.to_list(length=limit) # type: ignore
     print(f'Semantic searched "{query}" → {len(results)} results')
 
     random.shuffle(results)

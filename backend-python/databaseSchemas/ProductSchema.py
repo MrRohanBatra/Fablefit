@@ -21,3 +21,4 @@ class Product(Document):
     
     class Settings:
         name = "products"
+    

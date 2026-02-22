@@ -67,11 +67,11 @@ async def global_exception_handler(request: Request, exc: Exception):
     )
 os.makedirs("images", exist_ok=True)
 # app.mount("/images", StaticFiles(directory="images"), name="images")
-app.include_router(UserRouter)
-app.include_router(ProductRouter)
-app.include_router(cartRouter)
-app.include_router(orderRouter)
-app.include_router(uiRouter)
+app.include_router(UserRouter,prefix="/api")
+app.include_router(ProductRouter,prefix="/api")
+app.include_router(cartRouter,prefix="/api")
+app.include_router(orderRouter,prefix="/api")
+app.include_router(uiRouter,prefix="/api")
 
 CACHE_TIME = 31536000
 # Matches: app.use("/images", express.static(...))
@@ -82,14 +82,15 @@ CACHE_TIME = 31536000
 # )
 DEFAULT_IMAGE = os.path.join(os.getcwd(),"default.png")
 
-@app.get("/images/{image_name}")
-async def get_image(image_name: str):
-    image_path = os.path.join("images", image_name)
+@app.get("/images/{path:path}")
+async def get_image(path: str):
+    image_path = os.path.join("images", path)
 
     if os.path.exists(image_path):
+        print(f"Serving image: {image_path}")
         return FileResponse(image_path)
 
-    # fallback
+    print(f"Image not found: {image_path}, serving default image")
     return FileResponse(DEFAULT_IMAGE)
 
 @app.middleware("http")
