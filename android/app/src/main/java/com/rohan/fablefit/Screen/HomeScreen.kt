@@ -60,19 +60,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.internal.NavContext
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import com.google.android.gms.common.Feature
+import com.rohan.fablefit.navigation.BottomRoute
 import com.rohan.fablefit.ui.model.BannerUiModel
 import com.rohan.fablefit.ui.model.CategorySectionModel
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.ProductCard
+import com.rohan.fablefit.ui.model.SearchFilters
 import com.rohan.fablefit.ui.model.SectionType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(){
+fun HomeScreen(navController: NavController){
     val context=LocalContext.current;
     val scrollState= rememberScrollState();
     val banners = remember {  listOf(
@@ -112,12 +116,24 @@ fun HomeScreen(){
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/sale/300/300",
                 title = "Sale",
-                onClick = { /* Navigate to Sale */ }
+                onClick = { val filter = SearchFilters(category = "Men", query = "Men")
+
+                    // Put it in the SavedStateHandle
+                    navController.currentBackStackEntry?.savedStateHandle?.set("search_filters", filter)
+
+                    // Navigate to Search
+                    navController.navigate(BottomRoute.Search.route) }
             ),
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/trending/300/300",
                 title = "Trending",
-                onClick = { /* Navigate to Trending */ }
+                onClick = { val filter = SearchFilters(category = "Men", query = "Men")
+
+                    // Put it in the SavedStateHandle
+                    navController.currentBackStackEntry?.savedStateHandle?.set("search_filters", filter)
+
+                    // Navigate to Search
+                    navController.navigate(BottomRoute.Search.route) }
             ),
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/men/300/300",

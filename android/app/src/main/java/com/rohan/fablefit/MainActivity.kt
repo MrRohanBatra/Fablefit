@@ -9,6 +9,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -21,7 +24,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -31,6 +40,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -67,6 +78,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.rohan.fablefit.Screen.SearchScreen
 import com.rohan.fablefit.auth.SplashScreen
+import com.rohan.fablefit.ui.model.SearchFilters
 
 
 class MainActivity : ComponentActivity() {
@@ -167,59 +179,98 @@ fun MainECommerceScaffold() {
         BottomRoute.Cart,
         BottomRoute.Profile
     )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val activeFilters = navBackStackEntry?.savedStateHandle?.get<SearchFilters>("search_filters")
 
+    // 2. Initialize the searchQuery with filters.query, or empty if null
+    var searchQuery by remember(activeFilters) {
+        mutableStateOf(activeFilters?.query ?: "")
+    }
     Scaffold(
+
         topBar = {
-
-            TopAppBar(
-                navigationIcon = { Image(
-                    painterResource(R.drawable.icon),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = 12.dp, end = 12.dp)
-                        .size(32.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                ) },
-                title = {
-                    Text(
-                        when (currentRoute) {
-                            BottomRoute.Home.route -> stringResource(R.string.app_name)
-                            BottomRoute.Search.route -> "Search"
-                            BottomRoute.Cart.route -> "My Cart"
-                            BottomRoute.Profile.route -> "Profile"
-                            else -> ""
-                        },
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                },
-                actions = {
-
-                    when (currentRoute) {
-
-                        BottomRoute.Home.route -> {
-                            IconButton(
-                                onClick = {
-                                    navController.navigate(BottomRoute.Search.route)
+            if(currentRoute==BottomRoute.Home.route){
+                TopAppBar(
+                    modifier = Modifier.padding(start = 10.dp, end = 10.dp),
+                    title = { Text(stringResource(R.string.app_name)) },
+                    actions= {Icon(Icons.Default.Search, contentDescription = "Search Icon")
+                        BadgedBox(
+                            modifier = Modifier.padding(8.dp),
+                            badge = {
+                                val cartCount by remember { mutableStateOf(10) }
+                                Badge {
+                                    Text(
+                                        if(cartCount>9){
+                                            "9+"
+                                        }
+                                        else{
+                                            cartCount.toString()
+                                        }
+                                    )
                                 }
-                            ) {
+                            }
+                        ) {
+                            IconButton(onClick = { }) {
                                 Icon(
-                                    Icons.Default.Search,
-
-                                    contentDescription = "Search"
+                                    imageVector = Icons.Default.ShoppingCart, // Outlined looks cleaner
+                                    contentDescription = "Shopping Cart"
                                 )
                             }
                         }
+                             },
+                    navigationIcon = {Image(
+                        painterResource(R.drawable.icon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(start = 12.dp, end = 12.dp)
+                            .size(32.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                    )}
+                )
+            }
+            if(currentRoute== BottomRoute.Search.route){
+                var query by remember { mutableStateOf("") }
+                SearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 4.dp),
+                    inputField = {
+                        SearchBarDefaults.InputField(
+                            query = searchQuery,
+                            onQueryChange = { searchQuery = it },
+                            onSearch = { /* Handle search */ },
+                            expanded = false,
+                            onExpandedChange = {},
+                            placeholder = { Text("Search clothes, brands...") },
+                            leadingIcon ={
+                                IconButton(onClick = {
 
-                        BottomRoute.Cart.route -> {
-                        }
-
-                        BottomRoute.Profile.route -> {
-                            // Settings icon maybe later
-                        }
-                    }
-                }
-            )
+                                    navController.navigate(BottomRoute.Home.route) {
+                                        popUpTo(BottomRoute.Home.route) { inclusive = true }
+                                    }
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                        contentDescription = "Back"
+                                    )
+                                }
+                            },
+                            trailingIcon = {
+                                if (searchQuery.isNotEmpty()) {
+                                    IconButton(onClick = { searchQuery = "" }) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = "Clear"
+                                        )
+                                    }
+                                }
+                            }
+                        )
+                    },
+                    expanded = false,
+                    onExpandedChange = {}
+                ) {}
+            }
         },
         bottomBar = {
             Surface(
@@ -229,23 +280,6 @@ fun MainECommerceScaffold() {
                 tonalElevation = 8.dp
             ) {
                 NavigationBar(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clip(
-//                            RoundedCornerShape(
-//                                topStart = 28.dp,
-//                                topEnd = 28.dp
-//                            )
-//                        )
-//                    //                    .border(
-//                    //                        width = 0.dp,
-//                    //                        color = MaterialTheme.colorScheme.outlineVariant,
-//                    //                        shape = RoundedCornerShape(
-//                    //                            topStart = 28.dp,
-//                    //                            topEnd = 28.dp
-//                    //                        )
-//                    //                    )
-//                    ,
                     tonalElevation = 8.dp
                 ) {
 
@@ -273,16 +307,49 @@ fun MainECommerceScaffold() {
         NavHost(
             navController = navController,
             startDestination = BottomRoute.Home.route,
-            modifier = Modifier.padding(innerPadding),
-            enterTransition = { fadeIn(tween(200)) },
-            exitTransition = { fadeOut(tween(200)) },
+            modifier = Modifier
+                .padding(innerPadding)
+                .clip(RoundedCornerShape(20.dp)),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { it },
+                    animationSpec = tween(300)
+                ) + fadeIn(tween(300))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { -it },
+                    animationSpec = tween(300)
+                ) + fadeOut(tween(300))
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { -it },
+                    animationSpec = tween(300)
+                ) + fadeIn(tween(300))
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { it },
+                    animationSpec = tween(300)
+                ) + fadeOut(tween(300))
+            }
         ) {
 
             composable(BottomRoute.Home.route) {
-                HomeScreen()
+                HomeScreen(navController)
             }
-            composable(BottomRoute.Search.route) {
-                SearchScreen()
+            composable(BottomRoute.Search.route) { backStackEntry ->
+
+                val filters = navController
+                    .previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.get<SearchFilters>("search_filters")
+
+                SearchScreen(
+                    query=searchQuery,
+                    filters = filters
+                )
             }
             composable(BottomRoute.Cart.route) {
                 CartScreen()
