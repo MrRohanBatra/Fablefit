@@ -1,7 +1,7 @@
 package com.rohan.fablefit
 
-import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -9,23 +9,16 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
@@ -51,33 +44,29 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.rohan.fablefit.auth.AuthScreen
-import com.rohan.fablefit.auth.AuthViewModel
 import com.rohan.fablefit.navigation.BottomRoute
 import com.rohan.fablefit.ui.theme.FablefitTheme
 import com.rohan.fablefit.Screen.HomeScreen
 import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.SearchScreen
 import com.rohan.fablefit.auth.SplashScreen
+import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.SearchFilters
 
 
@@ -354,9 +343,18 @@ fun MainECommerceScaffold() {
             composable(BottomRoute.Cart.route) {
                 CartScreen()
             }
-
             composable(BottomRoute.Profile.route) {
                 ProfileScreen()
+            }
+            composable("${BottomRoute.ProductDisplay.route}/{productId}") { navBackStackEntry ->
+                // Extract the ID from the arguments
+                val productId = navBackStackEntry.arguments?.getString("productId")
+                if(productId==null){
+                    Toast.makeText(LocalContext.current,"Product Id not Found", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    ProductDisplayScreen(productId)
+                }
             }
         }
     }

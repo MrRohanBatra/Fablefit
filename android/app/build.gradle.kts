@@ -114,5 +114,9 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(libs.gson)
+    implementation(libs.retrofit)
+
+    // JSON converter
+    implementation(libs.converter.gson)
 
 }

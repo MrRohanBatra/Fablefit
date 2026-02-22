@@ -19,3 +19,19 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# Keep Gson annotations
+-keepattributes *Annotation*
+
+# Keep your model package
+-keep class com.rohan.fablefit.ui.model.** { *; }
+
+# Keep fields with SerializedName
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Keep generic signatures
+-keepattributes Signature
+
+# Keep Kotlin metadata
+-keep class kotlin.Metadata { *; }
