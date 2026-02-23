@@ -1,5 +1,5 @@
 import os
-from motor.motor_asyncio import AsyncIOMotorClient
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,11 +10,14 @@ MONGO_URI = os.getenv("MONGODB_URI")
 if not MONGO_URI:
     raise ValueError("MONGODB_URI is missing from environment variables.")
 
+# 2. Create the Client
 client = AsyncIOMotorClient(MONGO_URI)
 
+# 3. Reference the database for Fablefit
 db = client["fablefit"]
 
-
-async def get_db():
+# 4. Tiny fix: The return type is AsyncIOMotorDatabase, not AsyncIOMotorClient
+async def get_db() -> AsyncIOMotorDatabase:
     return db
+    
 print("Mongo async client created successfully")
