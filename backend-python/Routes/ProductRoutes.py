@@ -18,7 +18,9 @@ ProductRouter = APIRouter(prefix="/products")
 @ProductRouter.post("/add")
 async def add_product(product: Product):
     # 1. Generate embedding
+    
     embedding = ClipServiceModel.generate_embedding(product)
+    
     product.embedding = embedding
     
     # 2. Save using Beanie

@@ -4,12 +4,17 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from transformers import CLIPModel, CLIPProcessor
 import torch
 from PIL import Image
+from dotenv import load_dotenv
 from databaseSchemas.ProductSchema import Product
-
+load_dotenv()
 
 class ClipService:
 
     def __init__(self):
+        self.enabled=os.getenv("ENABLE_CLIP_MODEL","true").lower()=="true"
+        if(not self.enabled):
+            print("⚠️ CLIP_SERVICE: Disabled via environment variable. Skipping model load.")
+            return
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
 
         self.model = CLIPModel.from_pretrained(
@@ -26,7 +31,8 @@ class ClipService:
     # TEXT EMBEDDING (SAFE WAY)
     # ---------------------------------
     def generate_text_embedding(self, text: str):
-
+        if not self.enabled:
+            return [0.0]*512
         inputs = self.processor(
             text=[text],
             return_tensors="pt", # type: ignore
@@ -51,6 +57,8 @@ class ClipService:
     # IMAGE EMBEDDING (SAFE WAY)
     # ---------------------------------
     def generate_image_embedding(self, image_path: str):
+        if not self.enabled:
+            return [0.0]*512
         if(image_path.startswith("/images/")):
             image_path=image_path[1::]
         image = Image.open(image_path).convert("RGB")
@@ -87,7 +95,8 @@ class ClipService:
     # COMBINED PRODUCT EMBEDDING
     # ---------------------------------
     def generate_embedding(self, product: Product):
-
+        if not self.enabled:
+            return [0.0]*512
         text = f"{product.name}. {product.description[:200]}"
         image_path = product.images[0]
 
@@ -100,5 +109,5 @@ class ClipService:
         return combined.cpu().numpy().tolist()
 
 
-# Global instance
+
 ClipServiceModel = ClipService()
