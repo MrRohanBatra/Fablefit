@@ -1,16 +1,18 @@
 package com.rohan.fablefit.ui.Home
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.rohan.fablefit.ui.model.HomeSection
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class HomeSectionsViewModel : ViewModel() {
+class HomeSectionsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = UiRepository()
+    private val repository = UiRepository(getApplication<Application>().applicationContext)
 
     var uiState by mutableStateOf<HomeUiState>(HomeUiState.Loading)
         private set
