@@ -472,9 +472,10 @@ fun DynamicSection(section: HomeSection,onProductClick:(Product)-> Unit) {
                     section.products.take(1).forEach { product ->
                         ProductCard(
                             product = product,
+                            aspectRatio = 16f/9f,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(260.dp),
+                                .fillMaxWidth(),
+//                                .height(260.dp),
                             onProductClick = { onProductClick(product)}
                         )
                     }

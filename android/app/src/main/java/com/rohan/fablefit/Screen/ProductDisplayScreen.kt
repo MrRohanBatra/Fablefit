@@ -67,10 +67,10 @@ fun ProductDisplayScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(360.dp)
+                        .aspectRatio(2f/3f)
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 ) {
-                    ProductImagePager(images = product.images, baseUrl = "https://testserver.rohan.org.in")
+                    ProductImagePager(modifier = Modifier.fillMaxSize(),images = product.images, baseUrl = "https://testserver.rohan.org.in")
 
                     if (product.supportsTryOn) {
                         // Feature Color: Secondary (Differentiates from Primary)
@@ -401,15 +401,14 @@ fun ProductDisplayScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun ProductImagePager(
+    modifier: Modifier,
     images: List<String>,
     baseUrl: String
 ) {
     val pagerState = rememberPagerState(pageCount = { images.size })
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
+        modifier = modifier
     ) {
 
         HorizontalPager(
@@ -422,7 +421,7 @@ fun ProductImagePager(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(16.dp)),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.Crop
             )
         }
         Row(
