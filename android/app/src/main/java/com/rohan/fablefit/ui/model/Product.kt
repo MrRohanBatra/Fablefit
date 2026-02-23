@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -87,12 +88,13 @@ fun ProductCard(
     baseUrl: String="https://testserver.rohan.org.in",
     product: Product,
     modifier: Modifier = Modifier,
+    aspectRatio: Float =2f/3f,
     onProductClick: (Product) -> Unit
 ) {
     ElevatedCard(
         shape = MaterialTheme.shapes.medium, // Uses 12.dp by default in M3
         colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.surfaceContainer
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -100,12 +102,16 @@ fun ProductCard(
             .clickable { onProductClick(product) }
     ) {
         Column {
-            Box(modifier = Modifier.height(200.dp).fillMaxWidth()) {
+            Box(modifier = Modifier
+//                .aspectRatio(2/3f)
+                .fillMaxWidth()
+                .aspectRatio(aspectRatio)
+            ) {
                 SubcomposeAsyncImage(
                     model = product.thumbnail.let{"$baseUrl/$it"},
                     contentDescription = product.name,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.Crop,
                     loading = {
 
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -147,13 +153,13 @@ fun ProductCard(
                 Text(
                     text = product.companyName.uppercase(),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.sp
                 )
                 Text(
                     text = product.name,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -161,8 +167,8 @@ fun ProductCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = product.formattedPrice,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.tertiary,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
