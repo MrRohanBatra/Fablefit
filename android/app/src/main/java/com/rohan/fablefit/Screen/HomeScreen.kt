@@ -63,6 +63,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.internal.NavContext
@@ -82,8 +83,17 @@ import com.rohan.fablefit.ui.model.SectionType
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-fun HomeScreen(navController: NavController,homeViewModel: HomeSectionsViewModel= viewModel()){
+fun HomeScreen(navController: NavController){
+
     val context=LocalContext.current;
+    // ✅ Correct way to initialize an AndroidViewModel in Compose
+    val homeViewModel: HomeSectionsViewModel = viewModel(
+        factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                return HomeSectionsViewModel(context.applicationContext as android.app.Application) as T
+            }
+        }
+    )
     val banners = remember {  listOf(
 
         BannerUiModel(
@@ -187,7 +197,7 @@ fun HomeScreen(navController: NavController,homeViewModel: HomeSectionsViewModel
             is HomeUiState.Loading->{
                     item {
                         Box(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxSize().padding(10.dp),
                             contentAlignment = Alignment.Center
                         ){
                             CircularWavyProgressIndicator()

@@ -2,6 +2,7 @@ package com.rohan.fablefit.ui.model
 
 import android.annotation.SuppressLint
 import android.os.Parcelable
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
 
 import com.google.gson.annotations.SerializedName
+import com.rohan.fablefit.R
 import kotlinx.parcelize.Parcelize
 import java.util.Date
 
@@ -110,7 +113,12 @@ fun ProductCard(
                         }
                     },
                     error = {
-                        Box(Modifier.fillMaxSize().background(Color.Red.copy(alpha = 0.3f)))
+                        Box(Modifier.fillMaxSize()){
+                            Image(
+                                painter= painterResource(R.drawable.error_image),
+                                contentDescription=null,
+                            )
+                        }
                     }
                 )
 
