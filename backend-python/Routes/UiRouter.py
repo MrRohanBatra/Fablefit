@@ -7,6 +7,7 @@ from helpers.Utilities import Utils
 Tool=Utils()
 uiRouter = APIRouter(prefix="/ui")
 
+
 SECTION_TITLES = [
     "Trending Now",
     "Hot Picks",
@@ -17,9 +18,38 @@ SECTION_TITLES = [
     "Top Rated",
     "Best Sellers",
     "Street Style",
-    "Season Specials"
+    "Season Specials",
+    "Viral on Social",
+    "The Hot List",
+    "Most Wanted",
+    "Community Favorites",
+    "Modern Minimalist",
+    "Cybercore Collection",
+    "Old Money Essentials",
+    "Retro Revival",
+    "Utility & Techwear",
+    "Picked For You",
+    "Inspired By Your Style",
+    "Your Weekly Edit",
+    "Weekend Warriors",
+    "After-Hours Fits",
+    "The Winter Edit",
+    "Vacation Mode",
+    "Gym-To-Street",
+    "Date Night Ready",
+    "Exclusive Drops",
+    "Limited Edition",
+    "The Premium Edit",
+    "Curated Classics",
+    "Designer Spotlight",
+    "Budget Finds",
+    "Hidden Gems",
+    "New Arrival Alert",
+    "Wardrobe Refresh",
+    "Sustainable Style",
+    "Athleisure Core",
+    "Evening Elegance"
 ]
-
 SECTION_TYPES = ["HORIZONTAL_LIST", "GRID", "FEATURED"]
 
 @uiRouter.get("/banners", response_model=List[HomeSectionResponse])
