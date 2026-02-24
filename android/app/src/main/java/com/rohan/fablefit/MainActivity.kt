@@ -1,6 +1,7 @@
 package com.rohan.fablefit
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -47,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -63,6 +66,8 @@ import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
 import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.SearchScreen
 import com.rohan.fablefit.auth.SplashScreen
@@ -120,16 +125,24 @@ class MainActivity : ComponentActivity() {
                     kotlinx.coroutines.delay(300)
                     isCheckingAuth = false
                 }
+                LaunchedEffect(Unit) {
+                    FirebaseAuth.getInstance().addAuthStateListener { auth ->
+                        isAuthenticated = auth.currentUser != null
+                    }
+                }
 
                 // 3. Navigation Switchboard
                 Surface(color = MaterialTheme.colorScheme.background) {
 
-                    val targetState = when {
-                        isCheckingAuth -> "SPLASH"
-                        !isAuthenticated -> "AUTH"
-                        else -> "MAIN"
+                    val targetState by remember {
+                        mutableStateOf(
+                            when {
+                                isCheckingAuth -> "SPLASH"
+                                !isAuthenticated -> "AUTH"
+                                else -> "MAIN"
+                            }
+                        )
                     }
-
                     AnimatedContent(
                         targetState = targetState,
                         transitionSpec = {
@@ -146,7 +159,9 @@ class MainActivity : ComponentActivity() {
                                 onLoginSuccess = { isAuthenticated = true }
                             )
 
-                            "MAIN" -> MainECommerceScaffold()
+                            "MAIN" -> MainECommerceScaffold(
+                                onLogout = {isAuthenticated=false}
+                            )
                         }
                     }
                 }
@@ -156,7 +171,7 @@ class MainActivity : ComponentActivity() {
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainECommerceScaffold() {
+fun MainECommerceScaffold(onLogout:()-> Unit) {
 
     val navController = rememberNavController()
     val currentRoute =
@@ -233,7 +248,7 @@ fun MainECommerceScaffold() {
                             placeholder = { Text("Search clothes, brands...") },
                             leadingIcon ={
                                 IconButton(onClick = {
-
+                                    searchQuery=""
                                     navController.navigate(BottomRoute.Home.route) {
                                         popUpTo(BottomRoute.Home.route) { inclusive = true }
                                     }
@@ -283,7 +298,30 @@ fun MainECommerceScaffold() {
                                     launchSingleTop = true
                                 }
                             },
-                            icon = { Icon(screen.icon, screen.title) },
+                            icon = {
+                                if(screen.route== BottomRoute.Profile.route){
+//                                    Icon(screen.icon, screen.title)
+                                    val user= FirebaseAuth.getInstance().currentUser
+                                    Log.d("Fablefit", user?.photoUrl.toString())
+                                    SubcomposeAsyncImage(
+                                        model =user?.photoUrl,
+                                        contentDescription = "profile image",
+                                        modifier = Modifier
+                                            .size(28.dp)
+                                            .clip(CircleShape),
+                                        contentScale = ContentScale.Crop,
+                                        loading = {
+                                            Icon(screen.icon,contentDescription=screen.title)
+                                        },
+                                        error = {
+                                            Icon(screen.icon,contentDescription=screen.title)
+                                        }
+                                    )
+                                }
+                                else{
+                                    Icon(screen.icon, screen.title)
+                                }
+                            },
                             label = { Text(screen.title) },
                             alwaysShowLabel = false,
                         )
@@ -344,7 +382,9 @@ fun MainECommerceScaffold() {
                 CartScreen()
             }
             composable(BottomRoute.Profile.route) {
-                ProfileScreen()
+                ProfileScreen(navController, onLogout = {
+                    onLogout
+                })
             }
             composable("${BottomRoute.ProductDisplay.route}/{productId}") { navBackStackEntry ->
                 // Extract the ID from the arguments
