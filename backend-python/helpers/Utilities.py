@@ -2,6 +2,8 @@ import re
 from typing import Optional
 import sys
 import os
+
+import torch
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 MEN_WORDS   = {"men", "man", "mens", "male", "guy"}
@@ -85,3 +87,24 @@ class Utils:
             matched = [p for p in matched if self.matches_gender(p, gender)]
 
         return matched
+    
+class GptUtils():
+    def __init__(self):
+        pass
+    def get_best_cuda_device(self)->str:
+        if not torch.cuda.is_available():
+            return "cpu"
+
+        best_gpu = 0
+        best_free = 0
+
+        for i in range(torch.cuda.device_count()):
+            torch.cuda.set_device(i)
+            free, total = torch.cuda.mem_get_info(i)   # bytes
+            free_gb = free / 1024**3
+
+            if free_gb > best_free:
+                best_free = free_gb
+                best_gpu = i
+
+        return f"cuda:{best_gpu}"

@@ -6,17 +6,18 @@ import torch
 from PIL import Image
 from dotenv import load_dotenv
 from databaseSchemas.ProductSchema import Product
+from helpers.Utilities import GptUtils
 load_dotenv()
 
 class ClipService:
 
     def __init__(self):
+        self.gpuUtils = GptUtils()
         self.enabled=os.getenv("ENABLE_CLIP_MODEL","true").lower()=="true"
         if(not self.enabled):
             print("⚠️ CLIP_SERVICE: Disabled via environment variable. Skipping model load.")
             return
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
-
+        self.device = self.gpuUtils.get_best_cuda_device()
         self.model = CLIPModel.from_pretrained(
             "openai/clip-vit-base-patch32"
         ).to(self.device) # type: ignore
