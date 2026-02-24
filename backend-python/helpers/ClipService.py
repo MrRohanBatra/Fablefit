@@ -36,7 +36,9 @@ class ClipService:
         inputs = self.processor(
             text=[text],
             return_tensors="pt", # type: ignore
-            padding=True # type: ignore
+            padding=True # type: ignore,
+            truncation=True, # Automatically handles token limits
+            max_length=77
         )
 
         input_ids = inputs["input_ids"].to(self.device)
@@ -66,6 +68,7 @@ class ClipService:
         inputs = self.processor(
             images=[image],
             return_tensors="pt" # type: ignore
+            
         ).to(self.device)
 
         with torch.no_grad():
