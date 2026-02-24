@@ -1,12 +1,6 @@
 package com.rohan.fablefit.Screen
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,16 +24,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.CircularWavyProgressIndicator
-
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LoadingIndicator
@@ -47,14 +37,14 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
 import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -63,13 +53,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.internal.NavContext
-import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
-import com.google.android.gms.common.Feature
 import com.rohan.fablefit.navigation.BottomRoute
 import com.rohan.fablefit.ui.Home.HomeSectionsViewModel
 import com.rohan.fablefit.ui.Home.HomeUiState
@@ -86,7 +72,6 @@ import com.rohan.fablefit.ui.model.SectionType
 fun HomeScreen(navController: NavController){
 
     val context=LocalContext.current;
-    // ✅ Correct way to initialize an AndroidViewModel in Compose
     val homeViewModel: HomeSectionsViewModel = viewModel(
         factory = object : androidx.lifecycle.ViewModelProvider.Factory {
             override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
@@ -132,8 +117,6 @@ fun HomeScreen(navController: NavController){
                 imagePath = "https://picsum.photos/seed/sale/300/300",
                 title = "Sale",
                 onClick = { val filter = SearchFilters(category = "Men", query = "Men")
-
-                    // Put it in the SavedStateHandle
                     navController.currentBackStackEntry?.savedStateHandle?.set("search_filters", filter)
 
                     // Navigate to Search
@@ -197,7 +180,9 @@ fun HomeScreen(navController: NavController){
             is HomeUiState.Loading->{
                     item {
                         Box(
-                            modifier = Modifier.fillMaxSize().padding(10.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
                             contentAlignment = Alignment.Center
                         ){
                             CircularWavyProgressIndicator()
@@ -428,14 +413,15 @@ fun DynamicSection(section: HomeSection,onProductClick:(Product)-> Unit) {
 
             SectionType.HORIZONTAL_LIST -> {
                 LazyRow(
+                    modifier = Modifier.fillMaxHeight().clip(RoundedCornerShape(20.dp)),
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(section.products) { product ->
                         ProductCard(
-                                product = product,
-                                modifier = Modifier.width(160.dp),
-                                onProductClick = {onProductClick(product)}
+                            product = product,
+                            modifier = Modifier.width(160.dp),
+                            onProductClick = { onProductClick(product) }
                         )
                     }
                 }
@@ -446,7 +432,8 @@ fun DynamicSection(section: HomeSection,onProductClick:(Product)-> Unit) {
                     columns = GridCells.Fixed(2),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 600.dp), // prevent infinite height inside LazyColumn
+                        .heightIn(max = 600.dp)
+                        .clip(RoundedCornerShape(20.dp)), // prevent infinite height inside LazyColumn
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -467,7 +454,7 @@ fun DynamicSection(section: HomeSection,onProductClick:(Product)-> Unit) {
             SectionType.FEATURED -> {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp).clip(RoundedCornerShape(20.dp))
                 ) {
                     section.products.take(1).forEach { product ->
                         ProductCard(

@@ -28,9 +28,27 @@ class ProductViewModel(): ViewModel(
                 }
         }
     }
+    fun searchProduct(searchQuery: String,limit: Int=10){
+        if (searchQuery.isBlank()) {
+            uiState = ProductModelUiState.Initial
+            return // Stop the function here so no API call is made
+        }
+        viewModelScope.launch {
+            uiState= ProductModelUiState.Loading
+            productRepository.searchProduct(searchQuery,limit)
+                .onSuccess {
+                    uiState= ProductModelUiState.SuccessList(it)
+                }
+                .onFailure {
+                    uiState= ProductModelUiState.Error("Failed to load")
+                }
+        }
+    }
 }
 sealed class ProductModelUiState {
+    object Initial : ProductModelUiState()
     object Loading : ProductModelUiState()
     data class Success(val product: Product) : ProductModelUiState()
+    data class SuccessList(val products:List<Product>): ProductModelUiState()
     data class Error(val message: String) : ProductModelUiState()
 }

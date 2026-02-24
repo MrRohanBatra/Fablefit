@@ -396,6 +396,9 @@ fun ProductDisplayScreen(
             }
 
         }
+        else -> {
+
+        }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
