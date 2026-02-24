@@ -97,7 +97,8 @@ class ClipService:
     def generate_embedding(self, product: Product):
         if not self.enabled:
             return [0.0]*512
-        text = f"{product.name}. {product.description[:200]}"
+        # text = f"{product.name}. {product.description[:200]}"
+        text = f"{product.name} by {product.companyName}. Category: {product.category}. Color: {product.color}. {product.description[:200]}"
         image_path = product.images[0]
 
         text_emb = torch.tensor(self.generate_text_embedding(text), device=self.device)
