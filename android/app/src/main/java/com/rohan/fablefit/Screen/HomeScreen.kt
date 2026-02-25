@@ -117,10 +117,17 @@ fun HomeScreen(navController: NavController){
                 imagePath = "https://picsum.photos/seed/sale/300/300",
                 title = "Sale",
                 onClick = { val filter = SearchFilters(category = "Men", query = "Men")
-                    navController.currentBackStackEntry?.savedStateHandle?.set("search_filters", filter)
 
-                    // Navigate to Search
-                    navController.navigate(BottomRoute.Search.route) }
+                    // 1. Navigate to Search first
+                    navController.navigate(BottomRoute.Search.route) {
+                        // Avoid building up a large stack of search screens
+                        launchSingleTop = true
+                    }
+
+                    // 2. Find the Search screen's backstack entry and set the data there
+                    navController.getBackStackEntry(BottomRoute.Search.route)
+                        .savedStateHandle["search_filters"] = filter
+                }
             ),
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/trending/300/300",
