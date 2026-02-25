@@ -100,7 +100,6 @@ fun ProfileScreen(navController: NavController,onLogout:()-> Unit) {
                 ProfileMenuItem(Icons.Default.Settings, "App Settings") { /* TODO */ }
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp), thickness = 0.5.dp)
                 ProfileMenuItem(Icons.Default.ExitToApp, "Logout", isDestructive = true) {
-                    FirebaseAuth.getInstance().signOut()
                     onLogout()
                     }
                 }
