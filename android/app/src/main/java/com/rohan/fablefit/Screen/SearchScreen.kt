@@ -30,30 +30,123 @@ import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.ProductCard
 import com.rohan.fablefit.ui.model.SearchFilters
 import kotlinx.coroutines.delay
-
+//
+//@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
+//@Composable
+//fun SearchScreen(
+//    query: String,
+//    filters: SearchFilters?,
+//    onProductClick: ((Product) -> Unit)? = null,
+//    productViewModel: ProductViewModel = viewModel()
+//) {
+//    val uiState = productViewModel.uiState
+//    var searchQuery by remember {
+//        mutableStateOf(
+//            // 1. Check if the filter has a valid query
+//            filters?.query?.takeIf { it.isNotBlank() }
+//            // 2. If it doesn't, fall back to the main query
+//                ?: query
+//        )
+//    }
+//    LaunchedEffect(query, filters) {
+//        delay(300)
+//        // We removed the 'if (query.isNotEmpty())' check here.
+//        // Why? Because our updated ViewModel already checks if the query is blank
+//        // and safely resets the state to Initial without making an API call.
+//        productViewModel.searchProduct(searchQuery)
+//    }
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .clip(RoundedCornerShape(20.dp))
+//    ) {
+//        when (uiState) {
+//            // 1. The Initial State (Empty search bar)
+//            is ProductModelUiState.Initial -> {
+//                Box(
+//                    modifier = Modifier.fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Text("Search Something")
+//                }
+//            }
+//
+//            // 2. The Loading State (Fetching data)
+//            is ProductModelUiState.Loading -> {
+//                Box(
+//                    modifier = Modifier.fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    // Using the indicator you imported!
+//                    CircularWavyProgressIndicator()
+//                }
+//            }
+//
+//            // 3. The Success State (Got data)
+//            is ProductModelUiState.SuccessList -> {
+//                val products = uiState.products
+//
+//                if (products.isEmpty()) {
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text("No products found")
+//                    }
+//                } else {
+//                    LazyVerticalGrid(
+//                        columns = GridCells.Fixed(2),
+//                        contentPadding = PaddingValues(16.dp),
+//                        verticalArrangement = Arrangement.spacedBy(16.dp),
+//                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+//                    ) {
+//                        itemsIndexed(items = products) { index, product ->
+//                            ProductCard(
+//                                product = product,
+//                                onProductClick = {
+//                                    onProductClick?.invoke(product)
+//                                }
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//
+//            // 4. The Error State
+//            is ProductModelUiState.Error -> {
+//                Box(
+//                    modifier = Modifier.fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Text(uiState.message) // Use the actual error message here
+//                }
+//            }
+//
+//            else -> {}
+//        }
+//    }
+//}
+//
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchScreen(
-    query: String,
+    query: String, // This comes from NavHost/savedStateHandle
     filters: SearchFilters?,
     onProductClick: ((Product) -> Unit)? = null,
     productViewModel: ProductViewModel = viewModel()
 ) {
     val uiState = productViewModel.uiState
-    var searchQuery by remember {
-        mutableStateOf(
-            // 1. Check if the filter has a valid query
-            filters?.query?.takeIf { it.isNotBlank() }
-            // 2. If it doesn't, fall back to the main query
-                ?: query
-        )
-    }
+
+    // FIX: Use 'query' directly from the parameters.
+    // We removed 'var searchQuery by remember...' because it was shadowing the real data.
+
     LaunchedEffect(query, filters) {
+        // Optional: debounce to avoid hitting the API on every single keystroke
         delay(300)
-        // We removed the 'if (query.isNotEmpty())' check here.
-        // Why? Because our updated ViewModel already checks if the query is blank
-        // and safely resets the state to Initial without making an API call.
-        productViewModel.searchProduct(searchQuery)
+
+        // Pass the actual parameter 'query' to the ViewModel
+        productViewModel.searchProduct(query)
     }
 
     Column(
@@ -62,37 +155,23 @@ fun SearchScreen(
             .clip(RoundedCornerShape(20.dp))
     ) {
         when (uiState) {
-            // 1. The Initial State (Empty search bar)
             is ProductModelUiState.Initial -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text("Search Something")
                 }
             }
 
-            // 2. The Loading State (Fetching data)
             is ProductModelUiState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Using the indicator you imported!
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularWavyProgressIndicator()
                 }
             }
 
-            // 3. The Success State (Got data)
             is ProductModelUiState.SuccessList -> {
                 val products = uiState.products
-
                 if (products.isEmpty()) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("No products found")
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("No products found for '$query'")
                     }
                 } else {
                     LazyVerticalGrid(
@@ -101,33 +180,25 @@ fun SearchScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        itemsIndexed(items = products) { index, product ->
+                        itemsIndexed(items = products) { _, product ->
                             ProductCard(
                                 product = product,
-                                onProductClick = {
-                                    onProductClick?.invoke(product)
-                                }
+                                onProductClick = { onProductClick?.invoke(product) }
                             )
                         }
                     }
                 }
             }
 
-            // 4. The Error State
             is ProductModelUiState.Error -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(uiState.message) // Use the actual error message here
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(uiState.message)
                 }
             }
-
             else -> {}
         }
     }
 }
-//
 //@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 //@Composable
 //fun SearchScreen(

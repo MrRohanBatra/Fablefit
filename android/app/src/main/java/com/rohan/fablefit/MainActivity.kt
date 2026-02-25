@@ -15,6 +15,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -44,7 +45,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -85,92 +88,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-//            FablefitTheme {
-//                // 1. Start with a 'null' or 'Loading' state
-//                var authChecked by remember { mutableStateOf(false) }
-//                var user by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
-//
-//                // 2. Use a LaunchedEffect to verify the user once on startup
-//                LaunchedEffect(Unit) {
-//                    // This ensures the SDK has a moment to initialize
-//                    user = FirebaseAuth.getInstance().currentUser
-//                    authChecked = true
-//                }
-//
-//                // 3. Handle the UI based on the check status
-//                if (!authChecked) {
-//
-//                    SplashScreen()
-//                } else {
-//                    if (user == null) {
-//                        AuthScreen(
-//                            context = LocalContext.current,
-//                            onLoginSuccess = {
-//                                user = FirebaseAuth.getInstance().currentUser
-//                            }
-//                        )
-//                    } else {
-//                        MainECommerceScaffold()
-//                    }
-//                }
-//            }
-//            FablefitTheme {
-//                // 1. Define states for the check
-//                var isCheckingAuth by remember { mutableStateOf(true) }
-//                var isAuthenticated by remember { mutableStateOf(false) }
-//
-//                // 2. Perform the background check on startup
-//                LaunchedEffect(Unit) {
-//                    val startTime= System.currentTimeMillis();
-//                    // Check Firebase for an existing session
-//                    val currentUser = FirebaseAuth.getInstance().currentUser
-//                    isAuthenticated = currentUser != null
-//                    val elapsed = System.currentTimeMillis() - startTime
-//                    if (elapsed < 800) kotlinx.coroutines.delay(800 - elapsed)
-//                    kotlinx.coroutines.delay(300)
-//                    isCheckingAuth = false
-//                }
-//                LaunchedEffect(Unit) {
-//                    FirebaseAuth.getInstance().addAuthStateListener { auth ->
-//                        isAuthenticated = auth.currentUser != null
-//                    }
-//                }
-//
-//                // 3. Navigation Switchboard
-//                Surface(color = MaterialTheme.colorScheme.background) {
-//
-//                    val targetState by remember {
-//                        mutableStateOf(
-//                            when {
-//                                isCheckingAuth -> "SPLASH"
-//                                !isAuthenticated -> "AUTH"
-//                                else -> "MAIN"
-//                            }
-//                        )
-//                    }
-//                    AnimatedContent(
-//                        targetState = targetState,
-//                        transitionSpec = {
-//                            fadeIn(tween(500)) togetherWith fadeOut(tween(800))
-//                        },
-//                        label = "AppStartTransition"
-//                    ) { state ->
-//
-//                        when (state) {
-//                            "SPLASH" -> SplashScreen()
-//
-//                            "AUTH" -> AuthScreen(
-//                                context = LocalContext.current,
-//                                onLoginSuccess = { isAuthenticated = true }
-//                            )
-//
-//                            "MAIN" -> MainECommerceScaffold(
-//                                onLogout = {isAuthenticated=false}
-//                            )
-//                        }
-//                    }
-//                }
-//            }
             FablefitTheme() {
                 val navController=rememberNavController();
                 Surface(
@@ -181,6 +98,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = AppRoute.Splash
                     ){
                         composable(AppRoute.Splash) {
+                            SplashScreen()
                             LaunchedEffect(Unit) {
                                 val startTime=System.currentTimeMillis();
                                 val currentUser= FirebaseAuth.getInstance().currentUser
@@ -222,12 +140,12 @@ class MainActivity : ComponentActivity() {
                             MainECommerceScaffold(
                                 onLogout = {
                                     FirebaseAuth.getInstance().signOut();
-
+                                    navController.navigate(AppRoute.Auth) {
+                                        popUpTo(0) { inclusive = true }
+                                        launchSingleTop = true
+                                    }
                                 }
                             )
-                        }
-                        composable(AppRoute.Splash) {
-                            SplashScreen()
                         }
                     }
                 }
@@ -263,11 +181,16 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 TopAppBar(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp),
                     title = { Text(stringResource(R.string.app_name)) },
-                    actions= {Icon(Icons.Default.Search, contentDescription = "Search Icon")
+                    actions= {
+                        IconButton(onClick ={
+                            navController.navigate(BottomRoute.Search.route)
+                        }) {
+                            Icon(Icons.Default.Search, contentDescription = "Search Icon")
+                        }
                         BadgedBox(
                             modifier = Modifier.padding(8.dp),
                             badge = {
-                                val cartCount by remember { mutableStateOf(10) }
+                                val cartCount by remember { mutableIntStateOf(10) }
                                 Badge {
                                     Text(
                                         if(cartCount>9){
@@ -279,8 +202,11 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                                     )
                                 }
                             }
-                        ) {
-                            IconButton(onClick = { }) {
+                        )
+                                 {
+                            IconButton(onClick = { navController.navigate(BottomRoute.Cart.route){
+
+                            } }) {
                                 Icon(
                                     imageVector = Icons.Default.ShoppingCart, // Outlined looks cleaner
                                     contentDescription = "Shopping Cart"
@@ -299,7 +225,6 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 )
             }
             if(currentRoute== BottomRoute.Search.route){
-                var query by remember { mutableStateOf("") }
                 SearchBar(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -307,8 +232,12 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                     inputField = {
                         SearchBarDefaults.InputField(
                             query = searchQuery,
-                            onQueryChange = { searchQuery = it },
-                            onSearch = { /* Handle search */ },
+                            onQueryChange = { newQuery ->
+                                searchQuery = newQuery
+                                // Update the navigation handle so the screen can see it
+                                navController.currentBackStackEntry?.savedStateHandle?.set("search_query", newQuery)
+                            },
+                            onSearch = {  },
                             expanded = false,
                             onExpandedChange = {},
                             placeholder = { Text("Search clothes, brands...") },
@@ -434,14 +363,19 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             }
             composable(BottomRoute.Search.route) { backStackEntry ->
 
-                val filters = navController
-                    .previousBackStackEntry
-                    ?.savedStateHandle
-                    ?.get<SearchFilters>("search_filters")
-
+                val liveQuery by backStackEntry.savedStateHandle
+                    .getStateFlow("search_query", searchQuery)
+                    .collectAsState()
+                val filters = backStackEntry.savedStateHandle.get<SearchFilters>("search_filters")
                 SearchScreen(
-                    query=searchQuery,
-                    filters = filters
+                    query = liveQuery, // Use the live value from the handle
+                    filters = filters,
+                    onProductClick = {
+                        product->
+                        navController.navigate(
+                            "productdisplay/${product.id}"
+                        )
+                    }
                 )
             }
             composable(BottomRoute.Cart.route) {
@@ -449,7 +383,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             }
             composable(BottomRoute.Profile.route) {
                 ProfileScreen(navController, onLogout = {
-                    onLogout
+                    onLogout()
                 })
             }
             composable("${BottomRoute.ProductDisplay.route}/{productId}") { navBackStackEntry ->
