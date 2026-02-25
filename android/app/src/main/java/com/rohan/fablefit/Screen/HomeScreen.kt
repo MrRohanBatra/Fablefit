@@ -114,9 +114,27 @@ fun HomeScreen(navController: NavController){
     val categories = remember {
         listOf(
             CategorySectionModel(
-                imagePath = "https://picsum.photos/seed/sale/300/300",
-                title = "Sale",
-                onClick = { val filter = SearchFilters(category = "Men", query = "Men")
+                imagePath = "https://picsum.photos/seed/trending/300/300",
+                title = "Trending",
+                onClick = {
+                    val filter = SearchFilters(category = "", query = "Trending")
+
+                    // 1. Navigate to Search first
+                    navController.navigate(BottomRoute.Search.route) {
+                        // Avoid building up a large stack of search screens
+                        launchSingleTop = true
+                    }
+
+                    // 2. Find the Search screen's backstack entry and set the data there
+                    navController.getBackStackEntry(BottomRoute.Search.route)
+                        .savedStateHandle["search_filters"] = filter
+
+                }
+            ),
+            CategorySectionModel(
+                imagePath = "https://picsum.photos/seed/men/300/300",
+                title = "Men",
+                onClick = {  val filter = SearchFilters(category = "Men", query = "Men")
 
                     // 1. Navigate to Search first
                     navController.navigate(BottomRoute.Search.route) {
@@ -130,40 +148,68 @@ fun HomeScreen(navController: NavController){
                 }
             ),
             CategorySectionModel(
-                imagePath = "https://picsum.photos/seed/trending/300/300",
-                title = "Trending",
-                onClick = { val filter = SearchFilters(category = "Men", query = "Men")
-
-                    // Put it in the SavedStateHandle
-                    navController.currentBackStackEntry?.savedStateHandle?.set("search_filters", filter)
-
-                    // Navigate to Search
-                    navController.navigate(BottomRoute.Search.route) }
-            ),
-            CategorySectionModel(
-                imagePath = "https://picsum.photos/seed/men/300/300",
-                title = "Men",
-                onClick = { /* Navigate to Men */ }
-            ),
-            CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/women/300/300",
                 title = "Women",
-                onClick = { /* Navigate to Women */ }
+                onClick = {  val filter = SearchFilters(category = "Women", query = "Women")
+
+                    // 1. Navigate to Search first
+                    navController.navigate(BottomRoute.Search.route) {
+                        // Avoid building up a large stack of search screens
+                        launchSingleTop = true
+                    }
+
+                    // 2. Find the Search screen's backstack entry and set the data there
+                    navController.getBackStackEntry(BottomRoute.Search.route)
+                        .savedStateHandle["search_filters"] = filter
+                }
             ),
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/uppers/300/300",
                 title = "Uppers",
-                onClick = { /* Navigate to Tops/Jackets */ }
+                onClick = {  val filter = SearchFilters(category = "Uppers", query = "Upper")
+
+                    // 1. Navigate to Search first
+                    navController.navigate(BottomRoute.Search.route) {
+                        // Avoid building up a large stack of search screens
+                        launchSingleTop = true
+                    }
+
+                    // 2. Find the Search screen's backstack entry and set the data there
+                    navController.getBackStackEntry(BottomRoute.Search.route)
+                        .savedStateHandle["search_filters"] = filter
+                }
             ),
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/lowers/300/300",
                 title = "Lowers",
-                onClick = { /* Navigate to Pants/Joggers */ }
+                onClick = {  val filter = SearchFilters(category = "lowers", query = "Lowers")
+
+                    // 1. Navigate to Search first
+                    navController.navigate(BottomRoute.Search.route) {
+                        // Avoid building up a large stack of search screens
+                        launchSingleTop = true
+                    }
+
+                    // 2. Find the Search screen's backstack entry and set the data there
+                    navController.getBackStackEntry(BottomRoute.Search.route)
+                        .savedStateHandle["search_filters"] = filter
+                }
             ),
             CategorySectionModel(
                 imagePath = "https://picsum.photos/seed/dresses/300/300",
                 title = "Dresses",
-                onClick = { /* Navigate to Full Dresses */ }
+                onClick = {   val filter = SearchFilters(category = "Women", query = "Dresses")
+
+                    // 1. Navigate to Search first
+                    navController.navigate(BottomRoute.Search.route) {
+                        // Avoid building up a large stack of search screens
+                        launchSingleTop = true
+                    }
+
+                    // 2. Find the Search screen's backstack entry and set the data there
+                    navController.getBackStackEntry(BottomRoute.Search.route)
+                        .savedStateHandle["search_filters"] = filter
+                }
             )
         )
     }
