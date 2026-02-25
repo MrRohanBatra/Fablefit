@@ -16,10 +16,18 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -29,6 +37,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.CircularWavyProgressIndicator
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -51,6 +60,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -70,12 +80,14 @@ import com.rohan.fablefit.Screen.HomeScreen
 import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHost
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.SearchScreen
+import com.rohan.fablefit.Screen.UserInfo
 import com.rohan.fablefit.auth.AuthViewModel
 import com.rohan.fablefit.auth.SplashScreen
 import com.rohan.fablefit.navigation.AppRoute
@@ -175,7 +187,6 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
         mutableStateOf(activeFilters?.query ?: "")
     }
     Scaffold(
-
         topBar = {
             if(currentRoute==BottomRoute.Home.route){
                 TopAppBar(
@@ -270,6 +281,51 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                     onExpandedChange = {}
                 ) {}
             }
+            if(currentRoute== BottomRoute.Profile.route || currentRoute== BottomRoute.MyInfo.route){
+                Surface(
+                    shape = RoundedCornerShape(24.dp),
+                    tonalElevation = 4.dp,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    val user= FirebaseAuth.getInstance().currentUser
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(20.dp)
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.fillMaxWidth().padding(24.dp)
+                        ) {
+
+                            SubcomposeAsyncImage(
+                                model = user?.photoUrl,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clip(CircleShape),
+                                contentScale = ContentScale.Crop,
+                                loading = {
+                                    CircularWavyProgressIndicator()
+                                }
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            Text(
+                                user?.displayName ?: "FableFit User",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold
+                            )
+
+                            Text(
+                                user?.email ?: "",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+
+            }
         },
         bottomBar = {
             Surface(
@@ -323,7 +379,10 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                     }
                 }
             }
-        }
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top))
     ) { innerPadding ->
 
         NavHost(
@@ -395,6 +454,9 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 else{
                     ProductDisplayScreen(productId)
                 }
+            }
+            composable(BottomRoute.MyInfo.route) {
+                UserInfo()
             }
         }
     }

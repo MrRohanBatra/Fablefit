@@ -18,6 +18,7 @@ sealed class BottomRoute(
     object Cart : BottomRoute("cart", "Cart", Icons.Default.ShoppingCart)
     object Profile : BottomRoute("profile", "Profile", Icons.Default.Person)
     object ProductDisplay: BottomRoute(route = "productdisplay", title = "Product Display", icon = Icons.Default.Preview)
+    object MyInfo: BottomRoute(route="myinfo", title = "User Info", icon =Icons.Default.Preview )
 }
 object AppRoute {
     const val Splash = "splash"
