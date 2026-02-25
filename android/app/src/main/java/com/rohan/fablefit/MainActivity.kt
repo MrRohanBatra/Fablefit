@@ -1,5 +1,6 @@
 package com.rohan.fablefit
 
+import android.media.audiofx.HapticGenerator
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -64,8 +65,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -138,6 +142,7 @@ class MainActivity : ComponentActivity() {
                             AuthScreen(
                                 context=LocalContext.current,
                                 onLoginSuccess = {
+
                                     Log.d("login","login Complete Signed in as ${FirebaseAuth.getInstance().currentUser?.email}")
                                     navController.navigate(AppRoute.Main){
                                         popUpTo(AppRoute.Auth) {
@@ -186,6 +191,8 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
     var searchQuery by remember(activeFilters) {
         mutableStateOf(activeFilters?.query ?: "")
     }
+    val haptic=LocalHapticFeedback.current
+    val hapticValue=HapticFeedbackType.ContextClick
     Scaffold(
         topBar = {
             if(currentRoute==BottomRoute.Home.route){
@@ -285,7 +292,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 Surface(
                     shape = RoundedCornerShape(24.dp),
                     tonalElevation = 4.dp,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().padding(18.dp)
                 ) {
                     val user= FirebaseAuth.getInstance().currentUser
                     Box(
@@ -418,10 +425,11 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
         ) {
 
             composable(BottomRoute.Home.route) {
+                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
                 HomeScreen(navController)
             }
             composable(BottomRoute.Search.route) { backStackEntry ->
-
+                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
                 val liveQuery by backStackEntry.savedStateHandle
                     .getStateFlow("search_query", searchQuery)
                     .collectAsState()
@@ -438,9 +446,12 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 )
             }
             composable(BottomRoute.Cart.route) {
+                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
                 CartScreen()
             }
             composable(BottomRoute.Profile.route) {
+//                haptic.performHapticFeedback(hapticValue)
+                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
                 ProfileScreen(navController, onLogout = {
                     onLogout()
                 })
@@ -449,13 +460,16 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 // Extract the ID from the arguments
                 val productId = navBackStackEntry.arguments?.getString("productId")
                 if(productId==null){
+                    haptic.performHapticFeedback(hapticFeedbackType = HapticFeedbackType.Reject)
                     Toast.makeText(LocalContext.current,"Product Id not Found", Toast.LENGTH_SHORT).show()
                 }
                 else{
+//                    LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
                     ProductDisplayScreen(productId)
                 }
             }
             composable(BottomRoute.MyInfo.route) {
+//                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
                 UserInfo()
             }
         }

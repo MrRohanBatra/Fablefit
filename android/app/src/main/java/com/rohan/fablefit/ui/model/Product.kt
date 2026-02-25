@@ -25,7 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -91,6 +93,7 @@ fun ProductCard(
     aspectRatio: Float =2f/3f,
     onProductClick: (Product) -> Unit
 ) {
+    val haptic=LocalHapticFeedback.current
     ElevatedCard(
         shape = MaterialTheme.shapes.medium, // Uses 12.dp by default in M3
         colors = CardDefaults.elevatedCardColors(
@@ -99,7 +102,10 @@ fun ProductCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .clickable { onProductClick(product) }
+            .clickable {
+                haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                onProductClick(product)
+            }
     ) {
         Column {
             Box(modifier = Modifier

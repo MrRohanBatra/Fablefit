@@ -55,6 +55,8 @@ import kotlin.math.max
 import kotlin.ranges.rangeTo
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -64,6 +66,7 @@ fun SearchScreen(
     onProductClick: ((Product) -> Unit)? = null,
     productViewModel: ProductViewModel = viewModel()
 ) {
+    val haptic=LocalHapticFeedback.current
     val uiState = productViewModel.uiState
     var activeFilter by remember { mutableStateOf<SearchFilters?>(filters) }
     LaunchedEffect(query, filters) {
@@ -130,20 +133,24 @@ fun SearchScreen(
             }
         }
         var expandedModalSheet by remember { mutableStateOf(false) }
-        val sheetState = rememberModalBottomSheetState()
+        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         ExtendedFloatingActionButton(
             text = { Text("Filters") },
             icon = { Icon(Icons.Default.FilterList, contentDescription = "filter button") },
-            onClick = { expandedModalSheet = !expandedModalSheet },
-            modifier = Modifier.align(Alignment.BottomEnd)
+            onClick = {
+                haptic.performHapticFeedback(HapticFeedbackType.Confirm)
+                expandedModalSheet = !expandedModalSheet
+                      },
+            modifier = Modifier.align(Alignment.BottomEnd).padding(18.dp)
         )
 
         if(expandedModalSheet){
             ModalBottomSheet(
                 sheetState = sheetState,
-                onDismissRequest = {expandedModalSheet=!expandedModalSheet}
+                onDismissRequest = {haptic.performHapticFeedback(HapticFeedbackType.Confirm);expandedModalSheet=!expandedModalSheet}
             ) {
                 FilterBottomSheetContent(filters=activeFilter,onDismiss = {
+                    haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                     expandedModalSheet = false
                 }, onApply = {filters ->
                     activeFilter=filters;
@@ -159,6 +166,7 @@ fun FilterBottomSheetContent(
     onDismiss: () -> Unit,
     onApply: (SearchFilters) -> Unit
 ) {
+    val haptic= LocalHapticFeedback.current
     var selectedFilters by remember { mutableStateOf<SearchFilters?>(null) }
     var selectedGender by remember { mutableStateOf(filters?.category ?:"") }
     var minPrice by remember { mutableStateOf(filters?.minPrice ?: 100f) }
@@ -196,7 +204,9 @@ fun FilterBottomSheetContent(
                 genderCat.forEach { it->
                     FilterChip(
                         selected = selectedGender==it,
-                        onClick = {selectedGender=it},
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType. ContextClick)
+                            selectedGender=it},
                         label = {Text(it)}
                     )
                 }
@@ -214,6 +224,7 @@ fun FilterBottomSheetContent(
                     FilterChip(
                         selected = size in selectedSizes,
                         onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType. ContextClick)
                             selectedSizes =
                                 if (size in selectedSizes) {
                                     selectedSizes - size
@@ -246,6 +257,7 @@ fun FilterBottomSheetContent(
                     FilterChip(
                         selected = color in selectedColor,
                         onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType. ContextClick)
                             selectedColor =
                                 if (color in selectedColor) {
                                     selectedColor - color
@@ -268,12 +280,16 @@ fun FilterBottomSheetContent(
                 Text("₹${sliderPosition.start.toInt()} - ₹${sliderPosition.endInclusive.toInt()}")
             }
             RangeSlider(
+                modifier = Modifier.fillMaxWidth().padding(3.dp),
                 value = sliderPosition,
                 onValueChange = {
+                    if (it.start != sliderPosition.start || it.endInclusive != sliderPosition.endInclusive) {
+                        haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                    }
                     sliderPosition = it;
-                    minPrice=sliderPosition.start;
-                    maxPrice=sliderPosition.endInclusive;
-                                },
+                    minPrice = sliderPosition.start;
+                    maxPrice = sliderPosition.endInclusive;
+                },
                 valueRange = 0f..5000f,
                 steps = 100
             )
