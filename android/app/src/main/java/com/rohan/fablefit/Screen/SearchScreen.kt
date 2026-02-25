@@ -3,16 +3,36 @@ package com.rohan.fablefit.Screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,117 +50,20 @@ import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.ProductCard
 import com.rohan.fablefit.ui.model.SearchFilters
 import kotlinx.coroutines.delay
-//
-//@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-//@Composable
-//fun SearchScreen(
-//    query: String,
-//    filters: SearchFilters?,
-//    onProductClick: ((Product) -> Unit)? = null,
-//    productViewModel: ProductViewModel = viewModel()
-//) {
-//    val uiState = productViewModel.uiState
-//    var searchQuery by remember {
-//        mutableStateOf(
-//            // 1. Check if the filter has a valid query
-//            filters?.query?.takeIf { it.isNotBlank() }
-//            // 2. If it doesn't, fall back to the main query
-//                ?: query
-//        )
-//    }
-//    LaunchedEffect(query, filters) {
-//        delay(300)
-//        // We removed the 'if (query.isNotEmpty())' check here.
-//        // Why? Because our updated ViewModel already checks if the query is blank
-//        // and safely resets the state to Initial without making an API call.
-//        productViewModel.searchProduct(searchQuery)
-//    }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .clip(RoundedCornerShape(20.dp))
-//    ) {
-//        when (uiState) {
-//            // 1. The Initial State (Empty search bar)
-//            is ProductModelUiState.Initial -> {
-//                Box(
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text("Search Something")
-//                }
-//            }
-//
-//            // 2. The Loading State (Fetching data)
-//            is ProductModelUiState.Loading -> {
-//                Box(
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    // Using the indicator you imported!
-//                    CircularWavyProgressIndicator()
-//                }
-//            }
-//
-//            // 3. The Success State (Got data)
-//            is ProductModelUiState.SuccessList -> {
-//                val products = uiState.products
-//
-//                if (products.isEmpty()) {
-//                    Box(
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text("No products found")
-//                    }
-//                } else {
-//                    LazyVerticalGrid(
-//                        columns = GridCells.Fixed(2),
-//                        contentPadding = PaddingValues(16.dp),
-//                        verticalArrangement = Arrangement.spacedBy(16.dp),
-//                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-//                    ) {
-//                        itemsIndexed(items = products) { index, product ->
-//                            ProductCard(
-//                                product = product,
-//                                onProductClick = {
-//                                    onProductClick?.invoke(product)
-//                                }
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//
-//            // 4. The Error State
-//            is ProductModelUiState.Error -> {
-//                Box(
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(uiState.message) // Use the actual error message here
-//                }
-//            }
-//
-//            else -> {}
-//        }
-//    }
-//}
-//
+import kotlin.collections.filter
+import kotlin.math.max
+import kotlin.ranges.rangeTo
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchScreen(
-    query: String, // This comes from NavHost/savedStateHandle
+    query: String,
     filters: SearchFilters?,
     onProductClick: ((Product) -> Unit)? = null,
     productViewModel: ProductViewModel = viewModel()
 ) {
     val uiState = productViewModel.uiState
-
-    // FIX: Use 'query' directly from the parameters.
-    // We removed 'var searchQuery by remember...' because it was shadowing the real data.
-
+    var activeFilter by remember { mutableStateOf<SearchFilters?>(null) }
     LaunchedEffect(query, filters) {
         // Optional: debounce to avoid hitting the API on every single keystroke
         delay(300)
@@ -149,153 +72,244 @@ fun SearchScreen(
         productViewModel.searchProduct(query)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .clip(RoundedCornerShape(20.dp))
-    ) {
-        when (uiState) {
-            is ProductModelUiState.Initial -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Search Something")
-                }
-            }
-
-            is ProductModelUiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularWavyProgressIndicator()
-                }
-            }
-
-            is ProductModelUiState.SuccessList -> {
-                val products = uiState.products
-                if (products.isEmpty()) {
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(20.dp))
+        ) {
+            when (uiState) {
+                is ProductModelUiState.Initial -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text("No products found for '$query'")
+                        Text("Search Something")
                     }
-                } else {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        itemsIndexed(items = products) { _, product ->
-                            ProductCard(
-                                product = product,
-                                onProductClick = { onProductClick?.invoke(product) }
-                            )
+                }
+
+                is ProductModelUiState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularWavyProgressIndicator()
+                    }
+                }
+
+                is ProductModelUiState.SuccessList -> {
+                    val products = uiState.products
+                    if (products.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("No products found for '$query'")
+                        }
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            itemsIndexed(items = products) { _, product ->
+                                ProductCard(
+                                    product = product,
+                                    onProductClick = { onProductClick?.invoke(product) }
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            is ProductModelUiState.Error -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(uiState.message)
+                is ProductModelUiState.Error -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text(uiState.message)
+                    }
                 }
+
+                else -> {}
             }
-            else -> {}
+        }
+        var expandedModalSheet by remember { mutableStateOf(false) }
+        val sheetState = rememberModalBottomSheetState()
+        ExtendedFloatingActionButton(
+            text = { Text("Filters") },
+            icon = { Icon(Icons.Default.FilterList, contentDescription = "filter button") },
+            onClick = { expandedModalSheet = !expandedModalSheet },
+            modifier = Modifier.align(Alignment.BottomEnd)
+        )
+
+        if(expandedModalSheet){
+            ModalBottomSheet(
+                sheetState = sheetState,
+                onDismissRequest = {expandedModalSheet=!expandedModalSheet}
+            ) {
+                FilterBottomSheetContent(filters=activeFilter,onDismiss = {}, onApply = {filters ->
+                    activeFilter=filters;
+                    expandedModalSheet=false;
+                })
+            }
         }
     }
 }
-//@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
-//@Composable
-//fun SearchScreen(
-//    query: String,
-//    filters: SearchFilters?,
-//    onProductClick: ((Product) -> Unit)? = null,
-//    productViewModel: ProductViewModel= viewModel()
-//) {
-//    val uiState = productViewModel.uiState
-//
-//// Trigger search when query changes
-//    LaunchedEffect(query, filters) {
-//        if (query.isNotEmpty()) {
-//            productViewModel.searchProduct(query)
-//        }
-//    }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .clip(RoundedCornerShape(20.dp))
-//    ) {
-//
-//        when (uiState) {
-//
-//            is ProductModelUiState.Loading -> {
-//                Box(
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text("Search Something")
-//                }
-//            }
-//
-//            is ProductModelUiState.SuccessList -> {
-//
-//                val products = uiState.products
-//
-//                if (products.isEmpty()) {
-//                    Box(
-//                        modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//                        Text("No products found")
-//                    }
-//                } else {
-//                    LazyVerticalGrid(
-//                        columns = GridCells.Fixed(2),
-//                        contentPadding = PaddingValues(16.dp),
-//                        verticalArrangement = Arrangement.spacedBy(16.dp),
-//                        horizontalArrangement = Arrangement.spacedBy(16.dp)
-//                    ) {
-//                        itemsIndexed(items=products) { index,product ->
-//                            ProductCard(
-//                                product = product,
-//                                onProductClick = {
-//                                    onProductClick?.invoke(product)
-//                                }
-//                            )
-//                        }
-//                    }
-//                }
-//            }
-//
-//            is ProductModelUiState.Error -> {
-//                Box(
-//                    modifier = Modifier.fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text("Something went wrong")
-//                }
-//            }
-//
-//            else -> {}
-//        }
-//    }
-//}
+@OptIn(ExperimentalMaterial3Api::class,)
+@Composable
+fun FilterBottomSheetContent(
+    filters: SearchFilters?,
+    onDismiss: () -> Unit,
+    onApply: (SearchFilters) -> Unit
+) {
+    val selectedFilters by remember { mutableStateOf<SearchFilters?>(null) }
+    var selectedGender by remember { mutableStateOf(filters?.category ?:"") }
+    var minPrice by remember { mutableStateOf(filters?.minPrice ?: 100f) }
+    var maxPrice by remember { mutableStateOf(filters?.maxPrice ?:10000f) }
+    var selectedSizes by remember { mutableStateOf<List<String>>(filters?.sizes ?: emptyList()) }
+    var selectedColor by remember { mutableStateOf<List<String>>(filters?.colors?:emptyList()) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 24.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Filters", style = MaterialTheme.typography.titleLarge)
+            TextButton(onClick = {  }) {
+                Text("Clear All")
+            }
+        }
 
-fun filterProducts(allProductsList: List<Product>, filters: SearchFilters?): List<Product> {
+        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-    val query=if(filters?.query !=null){
-        filters.query
-    }
-    else{
-        ""
-    }
-    // 4. Otherwise, perform the actual filtering logic
-    return allProductsList.filter { product ->
-        val matchesQuery =
-                product.name.contains(query.trim(), ignoreCase = true)
+        Column(
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text("Gender", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+            val genderCat=listOf("Men","Women","Unisex")
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                genderCat.forEach { it->
+                    FilterChip(
+                        selected = selectedGender==it,
+                        onClick = {selectedGender=it},
+                        label = {Text(it)}
+                    )
+                }
+            }
 
-        val matchesCategory = filters?.category == null ||
-                product.category.equals(filters.category, ignoreCase = true)
+            Spacer(modifier = Modifier.height(24.dp))
+            Text("Sizes", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                val sizes = listOf("XS", "S", "M", "XL", "XXL")
+                sizes.forEach { size ->
+                    FilterChip(
+                        selected = size in selectedSizes,
+                        onClick = {
+                            selectedSizes =
+                                if (size in selectedSizes) {
+                                    selectedSizes - size
+                                } else {
+                                    selectedSizes + size
+                                }
+                        },
+                        label = { Text(size) }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Text("Colors", style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                val colors = listOf(
+                    "Black",
+                    "White",
+                    "Navy",
+                    "Beige",
+                    "Brown",
+                    "Olive",
+                    "Maroon",
+                    "Charcoal"
+                )
+                colors.forEach { color ->
+                    FilterChip(
+                        selected = color in selectedColor,
+                        onClick = {
+                            selectedColor =
+                                if (color in selectedColor) {
+                                    selectedColor - color
+                                } else {
+                                    selectedColor + color
+                                }
+                        },
+                        label = { Text(color) }
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(24.dp))
 
-        val matchesVton = filters?.vton_category == null ||
-                product.vton_category?.equals(filters.vton_category, ignoreCase = true) == true
+            var sliderPosition by remember { mutableStateOf(minPrice..maxPrice) }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text("Price Range", style = MaterialTheme.typography.titleMedium)
+                Text("₹${sliderPosition.start.toInt()} - ₹${sliderPosition.endInclusive.toInt()}")
+            }
+            RangeSlider(
+                value = sliderPosition,
+                onValueChange = {
+                    sliderPosition = it;
+                    minPrice=sliderPosition.start;
+                    maxPrice=sliderPosition.endInclusive;
+                                },
+                valueRange = 0f..5000f,
+                steps = 100
+            )
 
-        matchesQuery && matchesCategory && matchesVton
+
+
+        }
+
+        Button(
+            onClick = {
+                selectedFilters?.let { onApply(it) }
+                onDismiss()
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Apply Filters")
+        }
     }
 }
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun filterProducts(allProductsList: List<Product>, filters: SearchFilters?): List<Product> {
+
+    if (filters==null){
+        return  allProductsList;
+    }
+    else{
+        val pricemin=filters.minPrice?: 0f
+        val pricemax=filters.maxPrice?:10000f
+        return allProductsList.filter { p->
+            val matchGender=
+               filters.category?.isEmpty() == true ||filters.category==p.category;
+            val matchSizes =
+                filters.sizes.isEmpty() || p.sizes.any { it in filters.sizes }
+            val matchColors=
+                filters.colors.isEmpty()||filters.colors.toSet()==p.color.toSet();
+            val matchPriceRange =
+                p.price in pricemin..pricemax
+            matchPriceRange && matchColors && matchGender && matchSizes
+        }
+    }
+}
+
