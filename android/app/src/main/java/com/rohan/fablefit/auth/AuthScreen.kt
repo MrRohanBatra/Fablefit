@@ -49,6 +49,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -76,7 +78,7 @@ fun AuthScreen(
     var password by rememberSaveable { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
     val credentialManager = remember { CredentialManager.create(context) }
-
+    val haptic = LocalHapticFeedback.current
     // Your existing logic - Unchanged
     fun _login() {
         coroutineScope.launch {
@@ -103,6 +105,7 @@ fun AuthScreen(
     val uiState by authViewModel.uiState.collectAsState()
     LaunchedEffect(uiState.isLoggedIn) {
         if (uiState.isLoggedIn) {
+
             onLoginSuccess()
         }
     }
@@ -179,7 +182,9 @@ fun AuthScreen(
 
                 // Action Buttons
                 Button(
-                    onClick = { authViewModel.loginWithEmail(email, password) },
+                    onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.ToggleOn)
+                        authViewModel.loginWithEmail(email, password) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
@@ -210,7 +215,7 @@ fun AuthScreen(
                 }
 
                 OutlinedButton(
-                    onClick = { _login() },
+                    onClick = { haptic.performHapticFeedback(HapticFeedbackType.ToggleOn);_login() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
