@@ -15,8 +15,8 @@ android {
         applicationId = "com.rohan.fablefit"
         minSdk = 31
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.0.5"
+        versionCode = 6
+        versionName = "1.0.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -25,8 +25,6 @@ android {
             val propFile = rootProject.file("local.properties")
             if (propFile.exists()) {
                 props.load(propFile.inputStream())
-
-                // This looks for key.jks in the app folder
                 storeFile = file(props.getProperty("RELEASE_STORE_FILE"))
                 storePassword = props.getProperty("RELEASE_STORE_PASSWORD")
                 keyAlias = props.getProperty("RELEASE_KEY_ALIAS")
@@ -36,7 +34,7 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = true // Changed to true: essential for production/release
+            isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release") // This was missing!
 
             proguardFiles(

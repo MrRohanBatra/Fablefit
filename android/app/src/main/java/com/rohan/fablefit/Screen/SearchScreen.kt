@@ -53,6 +53,8 @@ import kotlinx.coroutines.delay
 import kotlin.collections.filter
 import kotlin.math.max
 import kotlin.ranges.rangeTo
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -63,13 +65,12 @@ fun SearchScreen(
     productViewModel: ProductViewModel = viewModel()
 ) {
     val uiState = productViewModel.uiState
-    var activeFilter by remember { mutableStateOf<SearchFilters?>(null) }
+    var activeFilter by remember { mutableStateOf<SearchFilters?>(filters) }
     LaunchedEffect(query, filters) {
         // Optional: debounce to avoid hitting the API on every single keystroke
         delay(300)
 
-        // Pass the actual parameter 'query' to the ViewModel
-        productViewModel.searchProduct(query)
+        productViewModel.searchProduct(query)//product from backend fetcher
     }
 
     Box {
@@ -93,6 +94,7 @@ fun SearchScreen(
 
                 is ProductModelUiState.SuccessList -> {
                     val products = uiState.products
+                    val filteredProduct =remember(products,activeFilter) {filterProducts(products,activeFilter)  }
                     if (products.isEmpty()) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -101,13 +103,14 @@ fun SearchScreen(
                             Text("No products found for '$query'")
                         }
                     } else {
+
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             contentPadding = PaddingValues(16.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp),
                             horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            itemsIndexed(items = products) { _, product ->
+                            itemsIndexed(items = filteredProduct) { _, product ->
                                 ProductCard(
                                     product = product,
                                     onProductClick = { onProductClick?.invoke(product) }
@@ -140,9 +143,10 @@ fun SearchScreen(
                 sheetState = sheetState,
                 onDismissRequest = {expandedModalSheet=!expandedModalSheet}
             ) {
-                FilterBottomSheetContent(filters=activeFilter,onDismiss = {}, onApply = {filters ->
+                FilterBottomSheetContent(filters=activeFilter,onDismiss = {
+                    expandedModalSheet = false
+                }, onApply = {filters ->
                     activeFilter=filters;
-                    expandedModalSheet=false;
                 })
             }
         }
@@ -155,7 +159,7 @@ fun FilterBottomSheetContent(
     onDismiss: () -> Unit,
     onApply: (SearchFilters) -> Unit
 ) {
-    val selectedFilters by remember { mutableStateOf<SearchFilters?>(null) }
+    var selectedFilters by remember { mutableStateOf<SearchFilters?>(null) }
     var selectedGender by remember { mutableStateOf(filters?.category ?:"") }
     var minPrice by remember { mutableStateOf(filters?.minPrice ?: 100f) }
     var maxPrice by remember { mutableStateOf(filters?.maxPrice ?:10000f) }
@@ -273,15 +277,19 @@ fun FilterBottomSheetContent(
                 valueRange = 0f..5000f,
                 steps = 100
             )
-
-
-
         }
 
         Button(
             onClick = {
-                selectedFilters?.let { onApply(it) }
-                onDismiss()
+                val updatedFilters = SearchFilters(
+                    category = selectedGender,
+                    minPrice = minPrice,
+                    maxPrice = maxPrice,
+                    sizes = selectedSizes,
+                    colors = selectedColor
+                )
+                onApply(updatedFilters);
+                onDismiss();
             },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -289,27 +297,20 @@ fun FilterBottomSheetContent(
         }
     }
 }
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
+// Remove @Composable from here; it's just logic
 fun filterProducts(allProductsList: List<Product>, filters: SearchFilters?): List<Product> {
+    if (filters == null) return allProductsList
 
-    if (filters==null){
-        return  allProductsList;
-    }
-    else{
-        val pricemin=filters.minPrice?: 0f
-        val pricemax=filters.maxPrice?:10000f
-        return allProductsList.filter { p->
-            val matchGender=
-               filters.category?.isEmpty() == true ||filters.category==p.category;
-            val matchSizes =
-                filters.sizes.isEmpty() || p.sizes.any { it in filters.sizes }
-            val matchColors=
-                filters.colors.isEmpty()||filters.colors.toSet()==p.color.toSet();
-            val matchPriceRange =
-                p.price in pricemin..pricemax
-            matchPriceRange && matchColors && matchGender && matchSizes
-        }
+    // Improved naming and price range logic
+    val priceMin = filters.minPrice?:0f
+    val priceMax = filters.maxPrice?:5000f
+
+    return allProductsList.filter { p ->
+        val matchGender = filters.category.isNullOrEmpty() || filters.category == p.category
+        val matchSizes = filters.sizes.isEmpty() || p.sizes.any { it in filters.sizes }
+        val matchColors = filters.colors.isEmpty() || filters.colors.contains(p.color)
+        val matchPriceRange = p.price in priceMin..priceMax
+
+        matchPriceRange && matchColors && matchGender && matchSizes
     }
 }
-
