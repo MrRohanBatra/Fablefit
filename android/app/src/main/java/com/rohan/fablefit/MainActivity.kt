@@ -14,6 +14,8 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -66,11 +68,14 @@ import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHost
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.SearchScreen
+import com.rohan.fablefit.auth.AuthViewModel
 import com.rohan.fablefit.auth.SplashScreen
+import com.rohan.fablefit.navigation.AppRoute
 import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.SearchFilters
 
@@ -109,59 +114,120 @@ class MainActivity : ComponentActivity() {
 //                    }
 //                }
 //            }
-            FablefitTheme {
-                // 1. Define states for the check
-                var isCheckingAuth by remember { mutableStateOf(true) }
-                var isAuthenticated by remember { mutableStateOf(false) }
-
-                // 2. Perform the background check on startup
-                LaunchedEffect(Unit) {
-                    val startTime= System.currentTimeMillis();
-                    // Check Firebase for an existing session
-                    val currentUser = FirebaseAuth.getInstance().currentUser
-                    isAuthenticated = currentUser != null
-                    val elapsed = System.currentTimeMillis() - startTime
-                    if (elapsed < 800) kotlinx.coroutines.delay(800 - elapsed)
-                    kotlinx.coroutines.delay(300)
-                    isCheckingAuth = false
-                }
-                LaunchedEffect(Unit) {
-                    FirebaseAuth.getInstance().addAuthStateListener { auth ->
-                        isAuthenticated = auth.currentUser != null
-                    }
-                }
-
-                // 3. Navigation Switchboard
-                Surface(color = MaterialTheme.colorScheme.background) {
-
-                    val targetState by remember {
-                        mutableStateOf(
-                            when {
-                                isCheckingAuth -> "SPLASH"
-                                !isAuthenticated -> "AUTH"
-                                else -> "MAIN"
+//            FablefitTheme {
+//                // 1. Define states for the check
+//                var isCheckingAuth by remember { mutableStateOf(true) }
+//                var isAuthenticated by remember { mutableStateOf(false) }
+//
+//                // 2. Perform the background check on startup
+//                LaunchedEffect(Unit) {
+//                    val startTime= System.currentTimeMillis();
+//                    // Check Firebase for an existing session
+//                    val currentUser = FirebaseAuth.getInstance().currentUser
+//                    isAuthenticated = currentUser != null
+//                    val elapsed = System.currentTimeMillis() - startTime
+//                    if (elapsed < 800) kotlinx.coroutines.delay(800 - elapsed)
+//                    kotlinx.coroutines.delay(300)
+//                    isCheckingAuth = false
+//                }
+//                LaunchedEffect(Unit) {
+//                    FirebaseAuth.getInstance().addAuthStateListener { auth ->
+//                        isAuthenticated = auth.currentUser != null
+//                    }
+//                }
+//
+//                // 3. Navigation Switchboard
+//                Surface(color = MaterialTheme.colorScheme.background) {
+//
+//                    val targetState by remember {
+//                        mutableStateOf(
+//                            when {
+//                                isCheckingAuth -> "SPLASH"
+//                                !isAuthenticated -> "AUTH"
+//                                else -> "MAIN"
+//                            }
+//                        )
+//                    }
+//                    AnimatedContent(
+//                        targetState = targetState,
+//                        transitionSpec = {
+//                            fadeIn(tween(500)) togetherWith fadeOut(tween(800))
+//                        },
+//                        label = "AppStartTransition"
+//                    ) { state ->
+//
+//                        when (state) {
+//                            "SPLASH" -> SplashScreen()
+//
+//                            "AUTH" -> AuthScreen(
+//                                context = LocalContext.current,
+//                                onLoginSuccess = { isAuthenticated = true }
+//                            )
+//
+//                            "MAIN" -> MainECommerceScaffold(
+//                                onLogout = {isAuthenticated=false}
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+            FablefitTheme() {
+                val navController=rememberNavController();
+                Surface(
+                    color=MaterialTheme.colorScheme.background
+                ) {
+                    NavHost(
+                        navController = navController,
+                        startDestination = AppRoute.Splash
+                    ){
+                        composable(AppRoute.Splash) {
+                            LaunchedEffect(Unit) {
+                                val startTime=System.currentTimeMillis();
+                                val currentUser= FirebaseAuth.getInstance().currentUser
+                                val elapsed = System.currentTimeMillis() - startTime
+                                if (elapsed < 800) kotlinx.coroutines.delay(800 - elapsed)
+                                if (currentUser!=null){
+                                    navController.navigate(
+                                        AppRoute.Main
+                                    ){
+                                        popUpTo(AppRoute.Splash){
+                                            inclusive=true
+                                        }
+                                    }
+                                }
+                                else{
+                                    navController.navigate(AppRoute.Auth){
+                                        popUpTo (AppRoute.Splash){
+                                            inclusive=true
+                                        }
+                                    }
+                                }
                             }
-                        )
-                    }
-                    AnimatedContent(
-                        targetState = targetState,
-                        transitionSpec = {
-                            fadeIn(tween(500)) togetherWith fadeOut(tween(800))
-                        },
-                        label = "AppStartTransition"
-                    ) { state ->
+                        }
+                        composable(AppRoute.Auth) {
+                            AuthScreen(
+                                context=LocalContext.current,
+                                onLoginSuccess = {
+                                    Log.d("login","login Complete Signed in as ${FirebaseAuth.getInstance().currentUser?.email}")
+                                    navController.navigate(AppRoute.Main){
+                                        popUpTo(AppRoute.Auth) {
+                                            inclusive=true;
+                                        }
+                                    }
+                                }
 
-                        when (state) {
-                            "SPLASH" -> SplashScreen()
-
-                            "AUTH" -> AuthScreen(
-                                context = LocalContext.current,
-                                onLoginSuccess = { isAuthenticated = true }
                             )
+                        }
+                        composable(AppRoute.Main) {
+                            MainECommerceScaffold(
+                                onLogout = {
+                                    FirebaseAuth.getInstance().signOut();
 
-                            "MAIN" -> MainECommerceScaffold(
-                                onLogout = {isAuthenticated=false}
+                                }
                             )
+                        }
+                        composable(AppRoute.Splash) {
+                            SplashScreen()
                         }
                     }
                 }
