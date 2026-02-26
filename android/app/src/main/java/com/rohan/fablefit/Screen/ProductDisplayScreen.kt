@@ -2,30 +2,50 @@ package com.rohan.fablefit.Screen
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -33,9 +53,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.google.firebase.auth.FirebaseAuth
+import com.rohan.fablefit.ui.Cart.CartModelUiState
+import com.rohan.fablefit.ui.Cart.CartViewModel
 import com.rohan.fablefit.ui.Product.ProductModelUiState
 import com.rohan.fablefit.ui.Product.ProductViewModel
-import kotlinx.coroutines.coroutineScope
+import com.rohan.fablefit.ui.model.CartItem
+import com.rohan.fablefit.ui.model.CartUpdate
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -43,9 +67,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProductDisplayScreen(
     productId: String,
-    productViewModel: ProductViewModel= viewModel()
+    productViewModel: ProductViewModel= viewModel(),
+    cartViewModel: CartViewModel,
 ) {
     val state=productViewModel.uiState;
+    val user= FirebaseAuth.getInstance().currentUser;
+    val cartState=cartViewModel.uiState;
+    val context=LocalContext.current;
+    val scope=rememberCoroutineScope()
     LaunchedEffect(productId) {
         productViewModel.loadProduct(productId = productId);
     }
@@ -183,8 +212,7 @@ fun ProductDisplayScreen(
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         var vtonClicked by remember { mutableStateOf(false) }
-                        val context=LocalContext.current
-                        val scope=rememberCoroutineScope()
+
                         // Secondary CTA (Outline style)
                         OutlinedButton(
                             enabled = !vtonClicked,
@@ -204,10 +232,26 @@ fun ProductDisplayScreen(
                         ) {
                             Icon(Icons.Default.Camera, null)
                         }
-
-                        // Primary CTA (Prominent style)
+                        val addToCartButtonState =cartState is CartModelUiState.Loading
                         Button(
-                            onClick = { },
+                            onClick = {
+                                    val cartUpdateItem= CartUpdate(
+                                        uid = user?.uid?:"",
+                                        productId = productId,
+                                        size = selectedSize?:"S",
+                                        color = product.color,
+                                        quantity = 1,
+                                    )
+                                    cartViewModel.addItemToCart(cartUpdateItem)
+                                if (cartState is CartModelUiState.Success) {
+                                    Toast.makeText(
+                                        context,
+                                        "Added ${product.name} to Cart",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            },
+                            enabled = !addToCartButtonState,
                             modifier = Modifier.weight(3f).height(56.dp),
                             shape = RoundedCornerShape(16.dp),
                             colors = ButtonDefaults.buttonColors(
@@ -216,11 +260,26 @@ fun ProductDisplayScreen(
                             ),
                             elevation = ButtonDefaults.buttonElevation(4.dp)
                         ) {
-                            Text(
+                            if(addToCartButtonState){
+                                LoadingIndicator()
+                            }
+                            else{
+                                LaunchedEffect(cartState) {
+                                    if (cartState is CartModelUiState.Error) {
+                                        Toast.makeText(
+                                            context,
+                                            "Failed to add product to Cart",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+
+                                }
+                                Text(
                                 "Add to Cart",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold
                             )
+                        }
                         }
                     }
                 }
