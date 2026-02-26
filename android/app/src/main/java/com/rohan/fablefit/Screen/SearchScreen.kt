@@ -51,11 +51,8 @@ import com.rohan.fablefit.ui.model.ProductCard
 import com.rohan.fablefit.ui.model.SearchFilters
 import kotlinx.coroutines.delay
 import kotlin.collections.filter
-import kotlin.math.max
 import kotlin.ranges.rangeTo
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 
@@ -157,9 +154,6 @@ fun SearchScreen(
                 }, onApply = {filters ->
                     activeFilter=filters;
                 },
-//                    onClear = {
-//                        activeFilter=null
-//                    }
                 )
             }
         }
@@ -282,34 +276,25 @@ fun FilterBottomSheetContent(
 
             var sliderPosition by remember { mutableStateOf(minPrice..maxPrice) }
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text("Price Range", style = MaterialTheme.typography.titleMedium)
                 Text("₹${sliderPosition.start.toInt()} - ₹${sliderPosition.endInclusive.toInt()}")
             }
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                RangeSlider(
-                    modifier = Modifier
-                        .padding(2.dp)
-                        .fillMaxWidth(0.95f)
-                        ,
-                    value = sliderPosition,
-                    onValueChange = {
-                        if (it.start != sliderPosition.start || it.endInclusive != sliderPosition.endInclusive) {
-                            haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
-                        }
-                        sliderPosition = it;
-                        minPrice = sliderPosition.start;
-                        maxPrice = sliderPosition.endInclusive;
-                    },
-                    valueRange = 0f..5000f,
-                    steps = 100
-                )
-            }
+            RangeSlider(
+                value = sliderPosition,
+                onValueChange = {
+                    if (it.start != sliderPosition.start || it.endInclusive != sliderPosition.endInclusive) {
+                        haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                    }
+                    sliderPosition = it;
+                    minPrice = sliderPosition.start;
+                    maxPrice = sliderPosition.endInclusive;
+                },
+                valueRange = 0f..5000f,
+                steps = 100
+            )
         }
 
         Button(
@@ -332,7 +317,7 @@ fun FilterBottomSheetContent(
         }
     }
 }
-// Remove @Composable from here; it's just logic
+
 fun filterProducts(allProductsList: List<Product>, filters: SearchFilters?): List<Product> {
     if (filters == null) return allProductsList
 

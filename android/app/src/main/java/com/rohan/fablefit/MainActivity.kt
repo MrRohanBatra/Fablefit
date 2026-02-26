@@ -95,6 +95,8 @@ import com.rohan.fablefit.Screen.UserInfo
 import com.rohan.fablefit.auth.AuthViewModel
 import com.rohan.fablefit.auth.SplashScreen
 import com.rohan.fablefit.navigation.AppRoute
+import com.rohan.fablefit.ui.Cart.CartModelUiState
+import com.rohan.fablefit.ui.Cart.CartViewModel
 import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.SearchFilters
 
@@ -173,7 +175,14 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainECommerceScaffold(onLogout:()-> Unit) {
-
+    val cartViewModel: CartViewModel=viewModel()
+    val user= FirebaseAuth.getInstance().currentUser
+    val uiState=cartViewModel.uiState
+    LaunchedEffect(user?.uid) {
+        user?.uid?.let {
+            cartViewModel.getUserCart(it)
+        }
+    }
     val navController = rememberNavController()
     val currentRoute =
         navController.currentBackStackEntryAsState()
@@ -208,16 +217,17 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                         BadgedBox(
                             modifier = Modifier.padding(8.dp),
                             badge = {
-                                val cartCount by remember { mutableIntStateOf(10) }
-                                Badge {
-                                    Text(
-                                        if(cartCount>9){
-                                            "9+"
+                                if (uiState is CartModelUiState.Success) {
+
+                                    val itemCount = uiState.cart.items.size
+
+                                    if (itemCount > 0) {
+                                        Badge {
+                                            Text(
+                                                if (itemCount > 9) "9+" else itemCount.toString()
+                                            )
                                         }
-                                        else{
-                                            cartCount.toString()
-                                        }
-                                    )
+                                    }
                                 }
                             }
                         )
@@ -333,6 +343,16 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 }
 
             }
+            if(currentRoute== BottomRoute.Cart.route){
+                TopAppBar(
+                    title = { Text("My Cart") },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                        }
+                    }
+                )
+            }
         },
         bottomBar = {
             Surface(
@@ -447,7 +467,8 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             }
             composable(BottomRoute.Cart.route) {
                 LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
-                CartScreen()
+
+                CartScreen(cartViewModel)
             }
             composable(BottomRoute.Profile.route) {
 //                haptic.performHapticFeedback(hapticValue)
@@ -465,7 +486,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 }
                 else{
 //                    LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
-                    ProductDisplayScreen(productId)
+                    ProductDisplayScreen(productId,cartViewModel=cartViewModel)
                 }
             }
             composable(BottomRoute.MyInfo.route) {

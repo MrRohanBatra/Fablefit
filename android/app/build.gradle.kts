@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.text)
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.ui)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

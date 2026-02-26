@@ -110,6 +110,11 @@ fun UserInfo() {
                     "Verified",
                     if (user?.isEmailVerified == true) "Yes" else "No"
                 )
+                HorizontalDivider()
+                InfoRow(
+                    label = "Uid",
+                    value = user?.uid ?:"Not uid found",
+                )
             }
         }
     }
