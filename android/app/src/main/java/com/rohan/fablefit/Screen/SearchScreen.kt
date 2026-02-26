@@ -54,6 +54,7 @@ import kotlin.collections.filter
 import kotlin.math.max
 import kotlin.ranges.rangeTo
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -141,7 +142,9 @@ fun SearchScreen(
                 haptic.performHapticFeedback(HapticFeedbackType.Confirm)
                 expandedModalSheet = !expandedModalSheet
                       },
-            modifier = Modifier.align(Alignment.BottomEnd).padding(18.dp)
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(18.dp)
         )
 
         if(expandedModalSheet){
@@ -154,7 +157,11 @@ fun SearchScreen(
                     expandedModalSheet = false
                 }, onApply = {filters ->
                     activeFilter=filters;
-                })
+                },
+//                    onClear = {
+//                        activeFilter=null
+//                    }
+                )
             }
         }
     }
@@ -164,15 +171,16 @@ fun SearchScreen(
 fun FilterBottomSheetContent(
     filters: SearchFilters?,
     onDismiss: () -> Unit,
-    onApply: (SearchFilters) -> Unit
+    onApply: (SearchFilters) -> Unit,
+//    onClear:()-> Unit,
 ) {
     val haptic= LocalHapticFeedback.current
-    var selectedFilters by remember { mutableStateOf<SearchFilters?>(null) }
-    var selectedGender by remember { mutableStateOf(filters?.category ?:"") }
-    var minPrice by remember { mutableStateOf(filters?.minPrice ?: 100f) }
-    var maxPrice by remember { mutableStateOf(filters?.maxPrice ?:10000f) }
-    var selectedSizes by remember { mutableStateOf<List<String>>(filters?.sizes ?: emptyList()) }
-    var selectedColor by remember { mutableStateOf<List<String>>(filters?.colors?:emptyList()) }
+    var selectedFilters by remember(filters) { mutableStateOf<SearchFilters?>(filters) }
+    var selectedGender by remember(selectedFilters) { mutableStateOf(selectedFilters?.category ?:"") }
+    var minPrice by remember(selectedFilters) { mutableFloatStateOf(selectedFilters?.minPrice ?: 100f) }
+    var maxPrice by remember(selectedFilters) { mutableFloatStateOf(selectedFilters?.maxPrice ?:10000f) }
+    var selectedSizes by remember(selectedFilters) { mutableStateOf<List<String>>(selectedFilters?.sizes ?: emptyList()) }
+    var selectedColor by remember(selectedFilters) { mutableStateOf<List<String>>(selectedFilters?.colors?:emptyList()) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -185,7 +193,9 @@ fun FilterBottomSheetContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Filters", style = MaterialTheme.typography.titleLarge)
-            TextButton(onClick = {  }) {
+            TextButton(onClick = {
+                selectedFilters= SearchFilters()
+            }) {
                 Text("Clear All")
             }
         }
@@ -279,20 +289,28 @@ fun FilterBottomSheetContent(
                 Text("Price Range", style = MaterialTheme.typography.titleMedium)
                 Text("₹${sliderPosition.start.toInt()} - ₹${sliderPosition.endInclusive.toInt()}")
             }
-            RangeSlider(
-                modifier = Modifier.fillMaxWidth().padding(3.dp),
-                value = sliderPosition,
-                onValueChange = {
-                    if (it.start != sliderPosition.start || it.endInclusive != sliderPosition.endInclusive) {
-                        haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
-                    }
-                    sliderPosition = it;
-                    minPrice = sliderPosition.start;
-                    maxPrice = sliderPosition.endInclusive;
-                },
-                valueRange = 0f..5000f,
-                steps = 100
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                RangeSlider(
+                    modifier = Modifier
+                        .padding(2.dp)
+                        .fillMaxWidth(0.95f)
+                        ,
+                    value = sliderPosition,
+                    onValueChange = {
+                        if (it.start != sliderPosition.start || it.endInclusive != sliderPosition.endInclusive) {
+                            haptic.performHapticFeedback(HapticFeedbackType.ContextClick)
+                        }
+                        sliderPosition = it;
+                        minPrice = sliderPosition.start;
+                        maxPrice = sliderPosition.endInclusive;
+                    },
+                    valueRange = 0f..5000f,
+                    steps = 100
+                )
+            }
         }
 
         Button(
@@ -307,7 +325,9 @@ fun FilterBottomSheetContent(
                 onApply(updatedFilters);
                 onDismiss();
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
         ) {
             Text("Apply Filters")
         }
