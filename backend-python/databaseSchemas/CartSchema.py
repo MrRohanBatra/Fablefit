@@ -22,3 +22,11 @@ class Cart(Document): # 🚀 CHANGE THIS FROM BaseModel TO Document
 
     class Settings:
         name = "carts" # MongoDB collection name
+
+class CartUpdate(BaseModel):
+    uid: str
+    product: str 
+    size: str
+    color: Optional[str] = None
+    quantity: int 
+

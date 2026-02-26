@@ -4,7 +4,7 @@ from typing import List, Optional
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException
-from databaseSchemas.CartSchema import Cart, CartItem
+from databaseSchemas.CartSchema import Cart, CartItem,CartUpdate
 from databaseSchemas.ProductSchema import Product
 from helpers.Utilities import Utils
 
@@ -45,14 +45,14 @@ async def get_cart(uid: str):
     return Tools.serializeDoc(cart.model_dump(by_alias=True))
 
 @cartRouter.post("/add")
-async def add_to_cart(payload: dict):
+async def add_to_cart(payload: CartUpdate):
     """Add or update item in cart (Matches Node.js addToCart)"""
     try:
-        uid = payload.get("uid")
-        product_id = payload.get("productId")
-        size = payload.get("size")
-        color = payload.get("color")
-        quantity = payload.get("quantity", 1)
+        uid = payload.uid
+        product_id = payload.product
+        size = payload.size
+        color = payload.color
+        quantity = payload.quantity
 
         print(f"🟢 [ADD] uid={uid}, product={product_id}, qty={quantity}")
 
@@ -94,12 +94,12 @@ async def add_to_cart(payload: dict):
         raise HTTPException(status_code=500, detail=str(e))
 
 @cartRouter.post("/remove")
-async def remove_from_cart(payload: dict):
+async def remove_from_cart(payload: CartUpdate):
     """Remove an item from cart (Matches Node.js removeFromCart)"""
-    uid = payload.get("uid")
-    product_id = payload.get("productId")
-    size = payload.get("size")
-    color = payload.get("color")
+    uid = payload.uid
+    product_id = payload.product
+    size = payload.size
+    color = payload.color
 
     print(f"🔴 [REMOVE] uid={uid}, product={product_id}")
 
@@ -121,13 +121,13 @@ async def remove_from_cart(payload: dict):
     return {"message": "Item removed", "cart": Tools.serializeDoc(cart.model_dump(by_alias=True))}
 
 @cartRouter.post("/update")
-async def update_cart_quantity(payload: dict):
+async def update_cart_quantity(payload: CartUpdate):
     """Update item quantity (Matches Node.js updateCartQuantity)"""
-    uid = payload.get("uid")
-    product_id = payload.get("productId")
-    size = payload.get("size")
-    color = payload.get("color")
-    quantity = payload.get("quantity")
+    uid = payload.uid
+    product_id = payload.product
+    size = payload.size
+    color = payload.color
+    quantity = payload.quantity
 
     print(f"🟠 [UPDATE] uid={uid}, product={product_id}, qty={quantity}")
 
