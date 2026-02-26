@@ -1,4 +1,5 @@
 package com.rohan.fablefit.Screen
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +35,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.rohan.fablefit.ui.Product.ProductModelUiState
 import com.rohan.fablefit.ui.Product.ProductViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -177,9 +182,22 @@ fun ProductDisplayScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
+                        var vtonClicked by remember { mutableStateOf(false) }
+                        val context=LocalContext.current
+                        val scope=rememberCoroutineScope()
                         // Secondary CTA (Outline style)
                         OutlinedButton(
-                            onClick = { },
+                            enabled = !vtonClicked,
+                            onClick = {
+                                if(!vtonClicked){
+                                    vtonClicked=true
+                                    Toast.makeText(context,"Upcoming feature",Toast.LENGTH_SHORT).show();
+                                    scope.launch {
+                                        delay(300)
+                                        vtonClicked=false
+                                    }
+                                }
+                            },
                             modifier = Modifier.weight(1f).height(56.dp),
                             shape = RoundedCornerShape(16.dp),
                             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
