@@ -71,7 +71,6 @@ fun SearchScreen(
     val uiState = productViewModel.uiState
     var activeFilter by remember { mutableStateOf<SearchFilters?>(filters) }
     LaunchedEffect(query, filters) {
-        // Optional: debounce to avoid hitting the API on every single keystroke
         delay(300)
 
         productViewModel.searchProduct(query)//product from backend fetcher
