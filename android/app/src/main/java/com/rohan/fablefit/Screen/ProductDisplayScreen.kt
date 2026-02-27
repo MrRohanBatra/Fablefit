@@ -22,15 +22,21 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -39,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -60,6 +67,7 @@ import com.rohan.fablefit.ui.Product.ProductModelUiState
 import com.rohan.fablefit.ui.Product.ProductViewModel
 import com.rohan.fablefit.ui.model.CartItem
 import com.rohan.fablefit.ui.model.CartUpdate
+import com.rohan.fablefit.ui.model.Product
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -78,6 +86,15 @@ fun ProductDisplayScreen(
     LaunchedEffect(productId) {
         productViewModel.loadProduct(productId = productId);
     }
+    LaunchedEffect(cartState) {
+        if (cartState is CartModelUiState.Success) {
+            // You can add logic here to only show toast if an action was just performed
+            // For now, simple feedback:
+            // Toast.makeText(context, "Cart Updated", Toast.LENGTH_SHORT).show()
+        } else if (cartState is CartModelUiState.Error) {
+            Toast.makeText(context, cartState.message, Toast.LENGTH_SHORT).show()
+        }
+    }
     when(state){
         is ProductModelUiState.Loading->{
             Box(
@@ -89,8 +106,10 @@ fun ProductDisplayScreen(
         }
         is ProductModelUiState.Success -> {
             val product = state.product
-            var selectedSize by remember { mutableStateOf<String?>(null) }
-
+            var selectedSize by remember { mutableStateOf<String>("S") }
+            val isInCart = cartViewModel.isProductInCart(productId, selectedSize)
+            val productQuantity = cartViewModel.getProductQuantity(productId, selectedSize)
+            val isUpdating = cartState is CartModelUiState.ItemUpdate
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -206,23 +225,23 @@ fun ProductDisplayScreen(
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    // 🛒 Improved Button Layout (Horizontal Split)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically // Keeps everything aligned
                     ) {
                         var vtonClicked by remember { mutableStateOf(false) }
 
-                        // Secondary CTA (Outline style)
+                        // This button now stays visible regardless of cart state
                         OutlinedButton(
                             enabled = !vtonClicked,
                             onClick = {
-                                if(!vtonClicked){
-                                    vtonClicked=true
-                                    Toast.makeText(context,"Upcoming feature",Toast.LENGTH_SHORT).show();
+                                if (!vtonClicked) {
+                                    vtonClicked = true
+                                    Toast.makeText(context, "Upcoming feature", Toast.LENGTH_SHORT).show()
                                     scope.launch {
                                         delay(300)
-                                        vtonClicked=false
+                                        vtonClicked = false
                                     }
                                 }
                             },
@@ -232,222 +251,111 @@ fun ProductDisplayScreen(
                         ) {
                             Icon(Icons.Default.Camera, null)
                         }
-                        val addToCartButtonState =cartState is CartModelUiState.Loading
-                        Button(
-                            onClick = {
-                                    val cartUpdateItem= CartUpdate(
-                                        uid = user?.uid?:"",
-                                        productId = productId,
-                                        size = selectedSize?:"S",
-                                        color = product.color,
-                                        quantity = 1,
-                                    )
-                                    cartViewModel.addItemToCart(cartUpdateItem)
-                                if (cartState is CartModelUiState.Success) {
-                                    Toast.makeText(
-                                        context,
-                                        "Added ${product.name} to Cart",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            },
-                            enabled = !addToCartButtonState,
+
+                        // We wrap the conditional logic in a Box or Surface with weight(3f)
+                        // to ensure it occupies the same space the "Add to Cart" button did.
+                        Box(
                             modifier = Modifier.weight(3f).height(56.dp),
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            elevation = ButtonDefaults.buttonElevation(4.dp)
-                        ) {
-                            if(addToCartButtonState){
-                                LoadingIndicator()
-                            }
-                            else{
-                                LaunchedEffect(cartState) {
-                                    if (cartState is CartModelUiState.Error) {
-                                        Toast.makeText(
-                                            context,
-                                            "Failed to add product to Cart",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                            contentAlignment = Alignment.Center
+                        )
+                        {
+                            if (isInCart) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceEvenly,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    IconButton(onClick = {;
+                                        cartViewModel.updateItemInCart(CartUpdate(
+                                        uid=user?.uid?:"",
+                                        productId=productId,
+                                        size=selectedSize?:"S",
+                                        color = product.color,
+                                        quantity = productQuantity-1,
+                                    ))  },
+                                        enabled = !isUpdating) {
+                                        Icon(Icons.Filled.Remove, null)
+                                    }
+
+                                    Text(
+                                        text = "$productQuantity",
+                                        fontWeight = FontWeight.SemiBold,
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+
+                                    IconButton(onClick = {
+                                        cartViewModel.updateItemInCart(CartUpdate(
+                                        uid=user?.uid?:"",
+                                        productId=productId,
+                                        size=selectedSize,
+                                        color = product.color,
+                                        quantity = productQuantity+1,
+                                    )) },enabled = !isUpdating) {
+                                        Icon(Icons.Filled.Add, null)
+                                    }
+                                    FilledTonalIconButton(
+                                        onClick = {
+                                            cartViewModel.removeItemFromCart(CartUpdate(
+                                                uid=user?.uid?:"",
+                                                productId=productId,
+                                                size=selectedSize?:"S",
+                                                color = null,
+                                                quantity = productQuantity,
+                                            ))
+                                        },
+                                        modifier = Modifier.size(48.dp), // Standard icon button size
+                                        shape = RoundedCornerShape(10.dp),
+                                        colors = IconButtonDefaults.filledTonalIconButtonColors(
+                                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                                            contentColor = MaterialTheme.colorScheme.onErrorContainer
+                                        ),
+                                        enabled = !isUpdating
+                                    ) {
+                                        Icon(Icons.Outlined.Delete, contentDescription = "Delete")
+                                    }
+                                }
+                            } else {
+                                val isAdding=cartState is CartModelUiState.Loading
+                                Button(
+                                    onClick = {
+                                        val cartUpdateItem = CartUpdate(
+                                            uid = user?.uid ?: "",
+                                            productId = productId,
+                                            size = selectedSize ?: "S",
+                                            color = product.color,
+                                            quantity = 1,
+                                        )
+                                        cartViewModel.addItemToCart(cartUpdateItem)
+//                                        if (cartState is CartModelUiState.Success) {
+//                                            Toast.makeText(context, "Added ${product.name} to Cart", Toast.LENGTH_SHORT).show()
+//                                        }
+                                    },
+                                    enabled = !isAdding,
+                                    modifier = Modifier.fillMaxSize(), // Fill the Box area
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
+                                    elevation = ButtonDefaults.buttonElevation(4.dp)
+                                ) {
+                                    if (isAdding) {
+                                        LoadingIndicator()
+                                    } else {
+                                        Text(
+                                            "Add to Cart",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                     }
 
                                 }
-                                Text(
-                                "Add to Cart",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                            }
                         }
                     }
                 }
             }
         }
-//        is ProductModelUiState.Success -> {
-//            val product = state.product
-//            // State for the selectable chips
-//            var selectedSize by remember { mutableStateOf<String?>(null) }
-//
-//            Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxSize()
-//                        .verticalScroll(rememberScrollState())
-//                        .padding(bottom = 100.dp) // Space for the floating bottom buttons
-//                ) {
-//                    // 🔹 Modern Hero Image Section
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(340.dp)
-//                            .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
-//                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
-//                    ) {
-//                        ProductImagePager(
-//                            images = product.images,
-//                            baseUrl = "https://testserver.rohan.org.in"
-//                        )
-//
-//                        // High-Contrast Try-On Badge
-//                        if (product.supportsTryOn) {
-//                            Surface(
-//                                modifier = Modifier.align(Alignment.TopEnd).padding(20.dp),
-//                                color = MaterialTheme.colorScheme.secondaryContainer,
-//                                shape = AbsoluteRoundedCornerShape(10.dp),
-//                                shadowElevation = 8.dp
-//                            ) {
-//                                Row(
-//                                    verticalAlignment = Alignment.CenterVertically,
-//                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-//                                ) {
-//                                    Icon(Icons.Default.Face, null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onTertiary)
-//                                    Spacer(Modifier.width(6.dp))
-//                                    Text(
-//                                        text = "TRY ON",
-//                                        style = MaterialTheme.typography.labelLarge,
-//                                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-//                                        fontWeight = FontWeight.ExtraBold
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//
-//                    // 🔹 Content Section
-//                    Column(modifier = Modifier.padding(24.dp)) {
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth(),
-//                            horizontalArrangement = Arrangement.SpaceBetween,
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            Text(
-//                                text = product.companyName.uppercase(),
-//                                style = MaterialTheme.typography.labelLarge,
-//                                color = MaterialTheme.colorScheme.tertiary,
-//                                fontWeight = FontWeight.ExtraBold,
-//                                letterSpacing = 1.5.sp
-//                            )
-//
-//                            // Dynamic Price Tag
-//                            Text(
-//                                text = product.formattedPrice,
-//                                style = MaterialTheme.typography.headlineSmall,
-//                                color = MaterialTheme.colorScheme.onSurface,
-//                                fontWeight = FontWeight.ExtraBold
-//                            )
-//                        }
-//
-//                        Spacer(modifier = Modifier.height(8.dp))
-//
-//                        Text(
-//                            text = product.name,
-//                            style = MaterialTheme.typography.headlineMedium,
-//                            color=MaterialTheme.colorScheme.onPrimaryContainer,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//
-//                        Spacer(modifier = Modifier.height(16.dp))
-//
-//                        Text(
-//                            text = product.description,
-//                            style = MaterialTheme.typography.bodyLarge,
-//                            lineHeight = 24.sp,
-//                            color = MaterialTheme.colorScheme.onSurfaceVariant
-//                        )
-//
-//                        Spacer(modifier = Modifier.height(24.dp))
-//
-//                        // 🔹 Interactive Sizes
-//                        if (product.sizes.isNotEmpty()) {
-//                            Text(
-//                                text = "Select Size",
-//                                style = MaterialTheme.typography.titleMedium,
-//                                fontWeight = FontWeight.Bold
-//                            )
-//                            Spacer(modifier = Modifier.height(12.dp))
-//
-//                            LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-//                                items(product.sizes) { size ->
-//                                    FilterChip(
-//                                        selected = selectedSize == size,
-//                                        onClick = { selectedSize = size },
-//                                        label = { Text(size, modifier = Modifier.padding(vertical = 8.dp)) },
-//                                        shape = RoundedCornerShape(12.dp),
-//                                        colors = FilterChipDefaults.filterChipColors(
-//                                            selectedContainerColor = MaterialTheme.colorScheme.primary,
-//                                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
-//                                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-//                                        ),
-//                                        border = null
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                // 🔹 Sticky Bottom Action Bar
-//                Surface(
-//                    modifier = Modifier.align(Alignment.BottomCenter),
-//                    tonalElevation = 8.dp,
-//                    shadowElevation = 16.dp,
-//                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
-//                ) {
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .padding(horizontal = 20.dp, vertical = 16.dp),
-//                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-//                    ) {
-//                        if (product.supportsTryOn) {
-//                            OutlinedButton(
-//                                onClick = { /* Handle Try On */ },
-//                                modifier = Modifier.weight(1f).height(56.dp),
-//                                shape = RoundedCornerShape(16.dp),
-//                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-//                            ) {
-//                                Icon(Icons.Default.Camera, contentDescription = null)
-//                                Spacer(Modifier.width(8.dp))
-//                                Text("Try On", fontWeight = FontWeight.Bold)
-//                            }
-//                        }
-//
-//                        Button(
-//                            onClick = { /* Handle Add to Cart */ },
-//                            modifier = Modifier.weight(1.5f).height(56.dp),
-//                            shape = RoundedCornerShape(16.dp),
-//                            colors = ButtonDefaults.buttonColors(
-//                                containerColor = MaterialTheme.colorScheme.primary
-//                            )
-//                        ) {
-//                            Text("Add to Cart", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
-//                        }
-//                    }
-//                }
-//            }
-//        }
         is ProductModelUiState.Error->
         {
             val message = state.message   // ✅ Correct extraction
