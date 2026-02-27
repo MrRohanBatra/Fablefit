@@ -25,7 +25,8 @@ class CartRepository {
                     ?:throw Exception("Empty body")
             }
             else{
-                throw Exception("HTTP ${response.code()}")
+                val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                throw Exception("HTTP ${response.code()} - $errorMessage")
             }
         }
     }

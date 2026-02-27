@@ -102,5 +102,7 @@ fun CartScreen(
                 }
             }
         }
+
+        else -> {}
     }
 }
