@@ -21,7 +21,8 @@ async def add_product(product: Product):
     
     embedding = ClipServiceModel.generate_embedding(product)
     
-    product.embedding = embedding
+    product.embedding = embedding.get("text_emb")
+    product.image_embedding = embedding.get("image_emb")
     
     # 2. Save using Beanie
     await product.insert()

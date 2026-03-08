@@ -15,7 +15,7 @@ class Product(Document):
     vton_category: Optional[str] = None
 
     embedding: List[float] = Field(default_factory=list)
-
+    image_embedding: List[float] = Field(default_factory=list)
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     

@@ -1,25 +1,26 @@
 import os
 import traceback
 from contextlib import asynccontextmanager  # 🔹 1. Import this for the startup event
-from fastapi import Depends, FastAPI, Request
-from fastapi.responses import FileResponse, JSONResponse
-from beanie import init_beanie              # 🔹 2. Import Beanie initialization
+
+from beanie import init_beanie  # 🔹 2. Import Beanie initialization
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from Routes import UiRouter
+from fastapi.responses import FileResponse, JSONResponse
+from pymongo.errors import PyMongoError
+
+from Routes.CartRoutes import cartRouter
 from Routes.ProductRoutes import ProductRouter
-from database import db, get_db             # We can use your existing 'db' variable
-from databaseSchemas.UserSchema import User
-from helpers.Utilities import Utils
+from Routes.UiRouter import uiRouter
+from Routes.UserRoutes import UserRouter
+from Routes.orderRoute import orderRouter
+from database import db  # We can use your existing 'db' variable
 from databaseSchemas.CartSchema import Cart
 from databaseSchemas.OrderSchema import Order
 from databaseSchemas.ProductSchema import Product
-from Routes.UserRoutes import UserRouter
-from pymongo.errors import PyMongoError
-from Routes.CartRoutes import cartRouter
-from Routes.orderRoute import orderRouter
-from Routes.UiRouter import uiRouter
-
+from databaseSchemas.UserSchema import User
+from helpers.Utilities import Utils
+import platform
+import socket
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # ADD THIS PRINT STATEMENT
@@ -30,7 +31,7 @@ async def lifespan(app: FastAPI):
     )
     print("✅ Beanie initialized successfully")
     yield
-# 🔹 4. Pass the lifespan to the FastAPI app
+
 app = FastAPI(lifespan=lifespan)
 Tools = Utils()
 app.add_middleware(
@@ -104,4 +105,13 @@ async def add_cache_headers(request: Request, call_next):
     return response
 @app.get("/")
 async def root():
-    return {"status": "running"}
+    return {
+        "status": "running",
+        "os": platform.system(),
+        "os_version": platform.version(),
+        "platform": platform.platform(),
+        "architecture": platform.machine(),
+        "hostname": socket.gethostname(),
+        "python_version": platform.python_version(),
+        "cpu_count": os.cpu_count()
+    }

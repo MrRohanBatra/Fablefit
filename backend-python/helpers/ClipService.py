@@ -98,9 +98,12 @@ class ClipService:
     # ---------------------------------
     # COMBINED PRODUCT EMBEDDING
     # ---------------------------------
-    def generate_embedding(self, product: Product):
+    def generate_embedding(self, product: Product)->dict:
         if not self.enabled:
-            return [0.0]*512
+            return {
+                "text_emb": [0.0]*512,
+                "image_emb": [0.0]*512,
+            }
         # text = f"{product.name}. {product.description[:200]}"
         text = f"{product.name} by {product.companyName}. Category: {product.category}. Color: {product.color}. {product.description[:200]}"
         image_path = product.images[0]
@@ -108,10 +111,10 @@ class ClipService:
         text_emb = torch.tensor(self.generate_text_embedding(text), device=self.device)
         image_emb = torch.tensor(self.generate_image_embedding(image_path), device=self.device)
 
-        combined = (text_emb + image_emb) / 2.0
-        combined = combined / combined.norm()
-
-        return combined.cpu().numpy().tolist()
+        return {
+            "text_emb": text_emb,
+            "image_emb": image_emb
+        }
 
 
 
