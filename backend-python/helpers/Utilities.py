@@ -87,11 +87,11 @@ class Utils:
             matched = [p for p in matched if self.matches_gender(p, gender)]
 
         return matched
-    
-class GptUtils():
+
+class GptUtils:
     def __init__(self):
         pass
-    def get_best_cuda_device(self)->str:
+    def get_best_cuda_device(self) -> str:
         if not torch.cuda.is_available():
             return "cpu"
 
@@ -99,12 +99,15 @@ class GptUtils():
         best_free = 0
 
         for i in range(torch.cuda.device_count()):
-            torch.cuda.set_device(i)
-            free, total = torch.cuda.mem_get_info(i)   # bytes
-            free_gb = free / 1024**3
+            try:
+                free, total = torch.cuda.mem_get_info(i)  # bytes
+                free_gb = free / (1024 ** 3)
 
-            if free_gb > best_free:
-                best_free = free_gb
-                best_gpu = i
+                if free_gb > best_free:
+                    best_free = free_gb
+                    best_gpu = i
+            except RuntimeError:
+                # GPU may be inaccessible or full
+                continue
 
         return f"cuda:{best_gpu}"

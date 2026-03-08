@@ -112,8 +112,8 @@ class ClipService:
         image_emb = torch.tensor(self.generate_image_embedding(image_path), device=self.device)
 
         return {
-            "text_emb": text_emb,
-            "image_emb": image_emb
+            "text_emb": text_emb.detach().cpu().numpy().tolist(),
+            "image_emb": image_emb.detach().cpu().numpy().tolist()
         }
 
 
