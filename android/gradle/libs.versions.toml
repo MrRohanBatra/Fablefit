@@ -1,5 +1,6 @@
 [versions]
 agp = "9.0.1"
+arrowtooltip = "0.0.2"
 coilCompose = "3.3.0"
 coilNetworkOkhttp = "3.3.0"
 compose = "1.0.0-beta08"
@@ -61,6 +62,7 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 
 # ----------------- MATERIAL 3 -----------------
 #androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+arrowtooltip = { module = "io.github.msseodev:arrowtooltip", version.ref = "arrowtooltip" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
