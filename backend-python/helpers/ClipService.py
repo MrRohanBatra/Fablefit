@@ -14,7 +14,7 @@ class ClipService:
     def __init__(self):
         self.gpuUtils = GptUtils()
         self.enabled=os.getenv("ENABLE_CLIP_MODEL","true").lower()=="true"
-        if(not self.enabled):
+        if not self.enabled:
             print("⚠️ CLIP_SERVICE: Disabled via environment variable. Skipping model load.")
             return
         self.device = self.gpuUtils.get_best_cuda_device()
