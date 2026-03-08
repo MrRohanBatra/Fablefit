@@ -121,5 +121,6 @@ dependencies {
 
     // JSON converter
     implementation(libs.converter.gson)
+    implementation(libs.arrowtooltip)
 
 }

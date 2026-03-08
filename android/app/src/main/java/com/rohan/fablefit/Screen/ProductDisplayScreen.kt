@@ -147,7 +147,7 @@ fun ProductDisplayScreen(
                 // 🔹 Info Section
                 Column(modifier = Modifier.padding(24.dp)) {
 
-                    // 🏷️ Company Name: Using Tertiary for distinct branding
+
                     Text(
                         text = product.companyName.uppercase(),
                         style = MaterialTheme.typography.labelLarge,
