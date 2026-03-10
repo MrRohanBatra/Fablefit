@@ -6,14 +6,20 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -33,15 +39,19 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.SupportAgent
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -56,6 +66,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,6 +94,7 @@ import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import com.rohan.fablefit.Screen.SearchScreen
 import com.rohan.fablefit.Screen.UserInfo
+import com.rohan.fablefit.agent.AgentRoutes
 import com.rohan.fablefit.auth.AuthScreen
 import com.rohan.fablefit.auth.SplashScreen
 import com.rohan.fablefit.navigation.AppRoute
@@ -498,34 +510,93 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
         }
     }
 }
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AiChatBot(showIcon: Boolean) {
-    if (showIcon) {
-        var showTip by remember { mutableStateOf(false) }
-        LaunchedEffect(Unit) {
-            delay(300)
-            showTip=true
+
+    var expanded by remember { mutableStateOf(false) }
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+    // Loop animation
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(500)
+            expanded = true
+            delay(6000)
+            expanded = false
+            delay(4000)
         }
-        ArrowTooltip(
-            visible = showTip,
-            tooltipContent ={
-                Text("Simple Tool Tip")
+    }
+
+    if (showIcon) {
+        ExtendedFloatingActionButton(
+            onClick = {
+                showBottomSheet = true
             },
-        ) {
-            FloatingActionButton(
-                onClick = {
-                    // TODO: Navigate to AI Chat Screen
-                },
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ) {
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            icon = {
                 Icon(
                     imageVector = Icons.Outlined.SupportAgent,
-                    contentDescription = "AI Chat Assistant"
+                    contentDescription = null
                 )
+            },
+            text = {
+                AnimatedVisibility(
+                    visible = expanded,
+                    enter = fadeIn() + expandHorizontally(),
+                    exit = fadeOut() + shrinkHorizontally()
+                ) {
+                    Text("AI Chat Assistant")
+                }
             }
+        )
+    }
+    if (showBottomSheet) {
 
+        val routes = listOf(
+            AgentRoutes.ImageSearch,
+            AgentRoutes.ChatBot
+        )
+
+        var selected by remember { mutableStateOf(routes[0]) }
+
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            }
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            ) {
+
+                Text(
+                    text = "Available Tools",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Spacer(Modifier.height(12.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    routes.forEach { route ->
+                        FilterChip(
+                            selected = selected == route,
+                            onClick = { selected = route },
+                            label = { Text(route.title) }
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(20.dp))
+
+                // Render selected tool UI
+                selected.ui()
+            }
         }
     }
 }
