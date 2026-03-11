@@ -1,7 +1,7 @@
 import httpx
 from typing import Optional
 from pydantic import BaseModel
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException,status
 from fastapi.responses import JSONResponse, StreamingResponse
 from dotenv import load_dotenv
 import os
@@ -80,3 +80,39 @@ async def forward_result(task_id: str):
         response.aiter_bytes(),
         media_type="image/png"
     )
+class HealthCheckResponse(BaseModel):
+    status: str
+    flask_connected: bool
+    message: str
+
+# --- Routes ---
+
+@router.get("/vton/check", response_model=HealthCheckResponse)
+async def check_vton_availability():
+    """
+    Checks if the Flask VTON service is up and reachable.
+    """
+    try:
+        # Pinging the Flask root "/" route
+        response = await client.get(f"{FLASK_URL}/", timeout=5.0)
+        
+        if response.status_code == 200:
+            return {
+                "status": "online",
+                "flask_connected": True,
+                "message": "VTON Service is ready to process jobs."
+            }
+        else:
+            return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={
+                    "status": "error",
+                    "flask_connected": False,
+                    "message": f"Flask returned status code {response.status_code}"
+                }
+            )
+    except httpx.RequestError:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, 
+            detail="VTON Flask server is unreachable. Is it running on port 8000?"
+        )
