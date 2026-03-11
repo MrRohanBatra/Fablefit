@@ -54,22 +54,22 @@ interface ApiService {
     suspend fun updateCart(
         @Body item: CartUpdate,
     ): Response<CartResponse>
-    @GET("/api/user/{uid")
+    @GET("/api/users/{uid}")
     suspend fun getUserData(
         @Path("uid") uid: String,
     ): Response<UserModel>
 
-    @POST("/api/user/add")
+    @POST("/api/users/add")
     suspend fun addUser(
-        user: UserModel,
+        @Body user: UserModel,
     ): Response<UserResponseModel>
 
-    @POST("/api/user/updatetype/{uid}")
+    @POST("/api/users/updatetype/{uid}")
     suspend fun updateUserType(
         @Path("uid") uid: String,
     ): Response<UserResponseModel>
     @Multipart
-    @POST("/api/user/uploadimage")
+    @POST("/api/users/uploadimage")
     suspend fun UploadUserImage(
         @Part("uid") uid: RequestBody,
         @Part image: MultipartBody.Part

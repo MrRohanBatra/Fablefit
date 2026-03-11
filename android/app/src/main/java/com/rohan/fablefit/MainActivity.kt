@@ -111,6 +111,8 @@ import com.rohan.fablefit.ui.model.SearchFilters
 import com.rohan.fablefit.ui.theme.FablefitTheme
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.lazy.items
+import com.rohan.fablefit.ui.User.UserViewModel
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -185,14 +187,21 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainECommerceScaffold(onLogout:()-> Unit) {
-    var refresh by remember { mutableStateOf(0) }
+
     val cartViewModel: CartViewModel=viewModel()
-    val user by remember(refresh) {   mutableStateOf(FirebaseAuth.getInstance().currentUser)}
+    val userViewModel: UserViewModel=viewModel()
+    val user by userViewModel.user
     val uiState=cartViewModel.uiState
     LaunchedEffect(user?.uid) {
         user?.uid?.let {
             cartViewModel.getUserCart(it)
+//            userViewModel.up
+            userViewModel.ensureUserExists()
         }
+
+    }
+    LaunchedEffect(Unit) {
+        userViewModel.refreshUser()
     }
     val navController = rememberNavController()
     val currentRoute =
@@ -316,7 +325,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                         .fillMaxWidth()
                         .padding(18.dp)
                 ) {
-                    val user= FirebaseAuth.getInstance().currentUser
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -513,9 +522,10 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             }
             composable(BottomRoute.MyInfo.route) {
 //                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
-                UserInfo(context = LocalContext.current,onRefresh={
-                    refresh++;
-                })
+                UserInfo(
+                    context = LocalContext.current,
+                    userViewModel = userViewModel
+                    )
             }
         }
     }
