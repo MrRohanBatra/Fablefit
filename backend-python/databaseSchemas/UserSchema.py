@@ -31,3 +31,11 @@ class UserResponse(BaseModel):
 class UserUploadImageRepsonse(BaseModel):
     message:str
     file:str
+
+
+class UserCreate(BaseModel):
+    uid: str
+    phone: Optional[str] = None
+    address: List[Any] = []
+    vton_image: Optional[str] = None
+    type: Literal["normal", "seller"] = "normal"

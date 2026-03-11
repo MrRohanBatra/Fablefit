@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from databaseSchemas.UserSchema import User, UserResponse, UserUploadImageRepsonse
+from databaseSchemas.UserSchema import User, UserResponse, UserUploadImageRepsonse, UserCreate
 from helpers.Utilities import Utils
 
 # Setup path for internal imports
@@ -15,7 +15,7 @@ UserRouter = APIRouter(prefix="/users")
 Tools = Utils()
 
 @UserRouter.post("/add",response_model=UserResponse)
-async def add_user(user_data: User):
+async def add_user(user_data: UserCreate):
     """Add or update user (Matches Node.js addUser logic)"""
     try:
         print(f"📥 Received user data: {user_data.uid}")
