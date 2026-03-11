@@ -49,7 +49,9 @@ async def add_user(user_data: UserCreate):
         # Create new user if not found
         print(f"🆕 Creating new user: {user_data.uid}")
         # Beanie's .insert() uses the defaults defined in your UserSchema
-        await user_data.insert()
+        new_user = User(**user_data.model_dump())
+
+        await new_user.insert()
         
         return {
             "message": "User created", 
