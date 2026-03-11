@@ -185,8 +185,9 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainECommerceScaffold(onLogout:()-> Unit) {
+    var refresh by remember { mutableStateOf(0) }
     val cartViewModel: CartViewModel=viewModel()
-    val user= FirebaseAuth.getInstance().currentUser
+    val user by remember(refresh) {   mutableStateOf(FirebaseAuth.getInstance().currentUser)}
     val uiState=cartViewModel.uiState
     LaunchedEffect(user?.uid) {
         user?.uid?.let {
@@ -512,7 +513,9 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             }
             composable(BottomRoute.MyInfo.route) {
 //                LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
-                UserInfo()
+                UserInfo(context = LocalContext.current,onRefresh={
+                    refresh++;
+                })
             }
         }
     }
