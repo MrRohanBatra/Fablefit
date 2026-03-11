@@ -2,9 +2,10 @@ import os
 import shutil
 import sys
 from datetime import datetime, timezone
+from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from databaseSchemas.UserSchema import User
+from databaseSchemas.UserSchema import User, UserResponse, UserUploadImageRepsonse
 from helpers.Utilities import Utils
 
 # Setup path for internal imports
@@ -13,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 UserRouter = APIRouter(prefix="/users")
 Tools = Utils()
 
-@UserRouter.post("/add")
+@UserRouter.post("/add",response_model=UserResponse)
 async def add_user(user_data: User):
     """Add or update user (Matches Node.js addUser logic)"""
     try:
@@ -59,7 +60,7 @@ async def add_user(user_data: User):
         print(f"❌ Error in addUser: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@UserRouter.get("/{uid}")
+@UserRouter.get("/{uid}",response_model=User)
 async def get_user(uid: str):
     """Get user by UID"""
     user = await User.find_one(User.uid == uid)
@@ -68,8 +69,8 @@ async def get_user(uid: str):
     
     return Tools.serializeDoc(user.model_dump(by_alias=True))
 
-@UserRouter.post("/updatetype/{uid}")
-async def update_user_type(uid: str, payload: dict):
+@UserRouter.post("/updatetype/{uid}",response_model=UserResponse)
+async def update_user_type(uid: str, payload: User):
     """Update user type only"""
     new_type = payload.get("type")
     
@@ -92,13 +93,13 @@ async def update_user_type(uid: str, payload: dict):
         "user": Tools.serializeDoc(user.model_dump(by_alias=True))
     }
 
-@UserRouter.get("/all/users")
+@UserRouter.get("/all/users",response_model=List[User])
 async def all_users():
     """Get all users"""
     users = await User.find_all().to_list()
     return [Tools.serializeDoc(u.model_dump(by_alias=True)) for u in users]
 
-@UserRouter.post("/uploadimage")
+@UserRouter.post("/uploadimage",response_model=UserUploadImageRepsonse)
 async def upload_image(
     uid: str = Form(...),
     image: UploadFile = File(...)
@@ -123,7 +124,7 @@ async def upload_image(
 
         return {
             "message": "Image replaced successfully",
-            "file": f"/images/{filename}"
+            "file": f"images/{filename}"
         }
     except Exception as e:
         print(f"Upload error: {e}")

@@ -1,5 +1,5 @@
 from typing import List, Optional, Any, Literal
-from pydantic import Field
+from pydantic import Field, BaseModel
 from datetime import datetime, timezone
 from beanie import Document
 
@@ -22,3 +22,12 @@ class User(Document):
 
     class Settings:
         name = "users"
+
+
+class UserResponse(BaseModel):
+    message:str
+    user: User
+
+class UserUploadImageRepsonse(BaseModel):
+    message:str
+    file:str

@@ -87,7 +87,7 @@ class HealthCheckResponse(BaseModel):
 
 # --- Routes ---
 
-@router.get("/vton/check", response_model=HealthCheckResponse)
+@router.get("/check", response_model=HealthCheckResponse)
 async def check_vton_availability():
     """
     Checks if the Flask VTON service is up and reachable.
