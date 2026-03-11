@@ -13,7 +13,8 @@ from Routes.ProductRoutes import ProductRouter
 from Routes.UiRouter import uiRouter
 from Routes.UserRoutes import UserRouter
 from Routes.orderRoute import orderRouter
-from database import db  # We can use your existing 'db' variable
+from Routes.VtonRoutes import router
+from database import db  
 from databaseSchemas.CartSchema import Cart
 from databaseSchemas.OrderSchema import Order
 from databaseSchemas.ProductSchema import Product
@@ -73,6 +74,7 @@ app.include_router(ProductRouter,prefix="/api")
 app.include_router(cartRouter,prefix="/api")
 app.include_router(orderRouter,prefix="/api")
 app.include_router(uiRouter,prefix="/api")
+app.include_router(router,prefix="/api")
 
 CACHE_TIME = 31536000
 # Matches: app.use("/images", express.static(...))
