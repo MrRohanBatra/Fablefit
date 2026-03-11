@@ -3,6 +3,7 @@ package com.rohan.fablefit
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,12 +32,15 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.SupportAgent
@@ -54,6 +59,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -104,8 +110,7 @@ import com.rohan.fablefit.ui.Cart.CartViewModel
 import com.rohan.fablefit.ui.model.SearchFilters
 import com.rohan.fablefit.ui.theme.FablefitTheme
 import kotlinx.coroutines.delay
-
-
+import androidx.compose.foundation.lazy.items
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -419,7 +424,9 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
         },
         floatingActionButton = {
             val show=true
-            AiChatBot(show)
+            if(currentRoute==BottomRoute.Home.route){
+                AiChatBot(show)
+            }
         },
         modifier = Modifier
             .fillMaxSize()
@@ -547,7 +554,7 @@ fun AiChatBot(showIcon: Boolean) {
                     enter = fadeIn() + expandHorizontally(),
                     exit = fadeOut() + shrinkHorizontally()
                 ) {
-                    Text("AI Chat Assistant")
+                    Text("Rasberry")
                 }
             }
         )
@@ -559,7 +566,7 @@ fun AiChatBot(showIcon: Boolean) {
             AgentRoutes.ChatBot
         )
 
-        var selected by remember { mutableStateOf(routes[0]) }
+        var selectedOption by remember { mutableStateOf<AgentRoutes?>(null) }
 
         ModalBottomSheet(
             onDismissRequest = {
@@ -567,36 +574,127 @@ fun AiChatBot(showIcon: Boolean) {
             }
         ) {
 
-            Column(
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+                    .fillMaxHeight()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
 
-                Text(
-                    text = "Available Tools",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Spacer(Modifier.height(12.dp))
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    routes.forEach { route ->
-                        FilterChip(
-                            selected = selected == route,
-                            onClick = { selected = route },
-                            label = { Text(route.title) }
-                        )
-                    }
+                item {
+                    AgentBubble("What would you like to do?")
                 }
 
-                Spacer(Modifier.height(20.dp))
+                if (selectedOption == null) {
 
-                // Render selected tool UI
-                selected.ui()
+                    items(routes) { route ->
+
+                        UserOptionBubble(
+                            text = route.title,
+                            onClick = {
+                                selectedOption = route
+                            }
+                        )
+                    }
+
+                } else {
+
+                    item {
+                        UserBubble(selectedOption!!.title)
+                    }
+
+                    item {
+                        selectedOption!!.ui()
+                    }
+
+                }
             }
+        }
+    }
+}
+@Composable
+fun UserBubble(
+    text: String? = null,
+    custom: (@Composable () -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.Top
+    ) {
+
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.primaryContainer
+        ) {
+            Column(
+                modifier = Modifier.padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+
+                text?.let {
+                    Text(it)
+                }
+
+                custom?.invoke()
+            }
+        }
+
+        Spacer(Modifier.width(8.dp))
+
+        Icon(
+            imageVector = Icons.Default.Person,
+            contentDescription = null,
+            modifier = Modifier.size(32.dp)
+        )
+    }
+}
+@Composable
+fun UserOptionBubble(
+    text: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+
+        AssistChip(
+            onClick = onClick,
+            label = { Text(text) }
+        )
+    }
+}
+@Composable
+fun AgentBubble(text: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+
+        Icon(
+            imageVector = Icons.Outlined.SupportAgent,
+            contentDescription = null,
+            modifier = Modifier.size(32.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(Modifier.width(8.dp))
+
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier.padding(12.dp)
+            )
         }
     }
 }
