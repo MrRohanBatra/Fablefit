@@ -108,7 +108,7 @@ async def upload_image(
 ):
     """Handle vton image upload and replacement"""
     try:
-        upload_dir = "images"
+        upload_dir = "images/102"
         os.makedirs(upload_dir, exist_ok=True)
 
         ext = os.path.splitext(image.filename)[1] if image.filename else ".png"

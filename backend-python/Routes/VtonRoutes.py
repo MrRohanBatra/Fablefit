@@ -5,6 +5,9 @@ from fastapi import APIRouter, UploadFile, File, Form, HTTPException,status
 from fastapi.responses import JSONResponse, StreamingResponse
 from dotenv import load_dotenv
 import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 load_dotenv()
 router = APIRouter(prefix="/vton")
 
@@ -14,6 +17,17 @@ class TryonResponse(BaseModel):
     task_id: str
     message: str
     position_in_queue: int
+
+
+class TryonPathRequest(BaseModel):
+    human_image_path: str
+    garment_image_path: str
+    description: str = ""
+    denoise_steps: int = 20
+    seed: int = 42
+    category: str = "upper_body"
+
+
 
 class StatusResponse(BaseModel):
     task_id: str
@@ -55,6 +69,46 @@ async def forward_tryon(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Proxy Error: {str(e)}")
 
+
+@router.post("/tryonbypath", response_model=TryonResponse)
+async def forward_tryon_by_path(request: TryonPathRequest):
+    """
+    Forwards local file paths to the Flask VTON API.
+    Reduces network overhead by reading from local storage.
+    """
+    # 1. Validate that files exist before trying to send them
+    if not os.path.exists(request.human_image_path):
+        raise HTTPException(status_code=404, detail=f"Human image not found at {request.human_image_path}")
+    if not os.path.exists(request.garment_image_path):
+        raise HTTPException(status_code=404, detail=f"Garment image not found at {request.garment_image_path}")
+
+    try:
+        # 2. Open files in binary mode
+        # We use a 'with' block or manual close to ensure file handles are released
+        with open(request.human_image_path, "rb") as h_file, \
+                open(request.garment_image_path, "rb") as g_file:
+
+            files = {
+                "human_image": (os.path.basename(request.human_image_path), h_file, "image/png"),
+                "garment_image": (os.path.basename(request.garment_image_path), g_file, "image/png"),
+            }
+
+            data = {
+                "description": request.description,
+                "denoise_steps": str(request.denoise_steps),
+                "seed": str(request.seed),
+                "category": request.category
+            }
+
+            # 3. Forward to Flask
+            response = await client.post(f"{FLASK_URL}/tryon", data=data, files=files)
+            response.raise_for_status()
+            return response.json()
+
+    except httpx.HTTPStatusError as e:
+        return JSONResponse(status_code=e.response.status_code, content=e.response.json())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 @router.get("/status/{task_id}", response_model=StatusResponse)
 async def forward_status(task_id: str):
     try:
