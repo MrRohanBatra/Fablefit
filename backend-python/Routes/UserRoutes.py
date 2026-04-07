@@ -108,26 +108,26 @@ async def upload_image(
 ):
     """Handle vton image upload and replacement"""
     try:
+        user = await User.find_one({"uid": uid})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
         upload_dir = "images/102"
         os.makedirs(upload_dir, exist_ok=True)
 
         ext = os.path.splitext(image.filename)[1] if image.filename else ".png"
-        # Matches Node.js fileName: `${uid}_${Date.now()}${ext}`
         timestamp = int(datetime.now().timestamp() * 1000)
         filename = f"{uid}_{timestamp}{ext}"
         filepath = os.path.join(upload_dir, filename)
-
-        # In Python, we just write the new file; 
-        # for strict 'replacement' of the specific timestamped file, 
-        # usually, we'd delete old ones based on a pattern, 
-        # but here we follow your Node logic of saving the new one.
         with open(filepath, "wb") as buffer:
             shutil.copyfileobj(image.file, buffer)
-
+        user.vton_image=filepath
+        await user.save()
         return {
             "message": "Image replaced successfully",
-            "file": f"images/{filename}"
+            "file": f"{filepath}"
         }
+        
     except Exception as e:
         print(f"Upload error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
