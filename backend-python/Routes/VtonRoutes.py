@@ -6,10 +6,22 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from dotenv import load_dotenv
 import os
 import sys
+
+from databaseSchemas.ProductSchema import Product
+from databaseSchemas.UserSchema import User
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 load_dotenv()
+BASE_URL=os.getenv("BASE_URL","http://127.0.0.1:1607")
 router = APIRouter(prefix="/vton")
+
+def getNetworkUrl(partial_url:str)->str:
+    if(partial_url.startswith("/")):
+        return f"{BASE_URL}/{partial_url[1::]}"
+    else:
+        return f"{BASE_URL}/{partial_url}"    
+
+
 
 # --- Response Models ---
 
@@ -27,7 +39,9 @@ class TryonPathRequest(BaseModel):
     seed: int = 42
     category: str = "upper_body"
 
-
+class ModernTryOn(BaseModel):
+    product_id:str
+    uid:str
 
 class StatusResponse(BaseModel):
     task_id: str
@@ -37,9 +51,9 @@ class StatusResponse(BaseModel):
 
 # --- Configuration ---
 FLASK_URL = os.getenv("VTON_URL","http://localhost:8000")
-client = httpx.AsyncClient(timeout=120.0) # Increased timeout for heavy VTON processing
+client = httpx.AsyncClient(timeout=120.0) 
 
-@router.post("/tryon", response_model=TryonResponse)
+@router.post("/tryonold", response_model=TryonResponse)
 async def forward_tryon(
     human_image: UploadFile = File(...),
     garment_image: UploadFile = File(...),
@@ -109,6 +123,43 @@ async def forward_tryon_by_path(request: TryonPathRequest):
         return JSONResponse(status_code=e.response.status_code, content=e.response.json())
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+    
+
+@router.post("/tryon",response_model=TryonResponse)
+async def tryon_function(request:ModernTryOn):
+    garment=await Product.get(request.product_id)
+    if garment is None:
+        raise HTTPException(404,f"product {request.product_id} not found")
+    human=await User.find_one({"uid":request.uid})
+    if human is None:
+        raise HTTPException(404,f"user {request.uid} not found")
+    garment_image=garment.images[0]
+    human_image=human.vton_image
+    human_url=getNetworkUrl(human_image)
+    garment_url=getNetworkUrl(garment_image)
+    
+    
+    human_response=await client.get(human_url)
+    if human_response.status_code!=200:
+        raise HTTPException(404, "Human image not found")
+    garment_response=await client.get(garment_url)
+    if garment_response.status_code!=200:
+        raise HTTPException(404, "Garment image not found")
+    human_type = human_response.headers.get("content-type", "image/jpeg")
+    garment_type = garment_response.headers.get("content-type", "image/jpeg")
+    files = {
+        "human_image": ("human", human_response.content, human_type),
+        "garment_image": ("garment", garment_response.content, garment_type),
+    }
+    data={
+        "category":garment.vton_category,
+        "denoise_steps":20,
+        "seed":42,
+    }
+    final_response=await client.post(f"{FLASK_URL}/tryon",data=data,files=files)
+    final_response.raise_for_status()
+    return final_response.json()
+
 @router.get("/status/{task_id}", response_model=StatusResponse)
 async def forward_status(task_id: str):
     try:
