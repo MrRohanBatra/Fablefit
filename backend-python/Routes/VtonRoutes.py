@@ -155,6 +155,7 @@ async def tryon_function(request:ModernTryOn):
         "category":garment.vton_category,
         "denoise_steps":20,
         "seed":42,
+        "description":garment.name,
     }
     final_response=await client.post(f"{FLASK_URL}/tryon",data=data,files=files)
     final_response.raise_for_status()
