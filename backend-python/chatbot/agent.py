@@ -51,10 +51,39 @@ async def add_item_to_cart(user_id: str, product_id: str):
     Adds a specific product to the user's shopping cart.
     It takes the user_id and product_id, constructs a cart update payload, and pushes it to the database.
     """
-    
+    from databaseSchemas.CartSchema import CartUpdate
+
+@tool
+async def add_item_to_cart(user_id: str, product_id: str):
+    """
+    Adds a specific product to the user's shopping cart.
+    """
+
+    try:
+        payload = CartUpdate(
+            uid=user_id,
+            product=product_id,
+            quantity=1,
+            size="M",      #default 
+            color="default"
+        )
+
+        result = await cart_add_logic(payload)
+
+        return {
+            "message": "Item added to cart successfully",
+            "error": False,
+            "data": result
+        }
+
+        except Exception as e:
+            return {
+                "message": f"Failed to add item: {str(e)}",
+                "error": True
+            }
     # RETURN: A success string confirming the item was added, OR an error string if the database operation fails.
-    return {"message":"added to card","error":False}
-    pass
+    # return {"message":"added to card","error":False}
+    # pass
 
 
 tools = [search_for_products, add_item_to_cart]
