@@ -1,279 +1,132 @@
-# from chatbot.state import get_user_state
-# from chatbot.intent import extract_intent
-# from chatbot.state import reset_user_state
-# from databaseSchemas.ProductSchema import Product
-# from databaseSchemas.CartSchema import Cart
-# from databaseSchemas.OrderSchema import Order
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from beanie import init_beanie
 
-
-# #Search 
-# async def search_products(query: str):
-#     products = await Product.find(
-#         {"name": {"$regex": query, "$options": "i"}}
-#     ).to_list()
-
-#     return [
-#         {"id": str(p.id), "name": p.name, "price": p.price}
-#         for p in products
-#     ]
-
-
-# #ADD TO CART
-# async def add_to_cart(user_id, product):
-#     cart = await Cart.find_one(Cart.user_id == user_id)
-
-#     if not cart:
-#         cart = Cart(user_id=user_id, items=[])
-
-#     cart.items.append({
-#         "product_id": product["id"],
-#         "quantity": 1
-#     })
-
-#     await cart.save()
-
-
-# #CREATE ORDER
-# async def create_order(user_id, product):
-#     order = Order(
-#         user_id=user_id,
-#         items=[{
-#             "product_id": product["id"],
-#             "quantity": 1
-#         }],
-#         total_price=product["price"]
-#     )
-#     await order.insert()
-#     return order
-
-
-# #Main
-# async def process_chat(user_id: str, message: str):
-
-#     state = get_user_state(user_id)
-
-#     # langchain
-#     intent_data = await extract_intent(message)
-
-#     intent = intent_data.get("intent")
-#     query = intent_data.get("query")
-#     product_name = intent_data.get("product_name")
-#     confirmation = intent_data.get("confirmation")
-
-#     #Search 
-#     if intent == "search":
-#         products = await search_products(query)
-
-#         if not products:
-#             return {"message": "No products found"}
-
-#         state["last_products"] = products
-
-#         response = "Here are some options:\n"
-#         for i, p in enumerate(products[:5]):
-#             response += f"{i+1}. {p['name']} ₹{p['price']}\n"
-
-#         response += "\nWhich one do you want?"
-
-#         return {"message": response}
-
-#     #Select
-#     if intent == "select" and state["last_products"]:
-#         for p in state["last_products"]:
-#             if product_name.lower() in p["name"].lower():
-#                 state["selected_product"] = p
-
-#                 return {
-#                     "message": f"Do you want to place order for {p['name']} ₹{p['price']}?"
-#                 }
-
-#         return {"message": "Product not found in list. Please choose again."}
-
-#     if intent == "confirm" and confirmation == "yes":
-
-#         if not state["selected_product"]:
-#             return {"message": "Please select a product first"}
-
-#         product = state["selected_product"]
-
-
-#         if product.get("stock", 0) <= 0:
-#             return {"message": f"{product['name']} is out of stock"}
-
-
-#         await add_to_cart(user_id, product)
-#         await create_order(user_id, product)
-
-        
-#         reset_user_state(user_id)
-
-#         return {
-#             "message": f"Order placed successfully for {product['name']}"
-#         }
-
-#     #Orders display
-#     if intent == "show_orders":
-#         orders = await Order.find(Order.user_id == user_id).to_list()
-
-#         if not orders:
-#             return {"message": "No orders found"}
-
-#         return {"message": f"You have {len(orders)} orders"}
-
-#     return {"message": "Sorry, I didn't understand. Try again."}
-
-
-
-
-from chatbot.state import get_user_state, reset_user_state
-from chatbot.intent import extract_intent
-
-from databaseSchemas.ProductSchema import Product
-from databaseSchemas.CartSchema import Cart
 from databaseSchemas.OrderSchema import Order
+from databaseSchemas.ProductSchema import Product
+from databaseSchemas.UserSchema import User
 
-from bson import ObjectId
+from typing import List, Optional
+from langchain_ollama import ChatOllama
+from langchain_openai import ChatOpenAI
+from langchain_core.tools import tool
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
+from database import db
+from chatbot.state import get_user_state
+from Routes.ProductRoutes import vector_search_products
+from Routes.CartRoutes import add_to_cart as cart_add_logic
+from databaseSchemas.CartSchema import Cart, CartUpdate
 
-
-#Search
-async def search_products(query: str):
-    products = await Product.find({
-        "name": {"$regex": query, "$options": "i"}
-    }).to_list()
-
-    return [
-        {
-            "id": str(p.id),
-            "name": p.name,
-            "price": p.price,
-            "stock": p.stock
-        }
-        for p in products
-    ]
+llm = ChatOllama(model="qwen3.5:2b", temperature=0)
 
 
-#Add to cart
-async def add_to_cart(user_id, product):
-    cart = await Cart.find_one(Cart.uid == user_id)
-
-    if not cart:
-        cart = Cart(uid=user_id, items=[], totalPrice=0)
-
-    # check if already exists
-    for item in cart.items:
-        if item.product == product["id"]:
-            item.quantity += 1
-            cart.totalPrice += product["price"]
-            await cart.save()
-            return
-
-    cart.items.append({
-        "product": product["id"],
-        "size": "M",  # temporary
-        "color": None,
-        "quantity": 1
-    })
-
-    cart.totalPrice += product["price"]
-
-    await cart.save()
+@tool
+async def search_for_products(query: str = "", category: str = "", color: str = "",gender=""):
+    """
+    Search for clothes by style, color, or name. 
+    It combines the provided parameters into a single search string and queries the vector database for matching products.
+    """
+    search_query=""
+    search_query=" ".join([query,color,gender,category])
+    if search_query=="":
+        search_query="trending clothes"
+    try:
+        all_products = await vector_search_products(search_query)
+    except Exception as e:
+        import traceback
+        print("VECTOR SEARCH ERROR:", e)
+        traceback.print_exc()
+        raise e
+    if(len(all_products)==0):
+        return {"message":"unable to find any product","error":True,"products":[]}
+    return {"message":"products found","products":all_products,"error":False}
+    # RETURN: A list of dictionaries (each containing 'id', 'name', and 'price') OR a string message if no products are found.
 
 
-# Create Order
-async def create_order(user_id, product):
+@tool
+async def add_item_to_cart(user_id: str, product_id: str):
+    """
+    Adds a specific product to the user's shopping cart.
+    It takes the user_id and product_id, constructs a cart update payload, and pushes it to the database.
+    """
+    
+    # RETURN: A success string confirming the item was added, OR an error string if the database operation fails.
+    return {"message":"added to card","error":False}
+    pass
 
-    order = Order(
-        userId=user_id,
 
-        items=[{
-            "product": ObjectId(product["id"]),
-            "size": "M",
-            "color": None,
-            "quantity": 1,
-            "price": product["price"]
-        }],
+tools = [search_for_products, add_item_to_cart]
 
-        totalPrice=product["price"],
-        address="Default Address",
-        paymentMethod="cod",
-        status="placed"
+# --- Agent Setup ---
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", """You are the Fablefit AI Stylist. You help users find clothes and manage their cart. 
+    The current user's ID is: {user_id}. Always use this user_id when adding items to the cart.
+    IMPORTANT: You have access to tools. Do NOT output raw JSON to the user. 
+    Execute the tools, wait for the observation, and then summarize the results in a friendly, conversational way."""),
+    MessagesPlaceholder(variable_name="chat_history"),
+    ("human", "{input}"),
+    MessagesPlaceholder(variable_name="agent_scratchpad"),
+])
+
+# Use the specific tool-calling agent logic
+agent = create_tool_calling_agent(llm, tools, prompt)
+
+# handle_parsing_errors=True helps recover if the local model formats JSON slightly wrong
+agent_executor = AgentExecutor(
+    agent=agent, 
+    tools=tools, 
+    verbose=True, 
+    handle_parsing_errors=True,
+    max_iterations=3 # Prevents the local model from getting stuck in an infinite loop
+)
+
+# --- Main Chat Processor ---
+
+async def process_chat(user_id: str, message: str, image_results: Optional[List] = None):
+    # Prepare input with image context if available
+    final_input = message
+    if image_results:
+        context = "The user uploaded an image. Visually similar products found: "
+        # Extract names safely
+        context += ", ".join([p.name if hasattr(p, 'name') else p.get('name', 'Product') for p in image_results])
+        final_input = f"{context}\n\nUser's message: {message}"
+
+    try:
+        response = await agent_executor.ainvoke({
+            "input": final_input,
+            "chat_history": [], # You can wire this up to get_user_state later
+            "user_id": user_id  # Inject the user_id so the LLM knows it
+        })
+        return {"message": response["output"]}
+    
+    except Exception as e:
+        print(f"Agent Execution Error: {e}")
+        return {"message": "I'm having a little trouble connecting to my stylist tools right now. Could you try again?"}
+
+import asyncio
+
+async def init_db():
+    await init_beanie(
+        database=db,
+        document_models=[Product,User,Cart,Order]
     )
+async def main():
+    await init_db()
+    user_id = "fb_user_12345"
 
-    await order.insert()
-    return order
+    while True:
+        s = input("Enter: ")
 
+        if s.lower() == "e":
+            break
 
-# Chat
-async def process_chat(user_id: str, message: str):
+        result = await process_chat(user_id, s)
+        print(result["message"])
 
-    state = get_user_state(user_id)
-
-    intent_data = await extract_intent(message)
-
-    intent = intent_data.get("intent")
-    query = intent_data.get("query")
-    product_name = intent_data.get("product_name")
-    confirmation = intent_data.get("confirmation")
-
-    # Search
-    if intent == "search":
-        products = await search_products(query)
-
-        if not products:
-            return {"message": "No products found"}
-
-        state["last_products"] = products
-
-        response = "Here are options:\n"
-        for i, p in enumerate(products[:5]):
-            response += f"{i+1}. {p['name']} ₹{p['price']}\n"
-
-        response += "\nWhich one do you want?"
-
-        return {"message": response}
-
-    #Select
-    if intent == "select" and state["last_products"]:
-        for p in state["last_products"]:
-            if product_name.lower() in p["name"].lower():
-                state["selected_product"] = p
-
-                return {
-                    "message": f"Do you want to place order for {p['name']} ₹{p['price']}?"
-                }
-
-        return {"message": "Product not found. Please choose again."}
-
-    # Confirm
-    if intent == "confirm":
-
-        if not state["selected_product"]:
-            return {"message": "Please select a product first"}
-
-        product = state["selected_product"]
-
-        
-        if product.get("stock", 0) <= 0:
-            return {"message": f" {product['name']} is out of stock"}
-
-        await add_to_cart(user_id, product)
-        await create_order(user_id, product)
-
-        reset_user_state(user_id)
-
-        return {"message": f"Order placed for {product['name']}"}
-
-    #Display orders 
-    if intent == "show_orders":
-        orders = await Order.find(Order.userId == user_id).to_list()
-
-        if not orders:
-            return {"message": "No orders found"}
-
-        response = "Your orders:\n"
-        for o in orders:
-            response += f"- ₹{o.totalPrice} | {o.status}\n"
-
-        return {"message": response}
-
-    return {"message": "Sorry, I didn't understand"}
+if __name__ == "__main__":
+    asyncio.run(main())
+    
+    

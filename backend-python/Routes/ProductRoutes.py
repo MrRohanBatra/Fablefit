@@ -45,7 +45,6 @@ async def add_product(product: Product):
 async def get_product_by_id(id: str):
     print("Product id", id)
     try:
-        # Beanie's .get() automatically handles ObjectId parsing
         product = await Product.get(id)
     except Exception: # Catches invalid hex strings exactly like the old cod
         raise HTTPException(status_code=400, detail="Invalid product id")

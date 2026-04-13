@@ -1,9 +1,10 @@
 fastapi
 uvicorn[standard]
 
-beanie==1.26.0
-motor==3.3.2
-pymongo==4.6.3
+beanie==2.0.1
+motor==3.7.1
+pymongo==4.16.0
+
 
 python-dotenv
 pydantic
@@ -16,3 +17,10 @@ torch
 torchvision
 
 httpx
+
+langchain
+langchain-classic
+langchain-community
+langchain-core
+langchain-ollama
+pydantic

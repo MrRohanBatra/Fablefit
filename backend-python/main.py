@@ -8,12 +8,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pymongo.errors import PyMongoError
 
+
 from Routes.CartRoutes import cartRouter
 from Routes.ProductRoutes import ProductRouter
 from Routes.UiRouter import uiRouter
 from Routes.UserRoutes import UserRouter
 from Routes.orderRoute import orderRouter
 from Routes.VtonRoutes import router
+from Routes.ChatRoute import chat_router
 from database import db  
 from databaseSchemas.CartSchema import Cart
 from databaseSchemas.OrderSchema import Order
@@ -75,7 +77,7 @@ app.include_router(cartRouter,prefix="/api")
 app.include_router(orderRouter,prefix="/api")
 app.include_router(uiRouter,prefix="/api")
 app.include_router(router,prefix="/api")
-
+app.include_router(chat_router,prefix="/api")
 CACHE_TIME = 31536000
 # Matches: app.use("/images", express.static(...))
 # app.mount(
