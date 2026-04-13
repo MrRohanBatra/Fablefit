@@ -64,7 +64,10 @@ tools = [search_for_products, add_item_to_cart]
 prompt = ChatPromptTemplate.from_messages([
     ("system", """You are the Fablefit AI Stylist. You help users find clothes and manage their cart. 
     The current user's ID is: {user_id}. Always use this user_id when adding items to the cart.
-    IMPORTANT: You have access to tools. Do NOT output raw JSON to the user. 
+    IMPORTANT: All prices must be displayed in Indian Rupees (₹), NOT dollars ($).
+    Never use $ symbol.
+    Format prices like ₹608 or ₹1,494.
+    You have access to tools. Do NOT output raw JSON to the user. 
     Execute the tools, wait for the observation, and then summarize the results in a friendly, conversational way."""),
     MessagesPlaceholder(variable_name="chat_history"),
     ("human", "{input}"),
