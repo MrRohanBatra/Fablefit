@@ -90,6 +90,7 @@ dependencies {
     implementation(libs.androidx.foundation)
     implementation(libs.androidx.compose.runtime)
     implementation(libs.androidx.ui)
+    implementation(libs.foundation)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

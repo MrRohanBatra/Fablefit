@@ -5,10 +5,17 @@ import com.rohan.fablefit.ui.model.CartResponse
 import com.rohan.fablefit.ui.model.CartUpdate
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
+import com.rohan.fablefit.ui.model.UserModel
+import com.rohan.fablefit.ui.model.UserResponseModel
+import com.rohan.fablefit.ui.model.UserUploadImageRepsonse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -47,5 +54,24 @@ interface ApiService {
     suspend fun updateCart(
         @Body item: CartUpdate,
     ): Response<CartResponse>
+    @GET("/api/users/{uid}")
+    suspend fun getUserData(
+        @Path("uid") uid: String,
+    ): Response<UserModel>
 
+    @POST("/api/users/add")
+    suspend fun addUser(
+        @Body user: UserModel,
+    ): Response<UserResponseModel>
+
+    @POST("/api/users/updatetype/{uid}")
+    suspend fun updateUserType(
+        @Path("uid") uid: String,
+    ): Response<UserResponseModel>
+    @Multipart
+    @POST("/api/users/uploadimage")
+    suspend fun UploadUserImage(
+        @Part("uid") uid: RequestBody,
+        @Part image: MultipartBody.Part
+    ): Response<UserUploadImageRepsonse>
 }
