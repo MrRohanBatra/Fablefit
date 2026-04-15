@@ -5,56 +5,41 @@ from datetime import datetime, timezone
 from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
-from databaseSchemas.UserSchema import User, UserResponse, UserUploadImageRepsonse, UserCreate
+from databaseSchemas.UserSchema import User, UserResponse, UserUploadImageRepsonse, UserCreate, FcmTokenUpdate
 from helpers.Utilities import Utils
 
-# Setup path for internal imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 UserRouter = APIRouter(prefix="/users")
 Tools = Utils()
 
-@UserRouter.post("/add",response_model=UserResponse)
+
+@UserRouter.post("/add", response_model=UserResponse)
 async def add_user(user_data: UserCreate):
-    """Add or update user (Matches Node.js addUser logic)"""
     try:
         print(f"📥 Received user data: {user_data.uid}")
-
-        # Check for existing user
         user = await User.find_one(User.uid == user_data.uid)
 
         if user:
             print(f"🔄 Updating existing user: {user_data.uid}")
-            
-            # Update fields if provided (mimicking the Node.js null-coalescing check)
-            if user_data.phone: user.phone = user_data.phone
-            if user_data.type: user.type = user_data.type
-            if user_data.vton_image: 
-                print(f"🖼️ Updating vton_image: {user_data.vton_image}")
-                user.vton_image = user_data.vton_image
-            
+            if user_data.phone:       user.phone      = user_data.phone
+            if user_data.type:        user.type       = user_data.type
+            if user_data.vton_image:  user.vton_image = user_data.vton_image
             if user_data.address is not None:
-                print(f"🏠 Updating address: {user_data.address}")
                 user.address = user_data.address
-            
             user.updatedAt = datetime.now(timezone.utc)
             saved_user = await user.save()
-            
             print("✅ User updated successfully")
             return {
-                "message": "User updated", 
+                "message": "User updated",
                 "user": Tools.serializeDoc(saved_user.model_dump(by_alias=True))
             }
 
-        # Create new user if not found
         print(f"🆕 Creating new user: {user_data.uid}")
-        # Beanie's .insert() uses the defaults defined in your UserSchema
         new_user = User(**user_data.model_dump())
-
         await new_user.insert()
-        
         return {
-            "message": "User created", 
+            "message": "User created",
             "user": Tools.serializeDoc(user_data.model_dump(by_alias=True))
         }
 
@@ -62,23 +47,38 @@ async def add_user(user_data: UserCreate):
         print(f"❌ Error in addUser: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@UserRouter.get("/{uid}",response_model=User)
+
+@UserRouter.post("/fcmtoken")
+async def update_fcm_token(payload: FcmTokenUpdate):
+    """
+    Called by the Android app whenever FCM issues a new device token.
+    Stored on the user document so the scheduler can find it for notifications.
+    """
+    user = await User.find_one(User.uid == payload.uid)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.fcm_token = payload.fcm_token
+    user.updatedAt = datetime.now(timezone.utc)
+    await user.save()
+
+    print(f"📲 FCM token updated for uid={payload.uid}")
+    return {"message": "FCM token updated"}
+
+
+@UserRouter.get("/{uid}", response_model=User)
 async def get_user(uid: str):
-    """Get user by UID"""
     user = await User.find_one(User.uid == uid)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    
     return Tools.serializeDoc(user.model_dump(by_alias=True))
 
-@UserRouter.post("/updatetype/{uid}",response_model=UserResponse)
+
+@UserRouter.post("/updatetype/{uid}", response_model=UserResponse)
 async def update_user_type(uid: str, payload: User):
-    """Update user type only"""
     new_type = payload.get("type")
-    
     if not new_type:
         raise HTTPException(status_code=400, detail="New user type is required")
-    
     if new_type not in ["normal", "seller"]:
         raise HTTPException(status_code=400, detail="Invalid user type")
 
@@ -86,27 +86,20 @@ async def update_user_type(uid: str, payload: User):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    user.type = new_type # type: ignore
+    user.type      = new_type  # type: ignore
     user.updatedAt = datetime.now(timezone.utc)
     await user.save()
+    return {"message": "User type updated successfully", "user": Tools.serializeDoc(user.model_dump(by_alias=True))}
 
-    return {
-        "message": "User type updated successfully",
-        "user": Tools.serializeDoc(user.model_dump(by_alias=True))
-    }
 
-@UserRouter.get("/all/users",response_model=List[User])
+@UserRouter.get("/all/users", response_model=List[User])
 async def all_users():
-    """Get all users"""
     users = await User.find_all().to_list()
     return [Tools.serializeDoc(u.model_dump(by_alias=True)) for u in users]
 
-@UserRouter.post("/uploadimage",response_model=UserUploadImageRepsonse)
-async def upload_image(
-    uid: str = Form(...),
-    image: UploadFile = File(...)
-):
-    """Handle vton image upload and replacement"""
+
+@UserRouter.post("/uploadimage", response_model=UserUploadImageRepsonse)
+async def upload_image(uid: str = Form(...), image: UploadFile = File(...)):
     try:
         user = await User.find_one({"uid": uid})
         if not user:
@@ -115,19 +108,18 @@ async def upload_image(
         upload_dir = "images/102"
         os.makedirs(upload_dir, exist_ok=True)
 
-        ext = os.path.splitext(image.filename)[1] if image.filename else ".png"
+        ext       = os.path.splitext(image.filename)[1] if image.filename else ".png"
         timestamp = int(datetime.now().timestamp() * 1000)
-        filename = f"{uid}_{timestamp}{ext}"
-        filepath = os.path.join(upload_dir, filename)
+        filename  = f"{uid}_{timestamp}{ext}"
+        filepath  = os.path.join(upload_dir, filename)
+
         with open(filepath, "wb") as buffer:
             shutil.copyfileobj(image.file, buffer)
-        user.vton_image=filepath
+
+        user.vton_image = filepath
         await user.save()
-        return {
-            "message": "Image replaced successfully",
-            "file": f"{filepath}"
-        }
-        
+        return {"message": "Image replaced successfully", "file": filepath}
+
     except Exception as e:
         print(f"Upload error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
