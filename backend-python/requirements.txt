@@ -16,3 +16,9 @@ torch
 torchvision
 
 httpx
+
+# Scheduler for background jobs (abandoned cart + price drop)
+apscheduler==3.10.4
+
+# Firebase Admin SDK for sending push notifications via FCM
+firebase-admin==6.5.0
