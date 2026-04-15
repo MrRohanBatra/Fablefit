@@ -111,8 +111,10 @@ import com.rohan.fablefit.ui.model.SearchFilters
 import com.rohan.fablefit.ui.theme.FablefitTheme
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.navigation.NavController
 import com.rohan.fablefit.ui.User.UserViewModel
-
+import com.rohan.fablefit.ui.Chatbot.AgentChatScreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -435,7 +437,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
         floatingActionButton = {
             val show=true
             if(currentRoute==BottomRoute.Home.route){
-                AiChatBot(show)
+                AiChatBot(show,navController);
             }
         },
         modifier = Modifier
@@ -532,10 +534,13 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AiChatBot(showIcon: Boolean) {
+fun AiChatBot(showIcon: Boolean, navController: NavController) { // <-- Make sure to pass navController
 
     var expanded by remember { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+
+    // Skip partially expanded so it opens like a full chat screen
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     // Loop animation
     LaunchedEffect(Unit) {
@@ -550,16 +555,11 @@ fun AiChatBot(showIcon: Boolean) {
 
     if (showIcon) {
         ExtendedFloatingActionButton(
-            onClick = {
-                showBottomSheet = true
-            },
+            onClick = { showBottomSheet = true },
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             icon = {
-                Icon(
-                    imageVector = Icons.Outlined.SupportAgent,
-                    contentDescription = null
-                )
+                Icon(Icons.Outlined.SupportAgent, contentDescription = null)
             },
             text = {
                 AnimatedVisibility(
@@ -572,56 +572,16 @@ fun AiChatBot(showIcon: Boolean) {
             }
         )
     }
+
     if (showBottomSheet) {
-
-        val routes = listOf(
-            AgentRoutes.ImageSearch,
-            AgentRoutes.ChatBot
-        )
-
-        var selectedOption by remember { mutableStateOf<AgentRoutes?>(null) }
-
         ModalBottomSheet(
-            onDismissRequest = {
-                showBottomSheet = false
-            }
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState,
+            // Makes the bottom sheet take up most of the screen like a real app
+            modifier = Modifier.fillMaxHeight(0.9f)
         ) {
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-
-                item {
-                    AgentBubble("What would you like to do?")
-                }
-
-                if (selectedOption == null) {
-
-                    items(routes) { route ->
-
-                        UserOptionBubble(
-                            text = route.title,
-                            onClick = {
-                                selectedOption = route
-                            }
-                        )
-                    }
-
-                } else {
-
-                    item {
-                        UserBubble(selectedOption!!.title)
-                    }
-
-                    item {
-                        selectedOption!!.ui()
-                    }
-
-                }
-            }
+            // Drop in our new clean chat interface
+            AgentChatScreen(navController = navController)
         }
     }
 }

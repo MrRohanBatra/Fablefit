@@ -38,6 +38,7 @@ glide-compose = "1.0.0-beta01"
 runtime = "1.10.3"
 ui = "1.10.3"
 foundationVersion = "1.10.4"
+navigationRuntimeKtx = "2.9.7"
 
 [libraries]
 
@@ -100,6 +101,7 @@ androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundationVersion" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
