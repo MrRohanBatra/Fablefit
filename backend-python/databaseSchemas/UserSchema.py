@@ -10,14 +10,15 @@ from beanie import Document
 TIER_THRESHOLDS = {
     "Bronze": 0,
     "Silver": 1000,
-    "Gold": 5000,
+    "Gold":   5000,
 }
 
 TIER_DISCOUNTS = {
     "Bronze": 0.0,
     "Silver": 0.05,   # 5%
-    "Gold": 0.15,     # 15%
+    "Gold":   0.15,   # 15%
 }
+
 
 def compute_tier(total_spent: float) -> str:
     if total_spent >= TIER_THRESHOLDS["Gold"]:
@@ -38,6 +39,10 @@ class User(Document):
     # Loyalty fields
     total_spent: float = 0.0
     tier: Literal["Bronze", "Silver", "Gold"] = "Bronze"
+
+    # FCM device token for push notifications
+    # Updated from the Android app whenever it changes
+    fcm_token: Optional[str] = None
 
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
@@ -62,4 +67,9 @@ class UserCreate(BaseModel):
     address: List[Any] = []
     vton_image: Optional[str] = None
     type: Literal["normal", "seller"] = "normal"
-    # total_spent and tier are intentionally excluded — they are computed, not user-supplied
+    # total_spent, tier, fcm_token are server-managed — excluded from create payload
+
+
+class FcmTokenUpdate(BaseModel):
+    uid: str
+    fcm_token: str
