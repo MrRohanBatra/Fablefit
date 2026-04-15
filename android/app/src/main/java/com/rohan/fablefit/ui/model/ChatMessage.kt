@@ -7,7 +7,7 @@ data class ChatMessage(
     val text: String,
     val isFromUser: Boolean,
     val productIdsToRender: List<String> = emptyList(),
-    val isLoading: Boolean = false // Useful for typing indicators
+    val isLoading: Boolean = false
 )
 
 fun parseAgentMessage(rawMessage: String): ChatMessage {

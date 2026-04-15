@@ -39,6 +39,7 @@ runtime = "1.10.3"
 ui = "1.10.3"
 foundationVersion = "1.10.4"
 navigationRuntimeKtx = "2.9.7"
+lifecycleViewmodelKtx = "2.10.0"
 
 [libraries]
 
@@ -102,6 +103,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundationVersion" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

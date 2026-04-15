@@ -534,7 +534,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AiChatBot(showIcon: Boolean, navController: NavController) { // <-- Make sure to pass navController
+fun AiChatBot(showIcon: Boolean, navController: NavController) {
 
     var expanded by remember { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -578,9 +578,9 @@ fun AiChatBot(showIcon: Boolean, navController: NavController) { // <-- Make sur
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState,
             // Makes the bottom sheet take up most of the screen like a real app
-            modifier = Modifier.fillMaxHeight(0.9f)
+            modifier = Modifier.fillMaxHeight()
         ) {
-            // Drop in our new clean chat interface
+
             AgentChatScreen(navController = navController)
         }
     }

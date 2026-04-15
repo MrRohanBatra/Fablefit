@@ -269,7 +269,7 @@ fun ProductDisplayScreen(
                                         cartViewModel.updateItemInCart(CartUpdate(
                                         uid=user?.uid?:"",
                                         productId=productId,
-                                        size=selectedSize?:"S",
+                                        size=selectedSize,
                                         color = product.color,
                                         quantity = productQuantity-1,
                                     ))  },
@@ -298,7 +298,7 @@ fun ProductDisplayScreen(
                                             cartViewModel.removeItemFromCart(CartUpdate(
                                                 uid=user?.uid?:"",
                                                 productId=productId,
-                                                size=selectedSize?:"S",
+                                                size=selectedSize,
                                                 color = null,
                                                 quantity = productQuantity,
                                             ))
@@ -321,7 +321,7 @@ fun ProductDisplayScreen(
                                         val cartUpdateItem = CartUpdate(
                                             uid = user?.uid ?: "",
                                             productId = productId,
-                                            size = selectedSize ?: "S",
+                                            size = selectedSize ,
                                             color = product.color,
                                             quantity = 1,
                                         )

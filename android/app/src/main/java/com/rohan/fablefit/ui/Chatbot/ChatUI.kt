@@ -2,6 +2,7 @@ package com.rohan.fablefit.ui.Chatbot
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -11,6 +12,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.SupportAgent
 import androidx.compose.material3.*
@@ -21,161 +25,150 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import com.rohan.fablefit.ui.model.ChatMessage
+import com.rohan.fablefit.ui.model.ChatbotViewModel
+
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AgentChatScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: ChatbotViewModel = viewModel() // Injecting the ViewModel
 ) {
-    var messages by remember {
-        mutableStateOf(listOf(
-            ChatMessage(
-                text = "Hi! I'm Rasberry, your personal stylist. What are you looking for today?",
-                isFromUser = false
-            )
-        ))
-    }
-    var inputText by remember { mutableStateOf("") }
-    val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
+    // Collecting state from ViewModel
+    val messages by viewModel.messages.collectAsStateWithLifecycle()
+    val inputText by viewModel.inputText.collectAsStateWithLifecycle()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        // 1. Chat History
+    val listState = rememberLazyListState()
+
+    // Auto-scroll to bottom when new messages arrive
+    LaunchedEffect(messages.size) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             state = listState,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 16.dp),
-            contentPadding = PaddingValues(vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 120.dp) // Adjusted for toolbar height
         ) {
-            items(messages) { msg ->
-                ChatBubbleUnified(message = msg, navController = navController)
+            items(messages) { message ->
+                ChatBubbleUnified(message, navController = navController)
             }
         }
 
-        // 2. Input Area
-//        Surface(
-//            color = MaterialTheme.colorScheme.surface,
-//            tonalElevation = 8.dp,
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
-//            Row(
-//                modifier = Modifier
-//                    .padding(horizontal = 16.dp, vertical = 12.dp)
-//                    .navigationBarsPadding(),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                // Optional: Image Upload Button for visual search
-//                IconButton(onClick = { /* Launch Image Picker */ }) {
-//                    Icon(Icons.Outlined.Image, contentDescription = "Upload Image")
-//                }
-//
-//                OutlinedTextField(
-//                    value = inputText,
-//                    onValueChange = { inputText = it },
-//                    placeholder = { Text("Ask about styles, colors...") },
-//                    modifier = Modifier
-//                        .weight(1f)
-//                        .padding(horizontal = 8.dp),
-//                    shape = RoundedCornerShape(24.dp),
-//                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-//                    maxLines = 3
-//                )
-//
-//                IconButton(
-//                    onClick = {
-//                        if (inputText.isNotBlank()) {
-//                            val userMsg = ChatMessage(text = inputText, isFromUser = true)
-//                            messages = messages + userMsg
-//                            val currentInput = inputText
-//                            inputText = ""
-//
-//                            // Scroll to bottom
-//                            coroutineScope.launch { listState.animateScrollToItem(messages.size - 1) }
-//
-//                            // TODO: Call your Retrofit API here: process_chat(user_id, currentInput)
-//                            // On Success:
-//                            // val agentMsg = parseAgentMessage(apiResponse.message)
-//                            // messages = messages + agentMsg
-//                        }
-//                    },
-//                    colors = IconButtonDefaults.iconButtonColors(
-//                        containerColor = MaterialTheme.colorScheme.primary,
-//                        contentColor = MaterialTheme.colorScheme.onPrimary
-//                    ),
-//                    modifier = Modifier.clip(CircleShape)
-//                ) {
-//                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
-//                }
-//            }
-//        }
-        HorizontalFloatingToolbar(
-            expanded = true,
-
+        Row(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 24.dp, start = 16.dp, end = 16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-                    .navigationBarsPadding(),
-                verticalAlignment = Alignment.CenterVertically
+            HorizontalFloatingToolbar(
+                expanded = true,
+                floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = { viewModel.sendMessage() },
+                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+                    }
+                }
             ) {
-                // Optional: Image Upload Button for visual search
-                IconButton(onClick = { /* Launch Image Picker */ }) {
-                    Icon(Icons.Outlined.Image, contentDescription = "Upload Image")
+                IconButton(onClick = { /* Handle Attach */ }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add attachment")
                 }
 
-                OutlinedTextField(
+                TextField(
                     value = inputText,
-                    onValueChange = { inputText = it },
-                    placeholder = { Text("Ask about styles, colors...") },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp),
-                    shape = RoundedCornerShape(24.dp),
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
-                    maxLines = 3
+                    onValueChange = { viewModel.onTextChanged(it) },
+                    placeholder = { Text("Type a message...") },
+                    modifier = Modifier.widthIn(max = 200.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    )
                 )
-
-                IconButton(
-                    onClick = {
-                        if (inputText.isNotBlank()) {
-                            val userMsg = ChatMessage(text = inputText, isFromUser = true)
-                            messages = messages + userMsg
-                            val currentInput = inputText
-                            inputText = ""
-
-                            // Scroll to bottom
-                            coroutineScope.launch { listState.animateScrollToItem(messages.size - 1) }
-
-                            // TODO: Call your Retrofit API here: process_chat(user_id, currentInput)
-                            // On Success:
-                            // val agentMsg = parseAgentMessage(apiResponse.message)
-                            // messages = messages + agentMsg
-                        }
-                    },
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier.clip(CircleShape)
-                ) {
-                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
-                }
             }
         }
     }
 }
+//@Composable
+//fun AgentChatScreen(
+//    navController: NavController
+//) {
+//    var messages by remember {
+//        mutableStateOf(listOf(
+//            ChatMessage(text = "Hi! I'm Rasberry...", isFromUser = false)
+//        ))
+//    }
+//    var inputText by remember { mutableStateOf("") }
+//    val listState = rememberLazyListState()
+//
+//    Box(modifier = Modifier.fillMaxSize()) {
+//        // 1. Message List (Occupies full screen)
+//        LazyColumn(
+//            state = listState,
+//            modifier = Modifier.fillMaxSize(),
+//            contentPadding = PaddingValues(bottom = 100.dp) // Space for the toolbar
+//        ) {
+//            items(messages) { message ->
+//                ChatBubbleUnified(message, navController = navController)
+//            }
+//        }
+//
+//        // 2. Bottom-Aligned Toolbar Container
+//        Row(
+//            modifier = Modifier
+//                .align(Alignment.BottomCenter)
+//                .padding(bottom = 24.dp, start = 16.dp, end = 16.dp)
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.Center
+//        ) {
+//            HorizontalFloatingToolbar(
+//                expanded = true,
+//                // The Main Action (Send)
+//                floatingActionButton = {
+//                    FloatingActionButton(
+//                        onClick = { /* Handle Send */ },
+//                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+//                    ) {
+//                        Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+//                    }
+//                }
+//            ) {
+//                // Items inside the toolbar (Left side of the FAB)
+//                IconButton(onClick = { /* Handle Attach */ }) {
+//                    Icon(Icons.Default.Add, contentDescription = "Add attachment")
+//                }
+//
+//                TextField(
+//                    value = inputText,
+//                    onValueChange = { inputText = it },
+//                    placeholder = { Text("Type a message...") },
+//                    modifier = Modifier.widthIn(max = 200.dp),
+//                    colors = TextFieldDefaults.colors(
+//                        focusedContainerColor = Color.Transparent,
+//                        unfocusedContainerColor = Color.Transparent,
+//                        focusedIndicatorColor = Color.Transparent,
+//                        unfocusedIndicatorColor = Color.Transparent
+//                    )
+//                )
+//            }
+//        }
+//    }
+//}
 @Composable
 fun ChatBubbleUnified(message: ChatMessage, navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(start = 2.dp, end = 2.dp),
         horizontalAlignment = if (message.isFromUser) Alignment.End else Alignment.Start
     ) {
         Row(
@@ -183,7 +176,6 @@ fun ChatBubbleUnified(message: ChatMessage, navController: NavController) {
             horizontalArrangement = if (message.isFromUser) Arrangement.End else Arrangement.Start,
             modifier = Modifier.fillMaxWidth(0.85f) // Don't let bubbles stretch all the way across
         ) {
-            // Agent Avatar
             if (!message.isFromUser) {
                 Icon(
                     imageVector = Icons.Outlined.SupportAgent,
@@ -195,7 +187,6 @@ fun ChatBubbleUnified(message: ChatMessage, navController: NavController) {
                 )
             }
 
-            // Text Bubble
             if (message.text.isNotEmpty()) {
                 Surface(
                     shape = RoundedCornerShape(
@@ -230,7 +221,10 @@ fun ChatBubbleUnified(message: ChatMessage, navController: NavController) {
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
                             // Placeholder for image
-                            Box(modifier = Modifier.fillMaxWidth().height(120.dp).background(Color.LightGray))
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .height(120.dp)
+                                .background(Color.LightGray))
                             Spacer(modifier = Modifier.height(8.dp))
                             Text("View Product", style = MaterialTheme.typography.labelMedium)
                         }
