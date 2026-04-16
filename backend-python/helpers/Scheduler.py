@@ -3,10 +3,6 @@ from datetime import datetime, timezone, timedelta
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-# Imported inside functions to avoid circular imports at module load time
-# (Beanie models need the app to be initialised first)
-
-# ── Tuneable constants ─────────────────────────────────────────────────────────
 ABANDONED_AFTER_DAYS      = int(os.getenv("ABANDONED_CART_DAYS", "3"))
 ABANDONED_REMIND_COOLDOWN = int(os.getenv("ABANDONED_REMIND_COOLDOWN_DAYS", "7"))
 PRICE_DROP_CHECK_HOURS    = int(os.getenv("PRICE_DROP_CHECK_HOURS", "6"))
@@ -28,11 +24,10 @@ async def job_abandoned_cart_nudge():
     stale_cutoff = now - timedelta(days=ABANDONED_AFTER_DAYS)
     cool_cutoff  = now - timedelta(days=ABANDONED_REMIND_COOLDOWN)
 
-    carts = await Cart.find_all().to_list()
+    carts    = await Cart.find_all().to_list()
     notified = 0
 
     for cart in carts:
-        # Skip empty carts
         if not cart.items:
             continue
 
@@ -48,12 +43,9 @@ async def job_abandoned_cart_nudge():
         if not user or not user.fcm_token:
             continue
 
-        # Personalise with the first item's product name
-        first_item = cart.items[0]
-        product = await Product.get(str(first_item.product))
+        first_item   = cart.items[0]
+        product      = await Product.get(str(first_item.product))
         product_name = product.name if product else "your item"
-
-        # Simple deterministic discount code per user
         discount_code = f"CART5-{cart.uid[:6].upper()}"
 
         sent = send_push(
@@ -87,8 +79,8 @@ async def job_price_drop_alerts():
 
     print("💰 [Scheduler] Checking for price drops...")
 
-    items     = await WishlistItem.find_all().to_list()
-    notified  = 0
+    items    = await WishlistItem.find_all().to_list()
+    notified = 0
 
     for item in items:
         product = await Product.get(item.product_id)
@@ -100,33 +92,39 @@ async def job_price_drop_alerts():
             continue
 
         drop_pct = int(((item.price_at_add - product.price) / item.price_at_add) * 100)
+        user     = await User.find_one(User.uid == item.uid)
 
-        user = await User.find_one(User.uid == item.uid)
+        # ── FIX: Only update the snapshot if we successfully sent the notification.
+        # If the user has no FCM token yet, we leave price_at_add unchanged so they
+        # still get the alert once they do have a token (e.g. after re-installing).
+        if not user or not user.fcm_token:
+            print(f"⚠️  No FCM token for uid={item.uid} — skipping snapshot update")
+            continue
 
-        if user and user.fcm_token:
-            sent = send_push(
-                token=user.fcm_token,
-                title="Price Drop Alert 📉",
-                body=(
-                    f"{product.name} just dropped {drop_pct}%! "
-                    f"Now ₹{product.price:.0f} (was ₹{item.price_at_add:.0f})."
-                ),
-                data={
-                    "type":       "price_drop",
-                    "product_id": str(product.id),
-                },
-            )
-            if sent:
-                notified += 1
+        sent = send_push(
+            token=user.fcm_token,
+            title="Price Drop Alert 📉",
+            body=(
+                f"{product.name} just dropped {drop_pct}%! "
+                f"Now ₹{product.price:.0f} (was ₹{item.price_at_add:.0f})."
+            ),
+            data={
+                "type":       "price_drop",
+                "product_id": str(product.id),
+            },
+        )
 
-        # Update snapshot so we don't fire again for the same drop level
-        item.price_at_add = product.price
-        await item.save()
+        if sent:
+            # Update snapshot ONLY after confirmed delivery so the same
+            # drop level doesn't fire again next check cycle.
+            item.price_at_add = product.price
+            await item.save()
+            notified += 1
 
     print(f"✅ [Scheduler] Price drop check done — notified {notified} user(s)")
 
 
-# ── Lifecycle helpers called from main.py ─────────────────────────────────────
+# ── Lifecycle ──────────────────────────────────────────────────────────────────
 
 def start_scheduler():
     scheduler.add_job(
