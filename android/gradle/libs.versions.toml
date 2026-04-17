@@ -37,6 +37,9 @@ glide = "4.16.0"
 glide-compose = "1.0.0-beta01"
 runtime = "1.10.3"
 ui = "1.10.3"
+foundationVersion = "1.10.4"
+navigationRuntimeKtx = "2.9.7"
+lifecycleViewmodelKtx = "2.10.0"
 
 [libraries]
 
@@ -61,13 +64,13 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
 
 # ----------------- MATERIAL 3 -----------------
+#androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 arrowtooltip = { module = "io.github.msseodev:arrowtooltip", version.ref = "arrowtooltip" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide-compose" }
-
 # ----------------- MATERIAL ICONS -----------------
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
@@ -78,9 +81,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }   # ← NEW
 
-# ----------------- GOOGLE SIGN IN -----------------
+# ----------------- GOOGLE SIGN IN (MODERN) -----------------
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 google-id = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
@@ -99,6 +101,9 @@ androidx-foundation = { group = "androidx.compose.foundation", name = "foundatio
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundationVersion" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
