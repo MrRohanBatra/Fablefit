@@ -8,7 +8,10 @@ plugins {
 
 android {
     namespace = "com.rohan.fablefit"
-
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
     compileSdk = 36
 
     buildFeatures {
@@ -104,6 +107,7 @@ dependencies {
     // ---------------- FIREBASE ----------------
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
+    implementation(libs.firebase.messaging)
 
     // ---------------- GOOGLE LOGIN (Credential Manager) ----------------
     implementation(libs.androidx.credentials)

@@ -10,7 +10,7 @@ from helpers.Utilities import Utils
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-UserRouter = APIRouter(prefix="/users")
+UserRouter = APIRouter(prefix="/users",tags=["User"])
 Tools = Utils()
 
 

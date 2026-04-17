@@ -1,5 +1,8 @@
 package com.rohan.fablefit.Screen
 import android.widget.Toast
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,8 +27,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Camera
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularWavyProgressIndicator
@@ -53,18 +58,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.google.firebase.auth.FirebaseAuth
+import com.rohan.fablefit.BuildConfig
 import com.rohan.fablefit.ui.Cart.CartModelUiState
 import com.rohan.fablefit.ui.Cart.CartViewModel
 import com.rohan.fablefit.ui.Product.ProductModelUiState
 import com.rohan.fablefit.ui.Product.ProductViewModel
+import com.rohan.fablefit.ui.Wishlist.WishlistViewModel
 import com.rohan.fablefit.ui.model.CartItem
 import com.rohan.fablefit.ui.model.CartUpdate
 import com.rohan.fablefit.ui.model.Product
@@ -77,14 +87,19 @@ fun ProductDisplayScreen(
     productId: String,
     productViewModel: ProductViewModel= viewModel(),
     cartViewModel: CartViewModel,
+    wishlistViewModel: WishlistViewModel = viewModel(),
 ) {
-    val state=productViewModel.uiState;
-    val user= FirebaseAuth.getInstance().currentUser;
-    val cartState=cartViewModel.uiState;
-    val context=LocalContext.current;
-    val scope=rememberCoroutineScope()
+    val state     = productViewModel.uiState
+    val cartState = cartViewModel.uiState
+    val user      = FirebaseAuth.getInstance().currentUser
+    val context   = LocalContext.current
+    val scope     = rememberCoroutineScope()
+    val haptic    = LocalHapticFeedback.current
+
     LaunchedEffect(productId) {
-        productViewModel.loadProduct(productId = productId);
+        productViewModel.loadProduct(productId)
+
+        user?.uid?.let { wishlistViewModel.loadWishlist(it) }
     }
     LaunchedEffect(cartState) {
         if (cartState is CartModelUiState.Success) {
@@ -105,11 +120,17 @@ fun ProductDisplayScreen(
             }
         }
         is ProductModelUiState.Success -> {
-            val product = state.product
-            var selectedSize by remember { mutableStateOf<String>("S") }
-            val isInCart = cartViewModel.isProductInCart(productId, selectedSize)
-            val productQuantity = cartViewModel.getProductQuantity(productId, selectedSize)
-            val isUpdating = cartState is CartModelUiState.ItemUpdate
+            val product   = state.product
+            var selectedSize by remember { mutableStateOf("S") }
+            val isInCart      = cartViewModel.isProductInCart(productId, selectedSize)
+            val productQty    = cartViewModel.getProductQuantity(productId, selectedSize)
+            val isUpdating    = cartState is CartModelUiState.ItemUpdate
+            val isWishlisted  = wishlistViewModel.isWishlisted(productId)
+            val heartTint by animateColorAsState(
+                targetValue   = if (isWishlisted) Color(0xFFE91E63) else Color.White,
+                animationSpec = spring(stiffness = Spring.StiffnessMedium),
+                label         = "heartColor"
+            )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -123,10 +144,13 @@ fun ProductDisplayScreen(
                         .aspectRatio(2f/3f)
                         .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
                 ) {
-                    ProductImagePager(modifier = Modifier.fillMaxSize(),images = product.images, baseUrl = "https://testserver.rohan.org.in")
-
+                    ProductImagePager(
+                        modifier = Modifier.fillMaxSize(),
+                        images   = product.images,
+                        baseUrl  = BuildConfig.BASE_URL
+                    )
                     if (product.supportsTryOn) {
-                        // Feature Color: Secondary (Differentiates from Primary)
+
                         Surface(
                             modifier = Modifier.align(Alignment.TopEnd).padding(16.dp),
                             color = MaterialTheme.colorScheme.secondaryContainer,
@@ -142,9 +166,30 @@ fun ProductDisplayScreen(
                             )
                         }
                     }
+                    IconButton(
+                        onClick = {
+                            haptic.performHapticFeedback(HapticFeedbackType.ToggleOn)
+                            user?.uid?.let { uid ->
+                                wishlistViewModel.toggle(uid, productId, product.price)
+                            } ?: Toast.makeText(context, "Login to wishlist items", Toast.LENGTH_SHORT).show()
+                        },
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(8.dp)
+                            .background(
+                                color  = Color.Black.copy(alpha = 0.35f),
+                                shape  = CircleShape
+                            )
+                    ) {
+                        Icon(
+                            imageVector = if (isWishlisted) Icons.Filled.Favorite
+                            else Icons.Outlined.FavoriteBorder,
+                            contentDescription = if (isWishlisted) "Remove from wishlist"
+                            else "Add to wishlist",
+                            tint               = heartTint,
+                        )
+                    }
                 }
-
-                // 🔹 Info Section
                 Column(modifier = Modifier.padding(24.dp)) {
 
 
@@ -206,9 +251,8 @@ fun ProductDisplayScreen(
 
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             items(product.sizes) { size ->
-                                val isSelected = selectedSize == size
                                 FilterChip(
-                                    selected = isSelected,
+                                    selected = selectedSize==size,
                                     onClick = { selectedSize = size },
                                     label = { Text(size, modifier = Modifier.padding(vertical = 4.dp)) },
                                     colors = FilterChipDefaults.filterChipColors(
@@ -271,14 +315,14 @@ fun ProductDisplayScreen(
                                         productId=productId,
                                         size=selectedSize,
                                         color = product.color,
-                                        quantity = productQuantity-1,
+                                        quantity = productQty-1,
                                     ))  },
                                         enabled = !isUpdating) {
                                         Icon(Icons.Filled.Remove, null)
                                     }
 
                                     Text(
-                                        text = "$productQuantity",
+                                        text = "$productQty",
                                         fontWeight = FontWeight.SemiBold,
                                         style = MaterialTheme.typography.titleMedium
                                     )
@@ -289,7 +333,7 @@ fun ProductDisplayScreen(
                                         productId=productId,
                                         size=selectedSize,
                                         color = product.color,
-                                        quantity = productQuantity+1,
+                                        quantity = productQty+1,
                                     )) },enabled = !isUpdating) {
                                         Icon(Icons.Filled.Add, null)
                                     }
@@ -300,7 +344,7 @@ fun ProductDisplayScreen(
                                                 productId=productId,
                                                 size=selectedSize,
                                                 color = null,
-                                                quantity = productQuantity,
+                                                quantity = productQty,
                                             ))
                                         },
                                         modifier = Modifier.size(48.dp), // Standard icon button size
@@ -404,7 +448,7 @@ fun ProductImagePager(
         ) { page ->
 
             AsyncImage(
-                model = "$baseUrl/${images[page]}",
+                model = "$baseUrl${images[page]}",
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()

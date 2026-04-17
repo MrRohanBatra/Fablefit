@@ -11,7 +11,9 @@ def _init() -> bool:
     if _initialized:
         return True
 
-    cred_path = os.getenv("FIREBASE_SERVICE_ACCOUNT_PATH", "")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    cred_path = os.path.join(current_dir, "firebase-admin.json")
+    print(f"using path: {cred_path}")
     if not cred_path or not os.path.exists(cred_path):
         print(
             "⚠️  NotificationService: FIREBASE_SERVICE_ACCOUNT_PATH not set or file missing. "

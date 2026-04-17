@@ -40,6 +40,7 @@ ui = "1.10.3"
 foundationVersion = "1.10.4"
 navigationRuntimeKtx = "2.9.7"
 lifecycleViewmodelKtx = "2.10.0"
+firebaseMessagingKtx = "25.0.1"
 
 [libraries]
 
@@ -81,7 +82,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
-
+#firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 # ----------------- GOOGLE SIGN IN (MODERN) -----------------
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
@@ -108,3 +110,4 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.2" }

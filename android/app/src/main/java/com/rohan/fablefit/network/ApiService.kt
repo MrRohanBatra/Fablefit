@@ -3,11 +3,15 @@ package com.rohan.fablefit.network
 import com.rohan.fablefit.ui.model.CartModel
 import com.rohan.fablefit.ui.model.CartResponse
 import com.rohan.fablefit.ui.model.CartUpdate
+import com.rohan.fablefit.ui.model.FcmTokenUpdate
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.UserModel
 import com.rohan.fablefit.ui.model.UserResponseModel
 import com.rohan.fablefit.ui.model.UserUploadImageRepsonse
+import com.rohan.fablefit.ui.model.WishlistItem
+import com.rohan.fablefit.ui.model.WishlistToggleRequest
+import com.rohan.fablefit.ui.model.WishlistToggleResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -74,4 +78,20 @@ interface ApiService {
         @Part("uid") uid: RequestBody,
         @Part image: MultipartBody.Part
     ): Response<UserUploadImageRepsonse>
+
+    @POST("/api/users/fcmtoken")
+    suspend fun updateFcmToken(
+        @Body update: FcmTokenUpdate
+    ): Response<Unit>
+
+    // -------- Wishlist --------
+    @GET("/api/wishlist/{uid}")
+    suspend fun getWishlist(
+        @Path("uid") uid: String
+    ): Response<List<WishlistItem>>
+
+    @POST("/api/wishlist/toggle")
+    suspend fun toggleWishlist(
+        @Body item: WishlistToggleRequest
+    ): Response<WishlistToggleResponse>
 }

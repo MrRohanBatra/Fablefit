@@ -19,6 +19,7 @@ from Routes.UserRoutes import UserRouter
 from Routes.orderRoute import orderRouter
 from Routes.VtonRoutes import router
 from Routes.WishlistRoutes import wishlistRouter          # ← NEW
+from Routes.NotificationTesterRoutes import noti_test_router
 from helpers.Scheduler import start_scheduler, stop_scheduler  # ← NEW
 
 from database import db
@@ -85,7 +86,8 @@ app.include_router(cartRouter,     prefix="/api")
 app.include_router(orderRouter,    prefix="/api")
 app.include_router(uiRouter,       prefix="/api")
 app.include_router(router,         prefix="/api")
-app.include_router(wishlistRouter, prefix="/api")   # ← NEW
+app.include_router(wishlistRouter, prefix="/api")  # ← NEW
+app.include_router(noti_test_router,prefix="/api")
 if(os.getenv("ENABLE_AGENT")=="true"):
     app.include_router(chat_router,prefix="/api")
 

@@ -1,5 +1,8 @@
 package com.rohan.fablefit
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -7,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
@@ -112,13 +116,31 @@ import com.rohan.fablefit.ui.theme.FablefitTheme
 import kotlinx.coroutines.delay
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.rohan.fablefit.services.FableFitMessagingService
 import com.rohan.fablefit.ui.User.UserViewModel
 import com.rohan.fablefit.ui.Chatbot.AgentChatScreen
+import com.rohan.fablefit.ui.Wishlist.WishlistViewModel
+
 class MainActivity : ComponentActivity() {
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // FCM notifications will now show up
+            Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show()
+        } else {
+            // Explain to the user that they won't get alerts
+            Toast.makeText(this, "You won't receive FableFit alerts", Toast.LENGTH_LONG).show()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        askNotificationPermission();
         setContent {
             FablefitTheme() {
                 val navController=rememberNavController();
@@ -158,7 +180,13 @@ class MainActivity : ComponentActivity() {
                             AuthScreen(
                                 context=LocalContext.current,
                                 onLoginSuccess = {
-
+                                    FirebaseAuth.getInstance().currentUser?.uid?.let {
+                                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
+                                            if(task.isSuccessful){
+                                                FableFitMessagingService().uploadToken(it,task.result)
+                                            }
+                                        }
+                                    }
                                     Log.d("login","login Complete Signed in as ${FirebaseAuth.getInstance().currentUser?.email}")
                                     navController.navigate(AppRoute.Main){
                                         popUpTo(AppRoute.Auth) {
@@ -185,6 +213,23 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    private fun askNotificationPermission() {
+        // This is only necessary for API level >= 33 (Android 13)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // Already have permission
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: Display an educational UI explaining why you need notifications
+                // Then show the system prompt
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                // Directly ask for the permission
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -192,6 +237,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
 
     val cartViewModel: CartViewModel=viewModel()
     val userViewModel: UserViewModel=viewModel()
+    val wishlistViewModel: WishlistViewModel = viewModel()
     val user by userViewModel.user
     val uiState=cartViewModel.uiState
     LaunchedEffect(user?.uid) {
@@ -199,30 +245,37 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             cartViewModel.getUserCart(it)
 //            userViewModel.up
             userViewModel.ensureUserExists()
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
+                if(task.isSuccessful){
+                    FableFitMessagingService().uploadToken(it,task.result)
+                }
+            }
+            wishlistViewModel.loadWishlist(it)
         }
 
     }
     LaunchedEffect(Unit) {
         userViewModel.refreshUser()
     }
-    val navController = rememberNavController()
-    val currentRoute =
-        navController.currentBackStackEntryAsState()
-            .value?.destination?.route
+    val navController   = rememberNavController()
+    val currentRoute    = navController.currentBackStackEntryAsState().value?.destination?.route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val activeFilters   = navBackStackEntry?.savedStateHandle?.get<SearchFilters>("search_filters")
+
+    var searchQuery by remember(activeFilters) {
+        mutableStateOf(activeFilters?.query ?: "")
+    }
+
+    val haptic      = LocalHapticFeedback.current
+    val hapticValue = HapticFeedbackType.ContextClick
+
     val screens = listOf(
         BottomRoute.Home,
         BottomRoute.Search,
         BottomRoute.Cart,
         BottomRoute.Profile
     )
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val activeFilters = navBackStackEntry?.savedStateHandle?.get<SearchFilters>("search_filters")
 
-    var searchQuery by remember(activeFilters) {
-        mutableStateOf(activeFilters?.query ?: "")
-    }
-    val haptic=LocalHapticFeedback.current
-    val hapticValue=HapticFeedbackType.ContextClick
     Scaffold(
         topBar = {
             if(currentRoute==BottomRoute.Home.route){
@@ -519,7 +572,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
                 }
                 else{
 //                    LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
-                    ProductDisplayScreen(productId,cartViewModel=cartViewModel)
+                    ProductDisplayScreen(productId,cartViewModel=cartViewModel, wishlistViewModel = wishlistViewModel)
                 }
             }
             composable(BottomRoute.MyInfo.route) {
