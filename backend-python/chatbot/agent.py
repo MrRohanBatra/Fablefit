@@ -206,7 +206,7 @@ from Routes.CartRoutes import add_to_cart as cart_add_logic
 from databaseSchemas.CartSchema import CartUpdate
 
 # Initializing LLM
-llm1 = ChatOllama(model="qwen3.5:2b", temperature=0)
+llm = ChatOllama(model="qwen3.5:2b", temperature=0)
 # llm = ChatOpenAI(
 #     model="../models/qwen2.5-14b",
 #     base_url="https://agent.rohan.org.in/v1",

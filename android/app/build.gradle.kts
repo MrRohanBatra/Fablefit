@@ -11,6 +11,10 @@ android {
 
     compileSdk = 36
 
+    buildFeatures {
+        compose = true
+        buildConfig = true // ADD THIS LINE TO FIX THE IMPORT ERROR
+    }
     defaultConfig {
         applicationId = "com.rohan.fablefit"
         minSdk = 31
@@ -36,7 +40,7 @@ android {
         release {
             isMinifyEnabled = true
             signingConfig = signingConfigs.getByName("release") // This was missing!
-
+            buildConfigField("String", "BASE_URL", "\"https://testserver.rohan.org.in/\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -45,12 +49,10 @@ android {
                 debugSymbolLevel = "FULL"
             }
         }
-
-
         debug {
-            // Debug usually uses the default debug.keystore automatically
-//            applicationIdSuffix = ".debug"
+            buildConfigField("String","BASE_URL", "\"http://192.168.29.178:1607/\"")
         }
+
     }
 
     compileOptions {

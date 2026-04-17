@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from pymongo.errors import PyMongoError
 
 
-from Routes.ChatRoute import chat_router
+from Routes.chatRoute import chat_router
 from Routes.CartRoutes import cartRouter
 from Routes.ProductRoutes import ProductRouter
 from Routes.UiRouter import uiRouter
