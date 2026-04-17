@@ -1,0 +1,155 @@
+import os
+from datetime import datetime, timezone, timedelta
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
+ABANDONED_AFTER_DAYS      = int(os.getenv("ABANDONED_CART_DAYS", "3"))
+ABANDONED_REMIND_COOLDOWN = int(os.getenv("ABANDONED_REMIND_COOLDOWN_DAYS", "7"))
+PRICE_DROP_CHECK_HOURS    = int(os.getenv("PRICE_DROP_CHECK_HOURS", "6"))
+
+scheduler = AsyncIOScheduler(timezone="UTC")
+
+
+# ── Job 1: Abandoned cart nudge ────────────────────────────────────────────────
+
+async def job_abandoned_cart_nudge():
+    from databaseSchemas.CartSchema import Cart
+    from databaseSchemas.UserSchema import User
+    from databaseSchemas.ProductSchema import Product
+    from helpers.NotificationService import send_push
+
+    print("🔔 [Scheduler] Checking for abandoned carts...")
+
+    now          = datetime.now(timezone.utc)
+    stale_cutoff = now - timedelta(days=ABANDONED_AFTER_DAYS)
+    cool_cutoff  = now - timedelta(days=ABANDONED_REMIND_COOLDOWN)
+
+    carts    = await Cart.find_all().to_list()
+    notified = 0
+
+    for cart in carts:
+        if not cart.items:
+            continue
+
+        # Cart must not have been touched recently
+        if cart.updatedAt > stale_cutoff:
+            continue
+
+        # Don't re-notify within the cooldown window
+        if cart.abandoned_notified_at and cart.abandoned_notified_at > cool_cutoff:
+            continue
+
+        user = await User.find_one(User.uid == cart.uid)
+        if not user or not user.fcm_token:
+            continue
+
+        first_item   = cart.items[0]
+        product      = await Product.get(str(first_item.product))
+        product_name = product.name if product else "your item"
+        discount_code = f"CART5-{cart.uid[:6].upper()}"
+
+        sent = send_push(
+            token=user.fcm_token,
+            title="Still thinking it over? 🛒",
+            body=(
+                f"Your {product_name} is waiting! "
+                f"Use code {discount_code} for 5% off — today only."
+            ),
+            data={
+                "type":          "abandoned_cart",
+                "discount_code": discount_code,
+            },
+        )
+
+        if sent:
+            cart.abandoned_notified_at = now
+            await cart.save()
+            notified += 1
+
+    print(f"✅ [Scheduler] Abandoned cart nudge done — notified {notified} user(s)")
+
+
+# ── Job 2: Price drop alerts ───────────────────────────────────────────────────
+
+async def job_price_drop_alerts():
+    from databaseSchemas.WishlistSchema import WishlistItem
+    from databaseSchemas.UserSchema import User
+    from databaseSchemas.ProductSchema import Product
+    from helpers.NotificationService import send_push
+
+    print("💰 [Scheduler] Checking for price drops...")
+
+    items    = await WishlistItem.find_all().to_list()
+    notified = 0
+
+    for item in items:
+        product = await Product.get(item.product_id)
+        if not product:
+            continue
+
+        # Only fire if price actually dropped
+        if product.price >= item.price_at_add:
+            continue
+
+        drop_pct = int(((item.price_at_add - product.price) / item.price_at_add) * 100)
+        user     = await User.find_one(User.uid == item.uid)
+
+        # ── FIX: Only update the snapshot if we successfully sent the notification.
+        # If the user has no FCM token yet, we leave price_at_add unchanged so they
+        # still get the alert once they do have a token (e.g. after re-installing).
+        if not user or not user.fcm_token:
+            print(f"⚠️  No FCM token for uid={item.uid} — skipping snapshot update")
+            continue
+
+        sent = send_push(
+            token=user.fcm_token,
+            title="Price Drop Alert 📉",
+            body=(
+                f"{product.name} just dropped {drop_pct}%! "
+                f"Now ₹{product.price:.0f} (was ₹{item.price_at_add:.0f})."
+            ),
+            data={
+                "type":       "price_drop",
+                "product_id": str(product.id),
+            },
+        )
+
+        if sent:
+            # Update snapshot ONLY after confirmed delivery so the same
+            # drop level doesn't fire again next check cycle.
+            item.price_at_add = product.price
+            await item.save()
+            notified += 1
+
+    print(f"✅ [Scheduler] Price drop check done — notified {notified} user(s)")
+
+
+# ── Lifecycle ──────────────────────────────────────────────────────────────────
+
+def start_scheduler():
+    scheduler.add_job(
+        job_abandoned_cart_nudge,
+        trigger="interval",
+        hours=24,
+        id="abandoned_cart_nudge",
+        replace_existing=True,
+    )
+    scheduler.add_job(
+        job_price_drop_alerts,
+        trigger="interval",
+        hours=PRICE_DROP_CHECK_HOURS,
+        id="price_drop_alerts",
+        replace_existing=True,
+    )
+    scheduler.start()
+    print(
+        f"✅ Scheduler started — "
+        f"abandoned cart check every 24 h, "
+        f"price drop check every {PRICE_DROP_CHECK_HOURS} h"
+    )
+
+
+def stop_scheduler():
+    if scheduler.running:
+        scheduler.shutdown(wait=False)
+        print("🛑 Scheduler stopped")

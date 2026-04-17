@@ -61,13 +61,13 @@ androidx-compose-foundation = { group = "androidx.compose.foundation", name = "f
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
 
 # ----------------- MATERIAL 3 -----------------
-#androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 arrowtooltip = { module = "io.github.msseodev:arrowtooltip", version.ref = "arrowtooltip" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 glide-core = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide-compose" }
+
 # ----------------- MATERIAL ICONS -----------------
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 
@@ -78,8 +78,9 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 compose = { module = "com.github.bumptech.glide:compose", version.ref = "compose" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }   # ← NEW
 
-# ----------------- GOOGLE SIGN IN (MODERN) -----------------
+# ----------------- GOOGLE SIGN IN -----------------
 androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
 androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
 google-id = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }

@@ -3,8 +3,13 @@ package com.rohan.fablefit.network
 import com.rohan.fablefit.ui.model.CartModel
 import com.rohan.fablefit.ui.model.CartResponse
 import com.rohan.fablefit.ui.model.CartUpdate
+import com.rohan.fablefit.ui.model.FcmTokenUpdate
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
+import com.rohan.fablefit.ui.model.UserModel
+import com.rohan.fablefit.ui.model.WishlistItem
+import com.rohan.fablefit.ui.model.WishlistToggleRequest
+import com.rohan.fablefit.ui.model.WishlistToggleResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -13,9 +18,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+
     @GET("/api/ui/banners")
     suspend fun getHomeSections(): Response<List<HomeSection>>
-//--------Products-------------------
+
+    // -------- Products --------
     @GET("/api/products/id/{id}")
     suspend fun getProduct(
         @Path("id") id: String
@@ -24,10 +31,21 @@ interface ApiService {
     @GET("/api/products/search")
     suspend fun searchProducts(
         @Query("s") searchQuery: String,
-        @Query("q") limit: Int=20
+        @Query("limit") limit: Int = 20
     ): Response<List<Product>>
-    //--------Cart-------------------
 
+    // -------- Users --------
+    @GET("/api/users/{uid}")
+    suspend fun getUser(
+        @Path("uid") uid: String
+    ): Response<UserModel>
+
+    @POST("/api/users/fcmtoken")
+    suspend fun updateFcmToken(
+        @Body update: FcmTokenUpdate
+    ): Response<Unit>
+
+    // -------- Cart --------
     @GET("/api/cart/{uid}")
     suspend fun getCartForUser(
         @Path("uid") uid: String
@@ -40,12 +58,22 @@ interface ApiService {
 
     @POST("/api/cart/remove")
     suspend fun removeProductFromCart(
-        @Body item: CartUpdate,
+        @Body item: CartUpdate
     ): Response<CartResponse>
 
     @POST("/api/cart/update")
     suspend fun updateCart(
-        @Body item: CartUpdate,
+        @Body item: CartUpdate
     ): Response<CartResponse>
 
+    // -------- Wishlist --------
+    @GET("/api/wishlist/{uid}")
+    suspend fun getWishlist(
+        @Path("uid") uid: String
+    ): Response<List<WishlistItem>>
+
+    @POST("/api/wishlist/toggle")
+    suspend fun toggleWishlist(
+        @Body item: WishlistToggleRequest
+    ): Response<WishlistToggleResponse>
 }

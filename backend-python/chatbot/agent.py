@@ -191,6 +191,9 @@ import os
 import sys
 from typing import List, Optional
 
+from langchain_openai import ChatOpenAI
+from torchgen import api
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from langchain_ollama import ChatOllama
@@ -203,8 +206,13 @@ from Routes.CartRoutes import add_to_cart as cart_add_logic
 from databaseSchemas.CartSchema import CartUpdate
 
 # Initializing LLM
-llm = ChatOllama(model="qwen3.5:2b", temperature=0)
-
+llm1 = ChatOllama(model="qwen3.5:2b", temperature=0)
+llm = ChatOpenAI(
+    model="../models/qwen2.5-14b",
+    base_url="https://agent.rohan.org.in/v1",
+    temperature=0,
+    api_key="dummy"
+)
 @tool
 async def search_for_products(query: str = "", category: str = "", color: str = "", gender: str = ""):
     """
@@ -336,3 +344,6 @@ async def process_chat(user_id: str, message: str, image_results: Optional[List]
     except Exception as e:
         print(f"Agent Execution Error: {e}")
         return {"message": "I'm having a little trouble connecting to my stylist tools right now. Could you try again?"}
+    
+    
+    
