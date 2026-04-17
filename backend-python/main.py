@@ -11,6 +11,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from pymongo.errors import PyMongoError
 
 
+from Routes.ChatRoute import chat_router
 from Routes.CartRoutes import cartRouter
 from Routes.ProductRoutes import ProductRouter
 from Routes.UiRouter import uiRouter
@@ -85,7 +86,8 @@ app.include_router(orderRouter,    prefix="/api")
 app.include_router(uiRouter,       prefix="/api")
 app.include_router(router,         prefix="/api")
 app.include_router(wishlistRouter, prefix="/api")   # ← NEW
-
+if(os.getenv("ENABLE_AGENT")=="true"):
+    app.include_router(chat_router,prefix="/api")
 
 # ── Static image serving ───────────────────────────────────────────────────────
 

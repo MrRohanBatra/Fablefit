@@ -207,12 +207,12 @@ from databaseSchemas.CartSchema import CartUpdate
 
 # Initializing LLM
 llm1 = ChatOllama(model="qwen3.5:2b", temperature=0)
-llm = ChatOpenAI(
-    model="../models/qwen2.5-14b",
-    base_url="https://agent.rohan.org.in/v1",
-    temperature=0,
-    api_key="dummy"
-)
+# llm = ChatOpenAI(
+#     model="../models/qwen2.5-14b",
+#     base_url="https://agent.rohan.org.in/v1",
+#     temperature=0,
+#     api_key="dummy"
+# )
 @tool
 async def search_for_products(query: str = "", category: str = "", color: str = "", gender: str = ""):
     """
