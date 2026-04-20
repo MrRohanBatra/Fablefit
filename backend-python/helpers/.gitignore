@@ -43,3 +43,4 @@ build/
 
 # Uploaded files (if you store locally)
 uploads/
+./firebase.json

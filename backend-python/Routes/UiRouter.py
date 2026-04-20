@@ -5,7 +5,7 @@ from databaseSchemas.ProductSchema import Product
 from models.UiModel import HomeSectionResponse, SectionType
 from helpers.Utilities import Utils
 Tool=Utils()
-uiRouter = APIRouter(prefix="/ui")
+uiRouter = APIRouter(prefix="/ui",tags=["UI"])
 
 
 SECTION_TITLES = [

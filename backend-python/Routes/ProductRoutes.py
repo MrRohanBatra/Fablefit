@@ -18,7 +18,7 @@ BASE_IMAGE_DIR = "images"
 
 Tools = Utils()
 
-ProductRouter = APIRouter(prefix="/products")
+ProductRouter = APIRouter(prefix="/products",tags=["Products"])
 
 @ProductRouter.post("/add")
 async def add_product(product: Product):

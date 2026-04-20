@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 load_dotenv()
 BASE_URL=os.getenv("BASE_URL","http://127.0.0.1:1607")
-router = APIRouter(prefix="/vton")
+router = APIRouter(prefix="/vton",tags=["Virtual Try ON"])
 
 def getNetworkUrl(partial_url:str)->str:
     if(partial_url.startswith("/")):

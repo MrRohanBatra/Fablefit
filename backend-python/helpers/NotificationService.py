@@ -12,7 +12,7 @@ def _init() -> bool:
         return True
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    cred_path = os.path.join(current_dir, "firebase-admin.json")
+    cred_path = os.path.join(current_dir, "firebase.json")
     print(f"using path: {cred_path}")
     if not cred_path or not os.path.exists(cred_path):
         print(

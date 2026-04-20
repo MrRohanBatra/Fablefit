@@ -195,7 +195,7 @@ from langchain_openai import ChatOpenAI
 from torchgen import api
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+from dotenv import load_dotenv
 from langchain_ollama import ChatOllama
 from langchain_core.tools import tool
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -204,9 +204,11 @@ from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
 from Routes.ProductRoutes import vector_search_products
 from Routes.CartRoutes import add_to_cart as cart_add_logic
 from databaseSchemas.CartSchema import CartUpdate
-
+load_dotenv()
 # Initializing LLM
-llm = ChatOllama(model="qwen3.5:2b", temperature=0)
+llm = ChatOllama(model=os.getenv("OLLAMA_MODEL_NAME","qwen-stylist-9b:latest"), temperature=0,
+                 base_url=os.getenv("OLLAMA_BASE_URL","http://127.0.0.1:5000")
+                 )
 # llm = ChatOpenAI(
 #     model="../models/qwen2.5-14b",
 #     base_url="https://agent.rohan.org.in/v1",

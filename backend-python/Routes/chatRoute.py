@@ -4,7 +4,7 @@ from fastapi import APIRouter, UploadFile, File, Form
 from chatbot.agent import process_chat
 from Routes.ProductRoutes import search_images # Re-using your CLIP search
 
-chat_router = APIRouter(prefix="/chat")
+chat_router = APIRouter(prefix="/chat",tags=["Rasberry"])
 
 @chat_router.post("/")
 async def chat_with_agent(
