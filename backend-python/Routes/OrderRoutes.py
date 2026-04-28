@@ -173,6 +173,7 @@ async def get_user_orders(user_id: str):
                 "status": o.status,
                 "total": o.totalPrice,
                 "delivery_date": o.deliveryDate,
+                "address":o.address,
                 "items": [
                     {
                         "product": str(i.product),
