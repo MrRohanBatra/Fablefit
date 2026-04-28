@@ -123,7 +123,8 @@ fun ProfileScreen(
             ProfileCard {
                 ProfileMenuItem(Icons.Default.Person, "My Account", onClick = {navController.navigate(
                     BottomRoute.MyInfo.route)})
-                ProfileMenuItem(Icons.Default.ShoppingBag, "My Orders") {}
+                ProfileMenuItem(Icons.Default.ShoppingBag, "My Orders", onClick = {navController.navigate(
+                    BottomRoute.MyOrders.route)})
                 ProfileMenuItem(Icons.Default.Settings, "App Settings") {}
             }
 

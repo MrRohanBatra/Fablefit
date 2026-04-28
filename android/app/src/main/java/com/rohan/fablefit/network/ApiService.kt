@@ -105,10 +105,8 @@ interface ApiService {
     // ✅ Place Order (COD)
     @POST("/api/orders/place")
     suspend fun placeOrder(
-        @Query("user_id") userId: String,
-        @Query("address") address: String
+        @Body request: PlaceOrderRequest
     ): Response<OrderPlaceResponse>
-
 
     // 📦 Get All Orders (for Order Screen)
     @GET("/api/orders/{user_id}")

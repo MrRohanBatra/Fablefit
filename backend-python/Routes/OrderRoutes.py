@@ -42,6 +42,7 @@ class OrderSimpleResponse(BaseModel):
     status: str
     total: float
     delivery_date: datetime
+    address:str
     items: List[OrderItemSimple]
 
 
@@ -49,12 +50,17 @@ class OrderListResponse(BaseModel):
     count: int
     orders: List[OrderSimpleResponse]
 
-
+class OrderPlaceRequest(BaseModel):
+    user_id: str
+    address: str
+    
 # -------------------------------
 # 🧾 1. PLACE ORDER (COD ONLY)
 # -------------------------------
 @router.post("/place", response_model=OrderPlaceResponse)
-async def place_order(user_id: str, address: str):
+async def place_order(data:OrderPlaceRequest):
+    user_id=data.user_id
+    address=data.address
     cart = await Cart.find_one(Cart.uid == user_id)
 
     if not cart or len(cart.items) == 0:
@@ -167,6 +173,7 @@ async def get_user_orders(user_id: str):
                 "status": o.status,
                 "total": o.totalPrice,
                 "delivery_date": o.deliveryDate,
+                "address":o.address,
                 "items": [
                     {
                         "product": str(i.product),

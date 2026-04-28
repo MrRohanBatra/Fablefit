@@ -99,6 +99,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.HomeScreen
+import com.rohan.fablefit.Screen.OrderScreen
 import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import com.rohan.fablefit.Screen.SearchScreen
@@ -380,7 +381,7 @@ fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
                     onExpandedChange = {}
                 ) {}
             }
-            if(currentRoute== BottomRoute.Profile.route || currentRoute== BottomRoute.MyInfo.route){
+            if(currentRoute== BottomRoute.Profile.route || currentRoute== BottomRoute.MyInfo.route || currentRoute== BottomRoute.MyOrders.route){
                 Surface(
                     shape = RoundedCornerShape(24.dp),
                     tonalElevation = 4.dp,
@@ -589,6 +590,11 @@ fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
                     context = LocalContext.current,
                     userViewModel = userViewModel
                     )
+            }
+            composable( BottomRoute.MyOrders.route ){
+                OrderScreen(
+                    orderViewModel
+                )
             }
         }
     }
