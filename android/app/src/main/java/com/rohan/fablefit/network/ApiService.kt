@@ -1,20 +1,6 @@
 package com.rohan.fablefit.network
 
-import com.rohan.fablefit.ui.model.CartModel
-import com.rohan.fablefit.ui.model.CartResponse
-import com.rohan.fablefit.ui.model.CartUpdate
-import com.rohan.fablefit.ui.model.ChatResponse
-import com.rohan.fablefit.ui.model.FcmTokenUpdate
-import com.rohan.fablefit.ui.model.HomeSection
-import com.rohan.fablefit.ui.model.Product
-import com.rohan.fablefit.ui.model.TryOnResponseModel
-import com.rohan.fablefit.ui.model.UserModel
-import com.rohan.fablefit.ui.model.UserResponseModel
-import com.rohan.fablefit.ui.model.UserUploadImageRepsonse
-import com.rohan.fablefit.ui.model.VtonReponseModel
-import com.rohan.fablefit.ui.model.WishlistItem
-import com.rohan.fablefit.ui.model.WishlistToggleRequest
-import com.rohan.fablefit.ui.model.WishlistToggleResponse
+import com.rohan.fablefit.ui.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -26,6 +12,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import com.rohan.fablefit.ui.model.VtonRequestModel
+import retrofit2.http.PUT
 
 
 interface ApiService {
@@ -115,4 +102,31 @@ interface ApiService {
         @Part("message") message: RequestBody,
         @Part image: MultipartBody.Part? = null
     ): Response<ChatResponse>
+    // ✅ Place Order (COD)
+    @POST("/api/orders/place")
+    suspend fun placeOrder(
+        @Query("user_id") userId: String,
+        @Query("address") address: String
+    ): Response<OrderPlaceResponse>
+
+
+    // 📦 Get All Orders (for Order Screen)
+    @GET("/api/orders/{user_id}")
+    suspend fun getUserOrders(
+        @Path("user_id") userId: String
+    ): Response<OrderListResponse>
+
+
+    // 🔍 Track Order
+    @GET("/api/orders/track/{order_id}")
+    suspend fun trackOrder(
+        @Path("order_id") orderId: String
+    ): Response<OrderTrackResponse>
+
+
+    // ❌ Cancel Order
+    @PUT("/api/orders/cancel/{order_id}")
+    suspend fun cancelOrder(
+        @Path("order_id") orderId: String
+    ): Response<OrderCancelResponse>
 }

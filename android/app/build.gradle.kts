@@ -99,8 +99,9 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    debugImplementation(libs.androidx.compose.ui.tooling)
 
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.play.services.location)
     // ---------------- NAVIGATION ----------------
     implementation(libs.androidx.navigation.compose)
 

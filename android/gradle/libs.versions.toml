@@ -30,6 +30,7 @@ espressoCore = "3.7.0"
 material3 = "1.5.0-alpha14"
 material3Version = "1.4.0"
 foundationLayout = "1.10.3"
+playServicesLocation = "21.1.0"
 retrofit = "3.0.0"
 uiText = "1.10.3"
 foundation = "1.10.3"
@@ -101,6 +102,7 @@ androidx-compose-foundation-layout = { group = "androidx.compose.foundation", na
 androidx-compose-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundationVersion" }
