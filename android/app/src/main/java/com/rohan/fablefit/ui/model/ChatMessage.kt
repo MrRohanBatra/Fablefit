@@ -1,4 +1,4 @@
-package com.rohan.fablefit.ui.model
+package com.rohan.fablefit.ui.model//package com.rohan.fablefit.ui.model
 
 import java.util.UUID
 

@@ -3,6 +3,7 @@ package com.rohan.fablefit.network
 import com.rohan.fablefit.ui.model.CartModel
 import com.rohan.fablefit.ui.model.CartResponse
 import com.rohan.fablefit.ui.model.CartUpdate
+import com.rohan.fablefit.ui.model.ChatResponse
 import com.rohan.fablefit.ui.model.FcmTokenUpdate
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
@@ -107,4 +108,11 @@ interface ApiService {
     suspend fun getStatus(
         @Path("task_id") taskId: String
     ): Response<TryOnResponseModel>
+    @Multipart
+    @POST("/api/chat/")
+    suspend fun chatWithAgent(
+        @Part("user_id") userId: RequestBody,
+        @Part("message") message: RequestBody,
+        @Part image: MultipartBody.Part? = null
+    ): Response<ChatResponse>
 }
