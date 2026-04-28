@@ -58,3 +58,7 @@ data class OrderListResponse(
     val count: Int,
     val orders: List<Order>
 )
+data class PlaceOrderRequest(
+    val user_id: String,
+    val address: String
+)

@@ -6,6 +6,7 @@ import com.rohan.fablefit.ui.model.OrderCancelResponse
 import com.rohan.fablefit.ui.model.OrderListResponse
 import com.rohan.fablefit.ui.model.OrderPlaceResponse
 import com.rohan.fablefit.ui.model.OrderTrackResponse
+import com.rohan.fablefit.ui.model.PlaceOrderRequest
 
 class OrderRepository(
 ) {
@@ -16,7 +17,7 @@ class OrderRepository(
         address: String
     ): Result<OrderPlaceResponse> {
         return try {
-            val response = api.placeOrder(userId, address)
+            val response = api.placeOrder(PlaceOrderRequest(userId, address))
 
             if (response.isSuccessful) {
                 Result.success(response.body()!!)
