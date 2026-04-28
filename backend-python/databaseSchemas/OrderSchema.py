@@ -3,19 +3,17 @@ from pydantic import BaseModel, Field
 from datetime import datetime, timedelta, timezone
 from beanie import Document, PydanticObjectId
 
-# 🔹 Order Item Model (Embedded)
+
 class OrderItem(BaseModel):
-    # Matches mongoose.Schema.Types.ObjectId
-    product: PydanticObjectId 
+    product: PydanticObjectId
     size: str
     color: Optional[str] = None
     quantity: int = Field(..., ge=1)
-    price: float  # Snapshot price at the time of purchase
+    price: float
 
-# 🔹 Order Model (Main Collection)
+
 class Order(Document):
-    # Firebase UID as a string
-    userId: str 
+    userId: str
 
     items: List[OrderItem] = Field(default_factory=list)
 
@@ -37,13 +35,18 @@ class Order(Document):
 
     paidAt: Optional[datetime] = None
 
-    # Default delivery date set to 8 days from now
     deliveryDate: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc) + timedelta(days=8)
     )
+
+    # Tracks which status-change notifications have already been sent.
+    # Values will be one of: "placed", "shipped", "out-for-delivery", "delivered"
+    # Appended to as the scheduler (and the place-order route) fire each notification,
+    # so no duplicate pushes are ever sent.
+    notified_statuses: List[str] = Field(default_factory=list)
 
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Settings:
-        name = "orders" # The MongoDB collection name
+        name = "orders"
