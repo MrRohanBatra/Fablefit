@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class ProductViewModel(): ViewModel(
 ) {
     private val productRepository= ProductRepository()
-    var uiState by mutableStateOf<ProductModelUiState>(ProductModelUiState.Loading)
+    var uiState by mutableStateOf<ProductModelUiState?>(null)
         private  set
     fun loadProduct(productId: String){
         viewModelScope.launch {

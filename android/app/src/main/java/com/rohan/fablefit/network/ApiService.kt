@@ -6,9 +6,11 @@ import com.rohan.fablefit.ui.model.CartUpdate
 import com.rohan.fablefit.ui.model.FcmTokenUpdate
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
+import com.rohan.fablefit.ui.model.TryOnResponseModel
 import com.rohan.fablefit.ui.model.UserModel
 import com.rohan.fablefit.ui.model.UserResponseModel
 import com.rohan.fablefit.ui.model.UserUploadImageRepsonse
+import com.rohan.fablefit.ui.model.VtonReponseModel
 import com.rohan.fablefit.ui.model.WishlistItem
 import com.rohan.fablefit.ui.model.WishlistToggleRequest
 import com.rohan.fablefit.ui.model.WishlistToggleResponse
@@ -22,6 +24,8 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import com.rohan.fablefit.ui.model.VtonRequestModel
+
 
 interface ApiService {
     @GET("/api/ui/banners")
@@ -94,4 +98,13 @@ interface ApiService {
     suspend fun toggleWishlist(
         @Body item: WishlistToggleRequest
     ): Response<WishlistToggleResponse>
+
+    @POST("/api/vton/tryon")
+    suspend fun tryon(
+        @Body item: VtonRequestModel
+    ): Response<VtonReponseModel>
+    @GET("/api/vton/status/{task_id}")
+    suspend fun getStatus(
+        @Path("task_id") taskId: String
+    ): Response<TryOnResponseModel>
 }

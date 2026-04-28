@@ -53,7 +53,7 @@ android {
             }
         }
         debug {
-            buildConfigField("String","BASE_URL", "\"http://192.168.29.178:1607/\"")
+            buildConfigField("String","BASE_URL", "\"https://testserver.rohan.org.in/\"")
         }
 
     }
