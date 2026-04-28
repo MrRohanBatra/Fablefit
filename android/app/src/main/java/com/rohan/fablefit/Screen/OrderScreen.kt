@@ -90,10 +90,20 @@ fun OrderScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             //Address
-                            Text(
-                                text = "₹${order.address}",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            Column {
+                                Text(
+                                    text = "Delivery Address",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+
+                                Text(
+                                    text = order.address,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    maxLines = 3, // 👈 limits height
+                                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis // 👈 ...
+                                )
+                            }
                             // 💰 Total
                             Text(
                                 text = "₹${order.total}",
