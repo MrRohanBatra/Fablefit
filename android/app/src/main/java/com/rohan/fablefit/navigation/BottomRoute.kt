@@ -4,6 +4,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Preview
+import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.Redeem
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -19,6 +21,7 @@ sealed class BottomRoute(
     object Profile : BottomRoute("profile", "Profile", Icons.Default.Person)
     object ProductDisplay: BottomRoute(route = "productdisplay", title = "Product Display", icon = Icons.Default.Preview)
     object MyInfo: BottomRoute(route="myinfo", title = "User Info", icon =Icons.Default.Preview )
+    object MyOrders: BottomRoute(route="myorders", title = "Orders",icon=Icons.Default.Receipt)
 }
 object AppRoute {
     const val Splash = "splash"

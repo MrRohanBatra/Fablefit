@@ -42,6 +42,7 @@ class OrderSimpleResponse(BaseModel):
     status: str
     total: float
     delivery_date: datetime
+    address:str
     items: List[OrderItemSimple]
 
 

@@ -47,7 +47,8 @@ data class Order(
     val status: String,
     val total: Double,
     val delivery_date: String,
-    val items: List<OrderItem>
+    val items: List<OrderItem>,
+    val address: String
 )
 
 
@@ -61,4 +62,9 @@ data class OrderListResponse(
 data class PlaceOrderRequest(
     val user_id: String,
     val address: String
+)
+data class OrderUiModel(
+    val orderId: String,
+    val total: Double,
+    val status: String
 )
