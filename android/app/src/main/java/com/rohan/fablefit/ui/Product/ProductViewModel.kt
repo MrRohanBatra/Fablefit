@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rohan.fablefit.BuildConfig
 import com.rohan.fablefit.ui.Home.HomeUiState
 import com.rohan.fablefit.ui.model.HomeSection
 import com.rohan.fablefit.ui.model.Product
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 class ProductViewModel(): ViewModel(
 ) {
     private val productRepository= ProductRepository()
-    var uiState by mutableStateOf<ProductModelUiState>(ProductModelUiState.Loading)
+    var uiState by mutableStateOf<ProductModelUiState?>(null)
         private  set
     fun loadProduct(productId: String){
         viewModelScope.launch {
@@ -42,6 +43,13 @@ class ProductViewModel(): ViewModel(
                 .onFailure {
                     uiState= ProductModelUiState.Error("Failed to load")
                 }
+        }
+    }
+    suspend fun getProductImageUrl(productId: String): String? {
+        val result = productRepository.getProductById(productId)
+
+        return result.getOrNull()?.let {
+            "${BuildConfig.BASE_URL}${it.images.firstOrNull()}"
         }
     }
 }

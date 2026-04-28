@@ -1,12 +1,13 @@
 package com.rohan.fablefit
 
+//import com.rohan.fablefit.ui.Chatbot.AgentChatScreen
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -20,7 +21,6 @@ import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +38,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -55,21 +54,19 @@ import androidx.compose.material3.CircularWavyProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -90,57 +87,83 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil3.compose.SubcomposeAsyncImage
 import com.google.firebase.auth.FirebaseAuth
-import com.msseo.android.arrowtooltip.ArrowTooltip
+import com.google.firebase.messaging.FirebaseMessaging
 import com.rohan.fablefit.Screen.CartScreen
 import com.rohan.fablefit.Screen.HomeScreen
 import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import com.rohan.fablefit.Screen.SearchScreen
 import com.rohan.fablefit.Screen.UserInfo
-import com.rohan.fablefit.agent.AgentRoutes
 import com.rohan.fablefit.auth.AuthScreen
 import com.rohan.fablefit.auth.SplashScreen
 import com.rohan.fablefit.navigation.AppRoute
 import com.rohan.fablefit.navigation.BottomRoute
+import com.rohan.fablefit.services.FableFitMessagingService
 import com.rohan.fablefit.ui.Cart.CartModelUiState
 import com.rohan.fablefit.ui.Cart.CartViewModel
+import com.rohan.fablefit.ui.Chatbot.AgentChatScreen
+import com.rohan.fablefit.ui.Order.OrderViewModel
+import com.rohan.fablefit.ui.User.UserViewModel
+import com.rohan.fablefit.ui.Wishlist.WishlistViewModel
 import com.rohan.fablefit.ui.model.SearchFilters
 import com.rohan.fablefit.ui.theme.FablefitTheme
 import kotlinx.coroutines.delay
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
-import com.rohan.fablefit.services.FableFitMessagingService
-import com.rohan.fablefit.ui.User.UserViewModel
-import com.rohan.fablefit.ui.Chatbot.AgentChatScreen
-import com.rohan.fablefit.ui.Wishlist.WishlistViewModel
 
 class MainActivity : ComponentActivity() {
+    // Replace your existing requestPermissionLauncher with this
+    private val permissionsToRequest = mutableListOf<String>()
+
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM notifications will now show up
-            Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show()
-        } else {
-            // Explain to the user that they won't get alerts
-            Toast.makeText(this, "You won't receive FableFit alerts", Toast.LENGTH_LONG).show()
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        permissions.entries.forEach {
+            val permissionName = it.key
+            val isGranted = it.value
+            if (isGranted) {
+                Log.d("Permissions", "$permissionName granted")
+            }
+        }
+        // After one set is done, check if there's more in the queue
+        processNextPermission()
+    }
+
+    private fun processNextPermission() {
+        if (permissionsToRequest.isNotEmpty()) {
+            val next = permissionsToRequest.removeAt(0)
+            requestPermissionLauncher.launch(arrayOf(next))
+        }
+    }
+    private fun preparePermissionQueue() {
+        // Notification Permission (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
+        // Location Permissions
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION)
         }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        askNotificationPermission();
+        preparePermissionQueue()
+        processNextPermission()
         setContent {
             FablefitTheme() {
                 val navController=rememberNavController();
@@ -199,6 +222,7 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(AppRoute.Main) {
                             MainECommerceScaffold(
+                                this@MainActivity,
                                 onLogout = {
                                     FirebaseAuth.getInstance().signOut();
                                     navController.navigate(AppRoute.Auth) {
@@ -213,30 +237,14 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (Android 13)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-            ) {
-                // Already have permission
-            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                // TODO: Display an educational UI explaining why you need notifications
-                // Then show the system prompt
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            } else {
-                // Directly ask for the permission
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MainECommerceScaffold(onLogout:()-> Unit) {
+fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
 
     val cartViewModel: CartViewModel=viewModel()
     val userViewModel: UserViewModel=viewModel()
+    val orderViewModel: OrderViewModel=viewModel()
     val wishlistViewModel: WishlistViewModel = viewModel()
     val user by userViewModel.user
     val uiState=cartViewModel.uiState
@@ -554,7 +562,7 @@ fun MainECommerceScaffold(onLogout:()-> Unit) {
             composable(BottomRoute.Cart.route) {
                 LaunchedEffect(Unit) { haptic.performHapticFeedback(hapticValue)}
 
-                CartScreen(cartViewModel)
+                CartScreen(context,cartViewModel, orderViewModel = orderViewModel)
             }
             composable(BottomRoute.Profile.route) {
 //                haptic.performHapticFeedback(hapticValue)

@@ -53,7 +53,7 @@ android {
             }
         }
         debug {
-            buildConfigField("String","BASE_URL", "\"http://192.168.29.178:1607/\"")
+            buildConfigField("String","BASE_URL", "\"https://testserver.rohan.org.in/\"")
         }
 
     }
@@ -99,8 +99,9 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    debugImplementation(libs.androidx.compose.ui.tooling)
 
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.play.services.location)
     // ---------------- NAVIGATION ----------------
     implementation(libs.androidx.navigation.compose)
 

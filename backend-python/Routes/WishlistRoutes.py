@@ -7,7 +7,7 @@ from databaseSchemas.WishlistSchema import WishlistItem, WishlistToggleRequest, 
 from databaseSchemas.ProductSchema import Product
 from helpers.Utilities import Utils
 
-wishlistRouter = APIRouter(prefix="/wishlist")
+wishlistRouter = APIRouter(prefix="/wishlist",tags=["Whishlist"])
 Tools = Utils()
 
 

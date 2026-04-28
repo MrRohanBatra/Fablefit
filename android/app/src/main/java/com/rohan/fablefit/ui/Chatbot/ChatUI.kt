@@ -23,11 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
+import com.rohan.fablefit.ui.Product.ProductViewModel
 import kotlinx.coroutines.launch
 import com.rohan.fablefit.ui.model.ChatMessage
 import com.rohan.fablefit.ui.model.ChatbotViewModel
@@ -55,9 +58,11 @@ fun AgentChatScreen(
         LazyColumn(
             state = listState,
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 120.dp) // Adjusted for toolbar height
-        ) {
+            contentPadding = PaddingValues(bottom = 120.dp) ,// Adjusted for toolbar height
+//            verticalArrangement = Arrangement.SpaceBetween
+            ) {
             items(messages) { message ->
+                Spacer(Modifier.height(10.dp))
                 ChatBubbleUnified(message, navController = navController)
             }
         }
@@ -166,9 +171,11 @@ fun AgentChatScreen(
 //    }
 //}
 @Composable
-fun ChatBubbleUnified(message: ChatMessage, navController: NavController) {
+fun ChatBubbleUnified(message: ChatMessage, navController: NavController,productViewModel: ProductViewModel=viewModel()) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(start = 2.dp, end = 2.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 2.dp, end = 2.dp),
         horizontalAlignment = if (message.isFromUser) Alignment.End else Alignment.Start
     ) {
         Row(
@@ -211,24 +218,42 @@ fun ChatBubbleUnified(message: ChatMessage, navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(start = 36.dp) // Align with agent text
+                contentPadding = PaddingValues(start = 36.dp)
             ) {
                 items(message.productIdsToRender) { productId ->
-                    // Replace this with your actual Product Card composable
+
+                    val imageUrl by produceState<String?>(initialValue = null, productId) {
+                        value = productViewModel.getProductImageUrl(productId)
+                    }
+
                     ElevatedCard(
                         onClick = { navController.navigate("productdisplay/$productId") },
                         modifier = Modifier.width(140.dp)
                     ) {
                         Column(modifier = Modifier.padding(8.dp)) {
-                            // Placeholder for image
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .height(120.dp)
-                                .background(Color.LightGray))
+                           if(imageUrl==null){
+
+                               Box(modifier = Modifier
+                                   .fillMaxWidth()
+                                   .height(120.dp)
+                                   .background(Color.LightGray))
+                           }
+                            else{
+                               Box(modifier = Modifier.fillMaxWidth().aspectRatio(2f/3f).height(120.dp).clip(RoundedCornerShape(8.dp))) {
+                                   AsyncImage(
+                                       model = imageUrl,
+                                       contentDescription = "Product Image",
+                                       modifier = Modifier
+                                           .fillMaxWidth(),
+                                       contentScale = ContentScale.Crop
+                                   )
+                               }
+                            }
                             Spacer(modifier = Modifier.height(8.dp))
                             Text("View Product", style = MaterialTheme.typography.labelMedium)
                         }
                     }
+
                 }
             }
         }

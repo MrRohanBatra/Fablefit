@@ -74,6 +74,8 @@ import com.rohan.fablefit.ui.Cart.CartModelUiState
 import com.rohan.fablefit.ui.Cart.CartViewModel
 import com.rohan.fablefit.ui.Product.ProductModelUiState
 import com.rohan.fablefit.ui.Product.ProductViewModel
+import com.rohan.fablefit.ui.Product.VtonUIState
+import com.rohan.fablefit.ui.Product.VtonViewModel
 import com.rohan.fablefit.ui.Wishlist.WishlistViewModel
 import com.rohan.fablefit.ui.model.CartItem
 import com.rohan.fablefit.ui.model.CartUpdate
@@ -86,10 +88,12 @@ import kotlinx.coroutines.launch
 fun ProductDisplayScreen(
     productId: String,
     productViewModel: ProductViewModel= viewModel(),
+    vtonViewModel: VtonViewModel=viewModel(),
     cartViewModel: CartViewModel,
     wishlistViewModel: WishlistViewModel = viewModel(),
 ) {
     val state     = productViewModel.uiState
+    val vtonState=vtonViewModel.uiState;
     val cartState = cartViewModel.uiState
     val user      = FirebaseAuth.getInstance().currentUser
     val context   = LocalContext.current
@@ -101,11 +105,14 @@ fun ProductDisplayScreen(
 
         user?.uid?.let { wishlistViewModel.loadWishlist(it) }
     }
+    LaunchedEffect(vtonState) {
+        if (vtonState is VtonUIState.Error) {
+            Toast.makeText(context, vtonState.message, Toast.LENGTH_LONG).show()
+            vtonViewModel.reset()
+        }
+    }
     LaunchedEffect(cartState) {
         if (cartState is CartModelUiState.Success) {
-            // You can add logic here to only show toast if an action was just performed
-            // For now, simple feedback:
-            // Toast.makeText(context, "Cart Updated", Toast.LENGTH_SHORT).show()
         } else if (cartState is CartModelUiState.Error) {
             Toast.makeText(context, cartState.message, Toast.LENGTH_SHORT).show()
         }
@@ -121,6 +128,13 @@ fun ProductDisplayScreen(
         }
         is ProductModelUiState.Success -> {
             val product   = state.product
+            val displayImages = remember(product.images, vtonState) {
+                if (vtonState is VtonUIState.Success) {
+                    listOf(vtonState.imagePath) + product.images
+                } else {
+                    product.images
+                }
+            }
             var selectedSize by remember { mutableStateOf("S") }
             val isInCart      = cartViewModel.isProductInCart(productId, selectedSize)
             val productQty    = cartViewModel.getProductQuantity(productId, selectedSize)
@@ -146,7 +160,7 @@ fun ProductDisplayScreen(
                 ) {
                     ProductImagePager(
                         modifier = Modifier.fillMaxSize(),
-                        images   = product.images,
+                        images   = displayImages,
                         baseUrl  = BuildConfig.BASE_URL
                     )
                     if (product.supportsTryOn) {
@@ -276,17 +290,13 @@ fun ProductDisplayScreen(
                     ) {
                         var vtonClicked by remember { mutableStateOf(false) }
 
-                        // This button now stays visible regardless of cart state
+
                         OutlinedButton(
                             enabled = !vtonClicked,
                             onClick = {
-                                if (!vtonClicked) {
-                                    vtonClicked = true
-                                    Toast.makeText(context, "Upcoming feature", Toast.LENGTH_SHORT).show()
-                                    scope.launch {
-                                        delay(300)
-                                        vtonClicked = false
-                                    }
+                                haptic.performHapticFeedback(HapticFeedbackType.Confirm);
+                                user?.uid?.let {
+                                    vtonViewModel.startVirtualTryOn(it,productId)
                                 }
                             },
                             modifier = Modifier.weight(1f).height(56.dp),
@@ -450,6 +460,7 @@ fun ProductImagePager(
             AsyncImage(
                 model = "$baseUrl${images[page]}",
                 contentDescription = null,
+
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(16.dp)),
@@ -481,3 +492,4 @@ fun ProductImagePager(
         }
     }
 }
+

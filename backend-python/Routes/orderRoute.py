@@ -11,7 +11,7 @@ from helpers.Utilities import Utils
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-orderRouter = APIRouter(prefix="/orders")
+orderRouter = APIRouter(prefix="/orders",tags=["Orders"])
 Tools = Utils()
 
 
