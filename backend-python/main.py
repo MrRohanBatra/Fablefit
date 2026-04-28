@@ -88,6 +88,7 @@ app.include_router(uiRouter,       prefix="/api")
 app.include_router(router,         prefix="/api")
 app.include_router(wishlistRouter, prefix="/api")  # ← NEW
 app.include_router(noti_test_router,prefix="/api")
+app.include_router(orderRouter,prefix="/api")
 if(os.getenv("ENABLE_AGENT")=="true"):
     app.include_router(chat_router,prefix="/api")
 
