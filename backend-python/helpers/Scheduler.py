@@ -6,8 +6,46 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 ABANDONED_AFTER_DAYS      = int(os.getenv("ABANDONED_CART_DAYS", "3"))
 ABANDONED_REMIND_COOLDOWN = int(os.getenv("ABANDONED_REMIND_COOLDOWN_DAYS", "7"))
 PRICE_DROP_CHECK_HOURS    = int(os.getenv("PRICE_DROP_CHECK_HOURS", "6"))
+ORDER_STATUS_CHECK_HOURS  = int(os.getenv("ORDER_STATUS_CHECK_HOURS", "6"))
 
 scheduler = AsyncIOScheduler(timezone="UTC")
+
+
+# ── Notification content ───────────────────────────────────────────────────────
+# Each entry: (title, body_template)
+# The body_template receives no format args — keep it generic so it works for
+# any order without needing to fetch product names at notification time.
+
+_ORDER_NOTIFICATIONS = {
+    "placed": (
+        "Order placed! 🛒",
+        "We've received your order and are getting it ready.",
+    ),
+    "shipped": (
+        "Your order is on the way! 📦",
+        "Your order has been shipped and is heading your way.",
+    ),
+    "out-for-delivery": (
+        "Out for delivery! 🚚",
+        "Your order is out for delivery — expect it today!",
+    ),
+    "delivered": (
+        "Order delivered! ✅",
+        "Your order has been delivered. Enjoy your purchase!",
+    ),
+}
+
+# Day thresholds for each status notification.
+# A notification is sent when (days since order creation) >= threshold AND
+# that status has NOT been recorded in order.notified_statuses yet.
+# "placed" is handled directly in the order-placement route (day 0),
+# but the scheduler also catches it as a safety net for any missed orders.
+_NOTIFY_THRESHOLDS = [
+    ("placed",            0),
+    ("shipped",           2),
+    ("out-for-delivery",  5),
+    ("delivered",         8),
+]
 
 
 # ── Job 1: Abandoned cart nudge ────────────────────────────────────────────────
@@ -31,11 +69,9 @@ async def job_abandoned_cart_nudge():
         if not cart.items:
             continue
 
-        # Cart must not have been touched recently
         if cart.updatedAt > stale_cutoff:
             continue
 
-        # Don't re-notify within the cooldown window
         if cart.abandoned_notified_at and cart.abandoned_notified_at > cool_cutoff:
             continue
 
@@ -87,16 +123,12 @@ async def job_price_drop_alerts():
         if not product:
             continue
 
-        # Only fire if price actually dropped
         if product.price >= item.price_at_add:
             continue
 
         drop_pct = int(((item.price_at_add - product.price) / item.price_at_add) * 100)
         user     = await User.find_one(User.uid == item.uid)
 
-        # ── FIX: Only update the snapshot if we successfully sent the notification.
-        # If the user has no FCM token yet, we leave price_at_add unchanged so they
-        # still get the alert once they do have a token (e.g. after re-installing).
         if not user or not user.fcm_token:
             print(f"⚠️  No FCM token for uid={item.uid} — skipping snapshot update")
             continue
@@ -115,13 +147,90 @@ async def job_price_drop_alerts():
         )
 
         if sent:
-            # Update snapshot ONLY after confirmed delivery so the same
-            # drop level doesn't fire again next check cycle.
             item.price_at_add = product.price
             await item.save()
             notified += 1
 
     print(f"✅ [Scheduler] Price drop check done — notified {notified} user(s)")
+
+
+# ── Job 3: Order status notifications ─────────────────────────────────────────
+
+async def job_order_status_notifications():
+    """
+    Runs every ORDER_STATUS_CHECK_HOURS hours.
+
+    For every non-cancelled order, computes how many days have passed since
+    creation and fires an FCM notification for each status threshold that has
+    been crossed but not yet notified.
+
+    The thresholds are:
+        placed          → day 0   (also sent immediately in the place-order route)
+        shipped         → day 2
+        out-for-delivery→ day 5
+        delivered       → day 8
+
+    notified_statuses on the Order document prevents any duplicate sends.
+    """
+    from databaseSchemas.OrderSchema import Order
+    from databaseSchemas.UserSchema import User
+    from helpers.NotificationService import send_push
+
+    print("📬 [Scheduler] Checking order status notifications...")
+
+    now    = datetime.now(timezone.utc)
+    orders = await Order.find(Order.status != "cancelled").to_list()
+    notified_count = 0
+
+    for order in orders:
+        # Once "delivered" has been notified there is nothing left to do.
+        if "delivered" in order.notified_statuses:
+            continue
+
+        user = await User.find_one(User.uid == order.userId)
+        if not user or not user.fcm_token:
+            continue
+
+        days_elapsed = (now - order.createdAt).days
+        order_dirty  = False   # track whether we need to save the document
+
+        for status, threshold_days in _NOTIFY_THRESHOLDS:
+            if days_elapsed < threshold_days:
+                # Thresholds are in ascending order; no later one can match.
+                break
+
+            if status in order.notified_statuses:
+                continue   # already sent
+
+            title, body = _ORDER_NOTIFICATIONS[status]
+
+            sent = send_push(
+                token=user.fcm_token,
+                title=title,
+                body=body,
+                data={
+                    "type":     "order_status",
+                    "order_id": str(order.id),
+                    "status":   status,
+                },
+            )
+
+            if sent:
+                order.notified_statuses.append(status)
+                order_dirty   = True
+                notified_count += 1
+                print(
+                    f"   📩 Sent '{status}' notification for "
+                    f"order={order.id} uid={order.userId} (day {days_elapsed})"
+                )
+
+        if order_dirty:
+            await order.save()
+
+    print(
+        f"✅ [Scheduler] Order status notifications done "
+        f"— sent {notified_count} notification(s) across {len(orders)} order(s)"
+    )
 
 
 # ── Lifecycle ──────────────────────────────────────────────────────────────────
@@ -141,11 +250,19 @@ def start_scheduler():
         id="price_drop_alerts",
         replace_existing=True,
     )
+    scheduler.add_job(
+        job_order_status_notifications,
+        trigger="interval",
+        hours=ORDER_STATUS_CHECK_HOURS,
+        id="order_status_notifications",
+        replace_existing=True,
+    )
     scheduler.start()
     print(
         f"✅ Scheduler started — "
         f"abandoned cart check every 24 h, "
-        f"price drop check every {PRICE_DROP_CHECK_HOURS} h"
+        f"price drop check every {PRICE_DROP_CHECK_HOURS} h, "
+        f"order status check every {ORDER_STATUS_CHECK_HOURS} h"
     )
 
 
