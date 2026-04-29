@@ -30,7 +30,7 @@ def compute_tier(total_spent: float) -> str:
 
 class User(Document):
     uid: str
-
+    name:str=""
     phone: Optional[str] = None
     address: List[Any] = Field(default_factory=list)
     vton_image: Optional[str] = None
@@ -63,6 +63,7 @@ class UserUploadImageRepsonse(BaseModel):
 
 class UserCreate(BaseModel):
     uid: str
+    name:str
     phone: Optional[str] = None
     address: List[Any] = []
     vton_image: Optional[str] = None

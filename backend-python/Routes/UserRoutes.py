@@ -23,6 +23,7 @@ async def add_user(user_data: UserCreate):
         if user:
             print(f"🔄 Updating existing user: {user_data.uid}")
             if user_data.phone:       user.phone      = user_data.phone
+            if user_data.name:        user.name       = user_data.name
             if user_data.type:        user.type       = user_data.type
             if user_data.vton_image:  user.vton_image = user_data.vton_image
             if user_data.address is not None:

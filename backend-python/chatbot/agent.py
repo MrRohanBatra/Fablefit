@@ -194,6 +194,8 @@ from typing import List, Optional
 from langchain_openai import ChatOpenAI
 from torchgen import api
 
+from databaseSchemas.UserSchema import User
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dotenv import load_dotenv
 from langchain_ollama import ChatOllama
@@ -294,8 +296,8 @@ tools = [search_for_products, add_item_to_cart]
 prompt = ChatPromptTemplate.from_messages([
     ("system", """You are Rasberry the Fablefit AI Stylist, a friendly, enthusiastic, and helpful personal fashion assistant. 
     Current user info:
-        - ID: {user[id]}
-        - Name: {user[name]}
+        - ID: {user_id}
+        - Name: {user_name}
         
 
     CRITICAL INSTRUCTIONS:
@@ -339,10 +341,15 @@ async def process_chat(user_id: str, message: str, image_results: Optional[List]
         final_input = f"{context}\n\nUser's message: {message}"
 
     try:
+        user = await User.find_one(User.uid == user_id)
+        if not user:
+            raise ValueError("User not found")
+        
         response = await agent_executor.ainvoke({
             "input": final_input,
             "chat_history": [], 
-            "user": user_id  
+            "user_id": user.uid,
+            "user_name":user.name
         })
         return {"message": response["output"]}
     
