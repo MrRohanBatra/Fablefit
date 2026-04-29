@@ -9,7 +9,7 @@ from databaseSchemas.ProductSchema import Product
 from helpers.NotificationService import send_push
 from databaseSchemas.UserSchema import User
 
-router = APIRouter(prefix="/orders", tags=["Orders"])
+orderRouter = APIRouter(prefix="/orders", tags=["Orders"])
 
 
 # ── Response models ────────────────────────────────────────────────────────────
@@ -82,7 +82,7 @@ async def _send_order_notification(user_id: str, order_id: str, status: str, tit
 
 # ── 1. Place order (COD) ───────────────────────────────────────────────────────
 
-@router.post("/place", response_model=OrderPlaceResponse)
+@orderRouter.post("/place", response_model=OrderPlaceResponse)
 async def place_order(data: OrderPlaceRequest):
     user_id = data.user_id
     address = data.address
@@ -151,7 +151,7 @@ async def place_order(data: OrderPlaceRequest):
 
 # ── 2. Track order ─────────────────────────────────────────────────────────────
 
-@router.get("/track/{order_id}", response_model=OrderTrackResponse)
+@orderRouter.get("/track/{order_id}", response_model=OrderTrackResponse)
 async def track_order(order_id: str):
     order = await Order.get(order_id)
     if not order:
@@ -167,7 +167,7 @@ async def track_order(order_id: str):
 
 # ── 3. Cancel order ────────────────────────────────────────────────────────────
 
-@router.put("/cancel/{order_id}", response_model=OrderCancelResponse)
+@orderRouter.put("/cancel/{order_id}", response_model=OrderCancelResponse)
 async def cancel_order(order_id: str):
     order = await Order.get(order_id)
     if not order:
@@ -194,7 +194,7 @@ async def cancel_order(order_id: str):
 
 # ── 4. Get user orders ─────────────────────────────────────────────────────────
 
-@router.get("/{user_id}", response_model=OrderListResponse)
+@orderRouter.get("/{user_id}", response_model=OrderListResponse)
 async def get_user_orders(user_id: str):
     orders = await Order.find(Order.userId == user_id).to_list()
 

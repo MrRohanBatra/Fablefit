@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 load_dotenv()
 BASE_URL=os.getenv("BASE_URL","http://127.0.0.1:1607")
-router = APIRouter(prefix="/vton",tags=["Virtual Try ON"])
+vtonRouter = APIRouter(prefix="/vton",tags=["Virtual Try ON"])
 
 def getNetworkUrl(partial_url:str)->str:
     if(partial_url.startswith("/")):
@@ -53,7 +53,7 @@ class StatusResponse(BaseModel):
 FLASK_URL = os.getenv("VTON_URL","http://localhost:8000")
 client = httpx.AsyncClient(timeout=120.0) 
 
-@router.post("/tryonold", response_model=TryonResponse)
+@vtonRouter.post("/tryonold", response_model=TryonResponse)
 async def forward_tryon(
     human_image: UploadFile = File(...),
     garment_image: UploadFile = File(...),
@@ -84,7 +84,7 @@ async def forward_tryon(
         raise HTTPException(status_code=500, detail=f"Proxy Error: {str(e)}")
 
 
-@router.post("/tryonbypath", response_model=TryonResponse)
+@vtonRouter.post("/tryonbypath", response_model=TryonResponse)
 async def forward_tryon_by_path(request: TryonPathRequest):
     """
     Forwards local file paths to the Flask VTON API.
@@ -125,7 +125,7 @@ async def forward_tryon_by_path(request: TryonPathRequest):
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
     
 
-@router.post("/tryon",response_model=TryonResponse)
+@vtonRouter.post("/tryon",response_model=TryonResponse)
 async def tryon_function(request:ModernTryOn):
     garment=await Product.get(request.product_id)
     if garment is None:
@@ -161,7 +161,7 @@ async def tryon_function(request:ModernTryOn):
     final_response.raise_for_status()
     return final_response.json()
 
-@router.get("/status/{task_id}", response_model=StatusResponse)
+@vtonRouter.get("/status/{task_id}", response_model=StatusResponse)
 async def forward_status(task_id: str):
     try:
         response = await client.get(f"{FLASK_URL}/status/{task_id}")
@@ -170,7 +170,7 @@ async def forward_status(task_id: str):
     except httpx.HTTPStatusError as e:
         return JSONResponse(status_code=e.response.status_code, content=e.response.json())
 
-@router.get("/result/{task_id}")
+@vtonRouter.get("/result/{task_id}")
 async def forward_result(task_id: str):
     # No response_model here because it returns a binary stream (image)
     req = client.build_request("GET", f"{FLASK_URL}/result/{task_id}")
@@ -193,7 +193,7 @@ class HealthCheckResponse(BaseModel):
 
 # --- Routes ---
 
-@router.get("/check", response_model=HealthCheckResponse)
+@vtonRouter.get("/check", response_model=HealthCheckResponse)
 async def check_vton_availability():
     """
     Checks if the Flask VTON service is up and reachable.
