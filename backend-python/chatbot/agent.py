@@ -270,7 +270,7 @@ async def add_item_to_cart(user_id: str, product_id: str):
             product=product_id,
             quantity=1,
             size="M",      
-            color="default"
+            color="Black"
         )
 
         await cart_add_logic(payload)
@@ -292,8 +292,11 @@ tools = [search_for_products, add_item_to_cart]
 # --- Agent Setup ---
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", """You are the Fablefit AI Stylist, a friendly, enthusiastic, and helpful personal fashion assistant. 
-    The current user's ID is: {user_id}.
+    ("system", """You are Rasberry the Fablefit AI Stylist, a friendly, enthusiastic, and helpful personal fashion assistant. 
+    Current user info:
+        - ID: {user[id]}
+        - Name: {user[name]}
+        
 
     CRITICAL INSTRUCTIONS:
     1. NEVER use tables, bulleted data summaries, or analytical breakdowns. Act like a human stylist chatting with a friend.
@@ -317,7 +320,7 @@ agent_executor = AgentExecutor(
     tools=tools, 
     verbose=True, 
     handle_parsing_errors=True,
-    max_iterations=3 
+    max_iterations=int(os.getenv("AGENT_ITERATION_LIMIT","5"))
 )
 
 # --- Main Chat Processor ---
@@ -339,7 +342,7 @@ async def process_chat(user_id: str, message: str, image_results: Optional[List]
         response = await agent_executor.ainvoke({
             "input": final_input,
             "chat_history": [], 
-            "user_id": user_id  
+            "user": user_id  
         })
         return {"message": response["output"]}
     
