@@ -12,10 +12,6 @@ scheduler = AsyncIOScheduler(timezone="UTC")
 
 
 # ── Notification content ───────────────────────────────────────────────────────
-# Each entry: (title, body_template)
-# The body_template receives no format args — keep it generic so it works for
-# any order without needing to fetch product names at notification time.
-
 _ORDER_NOTIFICATIONS = {
     "placed": (
         "Order placed! 🛒",
@@ -35,11 +31,6 @@ _ORDER_NOTIFICATIONS = {
     ),
 }
 
-# Day thresholds for each status notification.
-# A notification is sent when (days since order creation) >= threshold AND
-# that status has NOT been recorded in order.notified_statuses yet.
-# "placed" is handled directly in the order-placement route (day 0),
-# but the scheduler also catches it as a safety net for any missed orders.
 _NOTIFY_THRESHOLDS = [
     ("placed",            0),
     ("shipped",           2),
@@ -69,11 +60,20 @@ async def job_abandoned_cart_nudge():
         if not cart.items:
             continue
 
-        if cart.updatedAt > stale_cutoff:
+        # Ensure updatedAt is timezone-aware for comparison
+        updated_at = cart.updatedAt
+        if updated_at.tzinfo is None:
+            updated_at = updated_at.replace(tzinfo=timezone.utc)
+
+        if updated_at > stale_cutoff:
             continue
 
-        if cart.abandoned_notified_at and cart.abandoned_notified_at > cool_cutoff:
-            continue
+        if cart.abandoned_notified_at:
+            notified_at = cart.abandoned_notified_at
+            if notified_at.tzinfo is None:
+                notified_at = notified_at.replace(tzinfo=timezone.utc)
+            if notified_at > cool_cutoff:
+                continue
 
         user = await User.find_one(User.uid == cart.uid)
         if not user or not user.fcm_token:
@@ -130,7 +130,6 @@ async def job_price_drop_alerts():
         user     = await User.find_one(User.uid == item.uid)
 
         if not user or not user.fcm_token:
-            print(f"⚠️  No FCM token for uid={item.uid} — skipping snapshot update")
             continue
 
         sent = send_push(
@@ -157,21 +156,6 @@ async def job_price_drop_alerts():
 # ── Job 3: Order status notifications ─────────────────────────────────────────
 
 async def job_order_status_notifications():
-    """
-    Runs every ORDER_STATUS_CHECK_HOURS hours.
-
-    For every non-cancelled order, computes how many days have passed since
-    creation and fires an FCM notification for each status threshold that has
-    been crossed but not yet notified.
-
-    The thresholds are:
-        placed          → day 0   (also sent immediately in the place-order route)
-        shipped         → day 2
-        out-for-delivery→ day 5
-        delivered       → day 8
-
-    notified_statuses on the Order document prevents any duplicate sends.
-    """
     from databaseSchemas.OrderSchema import Order
     from databaseSchemas.UserSchema import User
     from helpers.NotificationService import send_push
@@ -183,7 +167,6 @@ async def job_order_status_notifications():
     notified_count = 0
 
     for order in orders:
-        # Once "delivered" has been notified there is nothing left to do.
         if "delivered" in order.notified_statuses:
             continue
 
@@ -191,16 +174,20 @@ async def job_order_status_notifications():
         if not user or not user.fcm_token:
             continue
 
-        days_elapsed = (now - order.createdAt).days
-        order_dirty  = False   # track whether we need to save the document
+        # FIX: Ensure order.createdAt is aware before subtraction
+        created_at = order.createdAt
+        if created_at.tzinfo is None:
+            created_at = created_at.replace(tzinfo=timezone.utc)
+
+        days_elapsed = (now - created_at).days
+        order_dirty  = False
 
         for status, threshold_days in _NOTIFY_THRESHOLDS:
             if days_elapsed < threshold_days:
-                # Thresholds are in ascending order; no later one can match.
                 break
 
             if status in order.notified_statuses:
-                continue   # already sent
+                continue
 
             title, body = _ORDER_NOTIFICATIONS[status]
 
