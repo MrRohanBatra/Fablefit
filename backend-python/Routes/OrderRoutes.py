@@ -112,7 +112,7 @@ async def place_order(data: OrderPlaceRequest):
 
     if not order_items:
         raise HTTPException(status_code=400, detail="No valid items")
-
+    now=datetime.now(timezone.utc)
     order = Order(
         userId=user_id,
         items=order_items,
@@ -123,6 +123,8 @@ async def place_order(data: OrderPlaceRequest):
         isPaid=False,
         # Mark "placed" as already notified so the scheduler never double-sends it.
         notified_statuses=["placed"],
+        createdAt=now,
+        updatedAt=now,
     )
 
     await order.insert()
