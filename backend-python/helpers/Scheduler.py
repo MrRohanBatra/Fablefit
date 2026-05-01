@@ -1,3 +1,13 @@
+import asyncio
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from beanie import init_beanie
+
+from databaseSchemas.OrderSchema import Order
+from databaseSchemas.ProductSchema import Product
+from databaseSchemas.UserSchema import User
+
 import os
 from datetime import datetime, timezone, timedelta
 
@@ -10,6 +20,11 @@ ORDER_STATUS_CHECK_HOURS  = int(os.getenv("ORDER_STATUS_CHECK_HOURS", "6"))
 
 scheduler = AsyncIOScheduler(timezone="UTC")
 
+# Helper to prevent offset-naive/aware errors
+def ensure_aware(dt: datetime) -> datetime:
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt
 
 # ── Notification content ───────────────────────────────────────────────────────
 _ORDER_NOTIFICATIONS = {
@@ -60,18 +75,13 @@ async def job_abandoned_cart_nudge():
         if not cart.items:
             continue
 
-        # Ensure updatedAt is timezone-aware for comparison
-        updated_at = cart.updatedAt
-        if updated_at.tzinfo is None:
-            updated_at = updated_at.replace(tzinfo=timezone.utc)
+        updated_at = ensure_aware(cart.updatedAt)
 
         if updated_at > stale_cutoff:
             continue
 
         if cart.abandoned_notified_at:
-            notified_at = cart.abandoned_notified_at
-            if notified_at.tzinfo is None:
-                notified_at = notified_at.replace(tzinfo=timezone.utc)
+            notified_at = ensure_aware(cart.abandoned_notified_at)
             if notified_at > cool_cutoff:
                 continue
 
@@ -174,10 +184,8 @@ async def job_order_status_notifications():
         if not user or not user.fcm_token:
             continue
 
-        # FIX: Ensure order.createdAt is aware before subtraction
-        created_at = order.createdAt
-        if created_at.tzinfo is None:
-            created_at = created_at.replace(tzinfo=timezone.utc)
+        # Force awareness to prevent subtraction crash
+        created_at = ensure_aware(order.createdAt)
 
         days_elapsed = (now - created_at).days
         order_dirty  = False
@@ -252,8 +260,42 @@ def start_scheduler():
         f"order status check every {ORDER_STATUS_CHECK_HOURS} h"
     )
 
-
 def stop_scheduler():
     if scheduler.running:
         scheduler.shutdown(wait=False)
         print("🛑 Scheduler stopped")
+
+async def tester():
+    from database import db
+    # Include all schemas needed by the various jobs
+    from databaseSchemas.CartSchema import Cart
+    from databaseSchemas.WishlistSchema import WishlistItem
+    
+    print("🚀 Initializing Beanie for Full Test...")
+    await init_beanie(
+        database=db,
+        document_models=[Order, Product, User, Cart, WishlistItem],
+    )
+
+    print("\n--- Starting Sequential Job Tests ---")
+
+    # 1. Test Order Status Notifications
+    print("\n[Test 1/3] Running: job_order_status_notifications")
+    await job_order_status_notifications()
+
+    # 2. Test Price Drop Alerts
+    print("\n[Test 2/3] Running: job_price_drop_alerts")
+    await job_price_drop_alerts()
+
+    # 3. Test Abandoned Cart Nudge
+    print("\n[Test 3/3] Running: job_abandoned_cart_nudge")
+    await job_abandoned_cart_nudge()
+
+    print("\n--- All Tests Completed ---")
+
+if __name__ == "__main__":
+    # Ensure environment variables are loaded if running as standalone
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    asyncio.run(tester())
