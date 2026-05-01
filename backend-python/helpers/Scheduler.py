@@ -165,28 +165,86 @@ async def job_price_drop_alerts():
 
 # ── Job 3: Order status notifications ─────────────────────────────────────────
 
+# async def job_order_status_notifications():
+#     from databaseSchemas.OrderSchema import Order
+#     from databaseSchemas.UserSchema import User
+#     from helpers.NotificationService import send_push
+
+#     print("📬 [Scheduler] Checking order status notifications...")
+
+#     now    = datetime.now(timezone.utc)
+#     orders = await Order.find(Order.status != "cancelled").to_list()
+#     notified_count = 0
+
+#     for order in orders:
+#         if "delivered" in order.notified_statuses:
+#             continue
+
+#         user = await User.find_one(User.uid == order.userId)
+#         if not user or not user.fcm_token:
+#             continue
+
+#         # Force awareness to prevent subtraction crash
+#         created_at = ensure_aware(order.createdAt)
+
+#         days_elapsed = (now - created_at).days
+#         order_dirty  = False
+
+#         for status, threshold_days in _NOTIFY_THRESHOLDS:
+#             if days_elapsed < threshold_days:
+#                 break
+
+#             if status in order.notified_statuses:
+#                 continue
+
+#             title, body = _ORDER_NOTIFICATIONS[status]
+
+#             sent = send_push(
+#                 token=user.fcm_token,
+#                 title=title,
+#                 body=body,
+#                 data={
+#                     "type":     "order_status",
+#                     "order_id": str(order.id),
+#                     "status":   status,
+#                 },
+#             )
+
+#             if sent:
+#                 order.notified_statuses.append(status)
+#                 order_dirty   = True
+#                 notified_count += 1
+#                 print(
+#                     f"   📩 Sent '{status}' notification for "
+#                     f"order={order.id} uid={order.userId} (day {days_elapsed})"
+#                 )
+
+#         if order_dirty:
+#             await order.save()
+
+#     print(
+#         f"✅ [Scheduler] Order status notifications done "
+#         f"— sent {notified_count} notification(s) across {len(orders)} order(s)"
+#     )
+
 async def job_order_status_notifications():
     from databaseSchemas.OrderSchema import Order
     from databaseSchemas.UserSchema import User
     from helpers.NotificationService import send_push
 
-    print("📬 [Scheduler] Checking order status notifications...")
+    print("📬 [Scheduler] Checking order status notifications & updating states...")
 
     now    = datetime.now(timezone.utc)
-    orders = await Order.find(Order.status != "cancelled").to_list()
+    # We fetch all non-cancelled/non-delivered orders to see if they need a promotion
+    orders = await Order.find(Order.status != "cancelled", Order.status != "delivered").to_list()
     notified_count = 0
 
     for order in orders:
-        if "delivered" in order.notified_statuses:
-            continue
-
         user = await User.find_one(User.uid == order.userId)
         if not user or not user.fcm_token:
             continue
 
-        # Force awareness to prevent subtraction crash
         created_at = ensure_aware(order.createdAt)
-
         days_elapsed = (now - created_at).days
         order_dirty  = False
 
@@ -194,40 +252,38 @@ async def job_order_status_notifications():
             if days_elapsed < threshold_days:
                 break
 
-            if status in order.notified_statuses:
-                continue
-
-            title, body = _ORDER_NOTIFICATIONS[status]
-
-            sent = send_push(
-                token=user.fcm_token,
-                title=title,
-                body=body,
-                data={
-                    "type":     "order_status",
-                    "order_id": str(order.id),
-                    "status":   status,
-                },
-            )
-
-            if sent:
-                order.notified_statuses.append(status)
-                order_dirty   = True
-                notified_count += 1
-                print(
-                    f"   📩 Sent '{status}' notification for "
-                    f"order={order.id} uid={order.userId} (day {days_elapsed})"
+            # If this status hasn't been notified yet...
+            if status not in order.notified_statuses:
+                
+                # 1. Update the actual status field in the DB
+                # Note: We only update if the order isn't already manually set 
+                # to something "further" in the lifecycle by an admin.
+                order.status = status 
+                
+                # 2. Trigger the Push Notification
+                title, body = _ORDER_NOTIFICATIONS[status]
+                sent = send_push(
+                    token=user.fcm_token,
+                    title=title,
+                    body=body,
+                    data={
+                        "type":     "order_status",
+                        "order_id": str(order.id),
+                        "status":   status,
+                    },
                 )
 
+                if sent:
+                    order.notified_statuses.append(status)
+                    order_dirty = True
+                    notified_count += 1
+                    print(f"   📩 Order {order.id} promoted to '{status}' (Day {days_elapsed})")
+
         if order_dirty:
+            order.updatedAt = now # Keep the updatedAt timestamp fresh
             await order.save()
 
-    print(
-        f"✅ [Scheduler] Order status notifications done "
-        f"— sent {notified_count} notification(s) across {len(orders)} order(s)"
-    )
-
-
+    print(f"✅ [Scheduler] Status updates done — {notified_count} orders progressed.")
 # ── Lifecycle ──────────────────────────────────────────────────────────────────
 
 def start_scheduler():
