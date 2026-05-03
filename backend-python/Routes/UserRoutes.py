@@ -112,7 +112,7 @@ async def updateAddress(uid:str,payload:UserAddressRequest):
     print(f"user address updated to {payload.address}")
     user.address=[payload.address]
     await user.save()
-    return {"message":"user address updated","uid":uid}
+    return {"message":"user address updated","user": Tools.serializeDoc(user.model_dump(by_alias=True))}
 @UserRouter.post("/uploadimage", response_model=UserUploadImageRepsonse)
 async def upload_image(uid: str = Form(...), image: UploadFile = File(...)):
     try:
