@@ -53,7 +53,7 @@ class UserViewModel : ViewModel() {
 
                 }
                 .onFailure {
-                    Log.d("UserViewModel","failed to update user address")
+                    Log.d("UserViewModel",it.message?:"failed")
                 }
         }
     }

@@ -100,7 +100,7 @@ async def all_users():
     return [Tools.serializeDoc(u.model_dump(by_alias=True)) for u in users]
 class UserAddressRequest(BaseModel):
     address:str
-@UserRouter.put("address/{uid}",response_model=UserResponse)
+@UserRouter.put("/address/{uid}",response_model=UserResponse)
 async def updateAddress(uid:str,payload:UserAddressRequest):
     print(f"uid: {uid}")
     print(f"payload: {payload}")
