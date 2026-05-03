@@ -3,6 +3,7 @@ package com.rohan.fablefit.ui.User
 import android.content.Context
 import android.net.Uri
 import com.rohan.fablefit.network.RetrofitInstance
+import com.rohan.fablefit.ui.model.AddressReqModel
 import com.rohan.fablefit.ui.model.Product
 import com.rohan.fablefit.ui.model.UserModel
 import com.rohan.fablefit.ui.model.UserResponseModel
@@ -13,6 +14,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import kotlin.Exception
 
 class UserRepository {
     suspend fun updateUserData(user: UserModel): Result<UserResponseModel>{
@@ -33,6 +35,17 @@ class UserRepository {
             if (response.isSuccessful) {
                 response.body() ?: throw Exception("Empty User Data")
             } else {
+                throw Exception("HTTP ${response.code()} ${response.errorBody()}")
+            }
+        }
+    }
+    suspend fun UpdateUserAddress(uid:String,address:String): Result<UserResponseModel>{
+        return runCatching {
+            val response= RetrofitInstance.api.updateAddress(uid, AddressReqModel(address))
+            if(response.isSuccessful){
+                response.body()?:throw Exception("Empty response")
+            }
+            else{
                 throw Exception("HTTP ${response.code()} ${response.errorBody()}")
             }
         }

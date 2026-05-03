@@ -2,6 +2,7 @@ package com.rohan.fablefit
 
 //import com.rohan.fablefit.ui.Chatbot.AgentChatScreen
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -95,6 +96,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil3.compose.SubcomposeAsyncImage
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import com.rohan.fablefit.Screen.CartScreen
@@ -104,6 +108,7 @@ import com.rohan.fablefit.Screen.ProductDisplayScreen
 import com.rohan.fablefit.Screen.ProfileScreen
 import com.rohan.fablefit.Screen.SearchScreen
 import com.rohan.fablefit.Screen.UserInfo
+import com.rohan.fablefit.Screen.getAddressFromLocation
 import com.rohan.fablefit.auth.AuthScreen
 import com.rohan.fablefit.auth.SplashScreen
 import com.rohan.fablefit.navigation.AppRoute
@@ -239,6 +244,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@SuppressLint("MissingPermission")
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
@@ -249,11 +255,26 @@ fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
     val wishlistViewModel: WishlistViewModel = viewModel()
     val user by userViewModel.user
     val uiState=cartViewModel.uiState
+    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+
     LaunchedEffect(user?.uid) {
         user?.uid?.let {
             cartViewModel.getUserCart(it)
 //            userViewModel.up
             userViewModel.ensureUserExists()
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                CancellationTokenSource().token
+            ).addOnSuccessListener { location ->
+                if(location!=null){
+                    val addr=getAddressFromLocation(
+                        context,
+                        location.latitude,
+                        location.longitude
+                    )
+                    userViewModel.updateUserAddress(addr)
+                }
+            }
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task->
                 if(task.isSuccessful){
                     FableFitMessagingService().uploadToken(it,task.result)

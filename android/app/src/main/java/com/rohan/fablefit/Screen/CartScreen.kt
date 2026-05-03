@@ -229,23 +229,23 @@ fun CartScreen(
                 }
 
                 // 🔹 TOTAL SECTION (keep simple)
-                item {
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Card(
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text("Total", style = MaterialTheme.typography.titleMedium)
-                            Text("₹${cart.totalPrice}", style = MaterialTheme.typography.titleMedium)
-                        }
-                    }
-                }
+//                item {
+//                    Spacer(modifier = Modifier.height(12.dp))
+//
+//                    Card(
+//                        shape = RoundedCornerShape(16.dp)
+//                    ) {
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(16.dp),
+//                            horizontalArrangement = Arrangement.SpaceBetween
+//                        ) {
+//                            Text("Total", style = MaterialTheme.typography.titleMedium)
+//                            Text("₹${cart.totalPrice}", style = MaterialTheme.typography.titleMedium)
+//                        }
+//                    }
+//                }
                 item {
                     Spacer(modifier = Modifier.height(12.dp))
 

@@ -17,3 +17,6 @@ data class UserModel(
 
     val address: List<String> = emptyList()
 )
+data class AddressReqModel(
+    val address:String="",
+)

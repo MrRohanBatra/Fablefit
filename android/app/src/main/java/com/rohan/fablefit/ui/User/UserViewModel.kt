@@ -45,7 +45,18 @@ class UserViewModel : ViewModel() {
                 }
         }
     }
+    fun updateUserAddress(address:String){
+        viewModelScope.launch {
+            val uid=_user.value?.uid?:return@launch
+            userRepo.UpdateUserAddress(uid,address)
+                .onSuccess {
 
+                }
+                .onFailure {
+                    Log.d("UserViewModel","failed to update user address")
+                }
+        }
+    }
     fun uploadImage(context: Context, uri: Uri) {
 
         viewModelScope.launch {

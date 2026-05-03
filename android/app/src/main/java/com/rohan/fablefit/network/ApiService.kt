@@ -64,6 +64,11 @@ interface ApiService {
     suspend fun updateUserType(
         @Path("uid") uid: String,
     ): Response<UserResponseModel>
+    @PUT("/api/users/address/{uid}")
+    suspend fun updateAddress(
+        @Path(value = "uid")uid: String,
+        @Body data: AddressReqModel
+    ):Response<UserResponseModel>
     @Multipart
     @POST("/api/users/uploadimage")
     suspend fun UploadUserImage(
