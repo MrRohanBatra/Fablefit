@@ -102,6 +102,8 @@ class UserAddressRequest(BaseModel):
     address:str
 @UserRouter.put("address/{uid}",response_model=UserResponse)
 async def updateAddress(uid:str,payload:UserAddressRequest):
+    print(f"uid: {uid}")
+    print(f"payload: {payload}")
     user=await User.find_one(User.uid==uid)
     if not user:
         raise HTTPException(404,"user not found")
