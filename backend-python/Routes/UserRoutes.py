@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import List
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from openai import BaseModel
 from databaseSchemas.UserSchema import User, UserResponse, UserUploadImageRepsonse, UserCreate, FcmTokenUpdate
 from helpers.Utilities import Utils
 
@@ -97,8 +98,19 @@ async def update_user_type(uid: str, payload: User):
 async def all_users():
     users = await User.find_all().to_list()
     return [Tools.serializeDoc(u.model_dump(by_alias=True)) for u in users]
-
-
+class UserAddressRequest(BaseModel):
+    address:str
+@UserRouter.put("address/{uid}",response_model=UserResponse)
+async def updateAddress(uid:str,payload:UserAddressRequest):
+    user=await User.find_one(User.uid==uid)
+    if not user:
+        raise HTTPException(404,"user not found")
+    if not payload:
+        raise HTTPException(404,"empty payload")
+    print(f"user address updated to {payload.address}")
+    user.address=[payload.address]
+    await user.save()
+    return {"message":"user address updated","uid":uid}
 @UserRouter.post("/uploadimage", response_model=UserUploadImageRepsonse)
 async def upload_image(uid: str = Form(...), image: UploadFile = File(...)):
     try:
