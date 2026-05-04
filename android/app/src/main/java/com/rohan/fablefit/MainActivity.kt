@@ -520,7 +520,7 @@ fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
         floatingActionButton = {
             val show=true
             if(currentRoute==BottomRoute.Home.route){
-                AiChatBot(show,navController);
+                AiChatBot(context,show,navController);
             }
         },
         modifier = Modifier
@@ -622,7 +622,7 @@ fun MainECommerceScaffold(context: Context,onLogout:()-> Unit) {
 }
 @OptIn(ExperimentalMaterial3ExpressiveApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun AiChatBot(showIcon: Boolean, navController: NavController) {
+fun AiChatBot(context: Context,showIcon: Boolean, navController: NavController) {
 
     var expanded by remember { mutableStateOf(false) }
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
@@ -669,7 +669,7 @@ fun AiChatBot(showIcon: Boolean, navController: NavController) {
             modifier = Modifier.fillMaxHeight()
         ) {
 
-            AgentChatScreen(navController = navController)
+            AgentChatScreen(context = context, navController = navController)
         }
     }
 }

@@ -1,5 +1,10 @@
 package com.rohan.fablefit.ui.Chatbot
 
+import android.content.Context
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -38,13 +43,20 @@ import com.rohan.fablefit.ui.model.ChatbotViewModel
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AgentChatScreen(
+    context: Context,
     navController: NavController,
     viewModel: ChatbotViewModel = viewModel() // Injecting the ViewModel
 ) {
     // Collecting state from ViewModel
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val inputText by viewModel.inputText.collectAsStateWithLifecycle()
-
+    var inputImageUri by remember { mutableStateOf<Uri?>(null) }
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let { inputImageUri=it }
+        }
+    )
     val listState = rememberLazyListState()
 
     // Auto-scroll to bottom when new messages arrive
@@ -78,15 +90,32 @@ fun AgentChatScreen(
                 expanded = true,
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { viewModel.sendMessage() },
+                        onClick = { viewModel.sendMessage(context) },
                         elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                     ) {
                         Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
                     }
                 }
             ) {
-                IconButton(onClick = { /* Handle Attach */ }) {
-                    Icon(Icons.Default.Add, contentDescription = "Add attachment")
+                IconButton(onClick = {
+                    if(inputImageUri==null){
+                        photoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
+                    else{
+                        inputImageUri=null;
+                    }
+                }) {
+                    if(inputImageUri==null){
+                        Icon(Icons.Default.Add, contentDescription = "Add attachment")
+                    }
+                    else{
+                        AsyncImage(
+                            model = inputImageUri,
+                            contentDescription = ""
+                        )
+                    }
                 }
 
                 TextField(

@@ -1,7 +1,9 @@
 package com.rohan.fablefit.ui.model
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.net.Uri
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -12,7 +14,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.http.Multipart
 
 class ChatbotViewModel : ViewModel() {
 
@@ -28,7 +33,7 @@ class ChatbotViewModel : ViewModel() {
         _inputText.value = newText
     }
 
-    fun sendMessage() {
+    fun sendMessage(context: Context) {
         val textToSend = _inputText.value.trim()
         if (textToSend.isNotEmpty()) {
             val userMsg = ChatMessage(text = textToSend, isFromUser = true)
@@ -36,7 +41,7 @@ class ChatbotViewModel : ViewModel() {
             _inputText.value = ""
 
             // Start the thinking and response simulation
-            simulateThinkingAndResponse(textToSend)
+            simulateThinkingAndResponse(context,textToSend)
         }
     }
 
@@ -73,7 +78,8 @@ class ChatbotViewModel : ViewModel() {
 //            }
 //        }
 //    }
-private fun simulateThinkingAndResponse(userQuery: String) {
+
+private fun simulateThinkingAndResponse(context: Context, userQuery: String, imageUri: Uri?=null) {
     viewModelScope.launch {
         val thinkingId = "thinking_placeholder"
 
@@ -91,11 +97,19 @@ private fun simulateThinkingAndResponse(userQuery: String) {
             val userIdBody = userId.toRequestBody("text/plain".toMediaType())
             val messageBody = userQuery.toRequestBody("text/plain".toMediaType())
 
+            val imageBody: MultipartBody.Part?=null
             // 🔥 API CALL
+            imageUri?.let {
+                val inputStream = context.contentResolver.openInputStream(it)
+                val requestBody = inputStream?.use { it.readBytes() }?.toRequestBody("image/*".toMediaTypeOrNull())
+                val imageBody = requestBody?.let {
+                    MultipartBody.Part.createFormData("image", "upload.jpg", it)
+                }
+            }
             val response = api.chatWithAgent(
                 userId = userIdBody,
                 message = messageBody,
-                image = null
+                image =imageBody
             )
 
             val rawResponse = if (response.isSuccessful) {
