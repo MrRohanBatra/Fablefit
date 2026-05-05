@@ -116,7 +116,7 @@ agent_executor = AgentExecutor(
     tools=tools, 
     verbose=True, 
     handle_parsing_errors=True,
-    max_iterations=5
+    max_iterations=int(os.getenv("MAX_ITER","5"))
 )
 
 async def process_chat(user_id: str, message: str, image_results: Optional[List] = None):
