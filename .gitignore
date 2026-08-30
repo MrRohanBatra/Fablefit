@@ -11,3 +11,5 @@ bin/
 *.iml
 .env
 .DS_Store
+
+.vscode/
