@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${COMMERCE_DB_URL:jdbc:postgresql://localhost:5432/fablefit}
+    username: ${COMMERCE_DB_USERNAME:fablefit}
+    password: ${COMMERCE_DB_PASSWORD:fablefit}
+
+server:
+  port: ${COMMERCE_PORT:8082}
+

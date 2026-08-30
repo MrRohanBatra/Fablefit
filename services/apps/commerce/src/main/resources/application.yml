@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: commerce
+  profiles:
+    default: local
+  jpa:
+    hibernate:
+      ddl-auto: ${COMMERCE_DDL_AUTO:update}
+    open-in-view: false
+    properties:
+      hibernate:
+        default_schema: ${COMMERCE_DB_SCHEMA:commerce}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${COMMERCE_JWT_ISSUER_URI:http://localhost:8081}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  version: ${APP_VERSION:0.1.0-SNAPSHOT}

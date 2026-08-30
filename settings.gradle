@@ -1,0 +1,5 @@
+rootProject.name = 'fablefit'
+
+include ':services:apps:gateway'
+include ':services:apps:identity'
+include ':services:apps:commerce'

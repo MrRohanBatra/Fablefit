@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: ${IDENTITY_DB_URL:jdbc:postgresql://localhost:5432/fablefit}
+    username: ${IDENTITY_DB_USERNAME:fablefit}
+    password: ${IDENTITY_DB_PASSWORD:fablefit}
+
+server:
+  port: ${IDENTITY_PORT:8081}
+
