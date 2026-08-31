@@ -28,3 +28,11 @@ springdoc:
 
 app:
   version: ${APP_VERSION:0.1.0-SNAPSHOT}
+
+
+fablefit:
+  seeder:
+    tenantKey: platform
+    tenantName: fablefit owner tenant
+    ownerEmail: owner@fablefit.com
+    ownerPassword: RohanIsGreat
