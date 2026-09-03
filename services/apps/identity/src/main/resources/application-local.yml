@@ -3,6 +3,10 @@ spring:
     url: ${IDENTITY_DB_URL:jdbc:postgresql://localhost:5432/fablefit}
     username: ${IDENTITY_DB_USERNAME:fablefit}
     password: ${IDENTITY_DB_PASSWORD:fablefit}
+  jpa:
+    hibernate:
+      ddl-auto: ${IDENTITY_DDL_AUTO:update}
+      
 
 server:
   port: ${IDENTITY_PORT:8081}

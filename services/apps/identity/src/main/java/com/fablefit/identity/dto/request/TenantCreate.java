@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class CreateTenant {
+public class TenantCreate {
     private String key;
     private String name;
     private String adminUserName;
     private String adminPassword;
+    private String adminFirstName;
+    private String adminLastName;
 }
