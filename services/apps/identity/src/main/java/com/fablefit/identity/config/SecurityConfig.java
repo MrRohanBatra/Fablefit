@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -38,9 +39,11 @@ public class SecurityConfig {
                     "/swagger-ui.html",
                     "/actuator/**",
                     "/v3/api-docs",
-                    "/v3/api-docs/**"
+                    "/v3/api-docs/**",
+                    "/.well-known/jwks.json"
                 ).permitAll()
                 .anyRequest().authenticated()
-            ).build();
+            ).oauth2ResourceServer(oauth2->oauth2.jwt(Customizer.withDefaults()))
+            .build();
     }
 }

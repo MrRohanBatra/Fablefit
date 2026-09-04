@@ -13,6 +13,7 @@ import com.fablefit.identity.service.TenantService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
+
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tenant/")
 public class TenantController {
