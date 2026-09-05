@@ -14,7 +14,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${IDENTITY_JWT_ISSUER_URI:http://localhost:8081}
+          public-key-location: ${IDENTITY_JWT_PUBLIC_KEY:classpath:certs/public.pem}
 
 management:
   endpoints:
@@ -29,10 +29,16 @@ springdoc:
 app:
   version: ${APP_VERSION:0.1.0-SNAPSHOT}
 
-
 fablefit:
   seeder:
     tenantKey: platform
     tenantName: fablefit owner tenant
     ownerEmail: owner@fablefit.com
     ownerPassword: RohanIsGreat
+  security:
+    jwt-issuer: ${IDENTITY_JWT_ISSUER:fablefit-identity}
+    jwt-expiresIn: ${IDENTITY_JWT_EXPIRES_IN:900}
+    expiresIn: ${IDENTITY_JWT_EXPIRES_IN:900}
+    rsa:
+      private-key: ${IDENTITY_JWT_PRIVATE_KEY:classpath:certs/private.pem}
+      public-key: ${IDENTITY_JWT_PUBLIC_KEY:classpath:certs/public.pem}
