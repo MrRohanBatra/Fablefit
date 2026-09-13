@@ -1,9 +1,5 @@
 package com.fablefit.identity.service;
 
-import org.springframework.security.oauth2.jwt.Jwt;
-
-import com.fablefit.identity.entity.User;
-
 import java.util.Map;
 
 public interface JwtService {

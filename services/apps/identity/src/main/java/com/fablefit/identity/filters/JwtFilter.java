@@ -1,6 +1,5 @@
 package com.fablefit.identity.filters;
 
-import com.fablefit.identity.repository.UserRepository;
 import com.fablefit.identity.service.JwtService;
 import com.fablefit.identity.service.TenantService;
 import com.fablefit.identity.service.UserService;
@@ -15,12 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+@Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
@@ -50,6 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
             boolean isValidToken = jwtService.validateToken(token);
             if (!isValidToken) {
                 filterChain.doFilter(request, response);
+                return;
             }
             String userPublicId = jwtService.getSubject(token);
             String userID=userService.resolveUserPublicIdToInternalId(userPublicId).toString();

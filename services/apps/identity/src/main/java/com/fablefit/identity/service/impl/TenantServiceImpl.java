@@ -1,14 +1,18 @@
 package com.fablefit.identity.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.fablefit.identity.dto.request.TenantCreate;
+import com.fablefit.identity.dto.response.TenantResponse;
 import com.fablefit.identity.dto.response.TenantCreated;
 import com.fablefit.identity.entity.Tenant;
 import com.fablefit.identity.entity.User;
 import com.fablefit.identity.repository.TenantRepository;
 import com.fablefit.identity.service.TenantService;
+
+import java.util.List;
 import java.util.UUID;
 import com.fablefit.identity.service.UserService;
 
@@ -20,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class TenantServiceImpl implements TenantService {
 
     private final TenantRepository tenantRepository;
+    private final ModelMapper modelMapper;
     // private final UserRepository userRepository;
     private final UserService userService;
     @Override
@@ -41,5 +46,10 @@ public class TenantServiceImpl implements TenantService {
             ()->new UsernameNotFoundException("tenant not found with key: "+ key)
         );
         return tenant.getId();
+    }
+    @Override
+    public List<TenantResponse> getTenants() {
+        List<Tenant> tenants=tenantRepository.findAll();
+        return tenants.stream().map(t->modelMapper.map(t,TenantResponse.class)).toList();
     }
 }
