@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fablefit.identity.filters.JwtFilter;
+import com.fablefit.identity.filters.LoggingFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-
+    private final LoggingFilter loggingFilter;
     @Bean
     public RoleHierarchy roleHierarchy(){
         return RoleHierarchyImpl.fromHierarchy(
@@ -59,6 +60,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterAfter(loggingFilter,JwtFilter.class)
             .build();
     }
 }
