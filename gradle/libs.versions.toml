@@ -4,6 +4,8 @@ springDependencyManagement = "1.1.7"
 springdoc = "3.1.0"
 springCloudGateway = "5.0.3"
 modelMapper = "3.2.6"
+exceptionHandler = "0.0.2-SNAPSHOT"
+
 [libraries]
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
@@ -18,7 +20,7 @@ springdoc-openapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-u
 postgresql = { module = "org.postgresql:postgresql" }
 lombok = { module = "org.projectlombok:lombok" }
 modelMapper = { module = "org.modelmapper:modelmapper" , version.ref = "modelMapper" }
-
+exceptionHandler = { module = "com.rohan:exceptionhandler", version.ref = "exceptionHandler" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
