@@ -2,25 +2,30 @@ package com.fablefit.identity.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginUser {
+public class CreateUser {
+    @Email
     @NotEmpty
-    private String tenantKey;
+    @JsonAlias({"username", "userName", "userEmail", "email"})
+    private String userName;
 
     @NotEmpty
-    @JsonAlias({"email", "username", "userName"})
-    private String userEmail;
+    private String firstName;
 
     @NotEmpty
-    @JsonAlias({"password"})
-    private String userPassword;
+    private String lastName;
+
+    @Size(min = 4, max = 20)
+    private String password;
 }

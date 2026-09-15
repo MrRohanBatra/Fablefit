@@ -1,8 +1,15 @@
 package com.fablefit.identity.filters;
 
+import com.fablefit.identity.entity.Tenant;
+import com.fablefit.identity.entity.User;
+import com.fablefit.identity.enums.Role;
+import com.fablefit.identity.exception.TenantErrorCode;
+import com.fablefit.identity.exception.UserErrorCode;
+import com.fablefit.identity.repository.TenantRepository;
+import com.fablefit.identity.repository.UserRepository;
 import com.fablefit.identity.service.JwtService;
-import com.fablefit.identity.service.TenantService;
-import com.fablefit.identity.service.UserService;
+import com.fablefit.identity.utils.AuthContext;
+import com.rohan.exceptionhandler.ApplicationException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,14 +26,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    private final UserService userService;
-    private final TenantService tenantService;
+    private final UserRepository userRepository;
+    private final TenantRepository tenantRepository;
 
     /**
      * Same contract as for {@code doFilter}, but guaranteed to be
@@ -54,17 +60,25 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
             String userPublicId = jwtService.getSubject(token);
-            String userID=userService.resolveUserPublicIdToInternalId(userPublicId).toString();
-            String role = jwtService.getClaim(token, "role");
-            String tenantKey=jwtService.getClaim(token, "tenantKey");
-            String tenantId=tenantService.getTenantIdFromKey(tenantKey).toString();
+            String tenantKey = jwtService.getClaim(token, "tenantKey");
+
+            User user = userRepository.findByPublicId(userPublicId).orElseThrow(
+                    () -> new ApplicationException(UserErrorCode.USER_NOT_FOUND)
+            );
+            Tenant tenant = tenantRepository.findByKey(tenantKey).orElseThrow(
+                    () -> new ApplicationException(TenantErrorCode.TENANT_NOT_FOUND)
+            );
+
+            AuthContext authContext = AuthContext.builder()
+                    .user(user)
+                    .tenant(tenant)
+                    .build();
+
+            Role role = user.getRole();
             List<GrantedAuthority> authorities =
-                    List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    Map.of(
-                        "user",userID,
-                        "tenant",tenantId
-                    ),
+                    authContext,
                     null,
                     authorities
             );

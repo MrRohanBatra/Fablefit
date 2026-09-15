@@ -3,10 +3,7 @@ package com.fablefit.identity.service;
 import java.util.Map;
 
 public interface JwtService {
-    String generateToken(
-            String subject,
-            Map<String, Object> claims
-    );
+    String generateToken(String subject, Map<String, Object> claims);
 
     boolean validateToken(String token);
 

@@ -5,6 +5,7 @@ import com.fablefit.identity.utils.PublicIdPrefix;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="tenants")
+@Table(name="tenants",uniqueConstraints=@UniqueConstraint(columnNames={"key"}))
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,5 +25,4 @@ public class Tenant extends BaseEntity {
     private String key;
     @Column(name="name")
     private String name;
-
 }

@@ -50,6 +50,17 @@ public class GlobalErrorHandler {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
+        @ExceptionHandler(org.springframework.http.converter.HttpMessageConversionException.class)
+        public ResponseEntity<ErrorResponse> handleHttpMessageConversionException(
+                        org.springframework.http.converter.HttpMessageConversionException ex,
+                        HttpServletRequest request) {
+                ErrorResponse errorResponse = new ErrorResponse(CommonErrorCode.VALIDATION_FAILED.code(),
+                                "Malformed JSON request body or unreadable property format",
+                                HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+
         @ExceptionHandler(AccessDeniedException.class)
         public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex,
                         HttpServletRequest request) {

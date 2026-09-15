@@ -1,5 +1,7 @@
 package com.fablefit.identity.dto.response;
 
+import com.fablefit.identity.enums.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,9 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TenantCreated {
+public class UserResponse {
     private String id;
-    private String tenantKey;
-    private String tenantName;
-    private String ownerUserId;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private Role role;
 }

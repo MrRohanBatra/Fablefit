@@ -19,8 +19,6 @@ public class ApiEnvelope<T> {
 
     private String message;
     private T data;
-    private ApiError error;
-
     @Builder.Default
     private MetaObject meta = new MetaObject();
 
@@ -39,22 +37,5 @@ public class ApiEnvelope<T> {
                 .data(data)
                 .meta(new MetaObject())
                 .build();
-    }
-
-    public static <T> ApiEnvelope<T> error(String code, String message) {
-        return ApiEnvelope.<T>builder()
-                .status("error")
-                .error(new ApiError(code, message))
-                .meta(new MetaObject())
-                .build();
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class ApiError {
-        private String code;
-        private String message;
     }
 }

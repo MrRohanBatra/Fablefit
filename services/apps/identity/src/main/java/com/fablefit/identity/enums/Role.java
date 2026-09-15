@@ -5,5 +5,5 @@ public enum Role {
     SUPER_ADMIN,
     ADMIN,
     WRITE,
-    READ    
+    READ
 }
