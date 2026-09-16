@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.rohan.exceptionhandler.ApplicationException;
 import com.rohan.exceptionhandler.CommonErrorCode;
@@ -81,6 +82,16 @@ public class GlobalErrorHandler {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
 
+        @ExceptionHandler(NoResourceFoundException.class)
+        public ResponseEntity<ErrorResponse> handleNoResourceFoundException(NoResourceFoundException ex,HttpServletRequest request){
+                return ResponseEntity.status(CommonErrorCode.RESOURCE_NOT_FOUND.status()).body(new ErrorResponse(
+                        CommonErrorCode.RESOURCE_NOT_FOUND.code(),
+                        CommonErrorCode.RESOURCE_NOT_FOUND.message(),
+                        CommonErrorCode.RESOURCE_NOT_FOUND.status(),
+                        request.getRequestURI()
+                ));
+        }
+        
         @ExceptionHandler(Exception.class)
         public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex, HttpServletRequest request) {
                 log.error("Unhandled exception caught in global error handler", ex);

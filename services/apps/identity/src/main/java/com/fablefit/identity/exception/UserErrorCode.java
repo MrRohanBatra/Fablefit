@@ -12,7 +12,8 @@ public enum UserErrorCode implements ErrorCode {
     PASSWORD_TOO_WEAK("PASSWORD_TOO_WEAK", "Password does not meet the security requirements", 400),
     PASSWORD_RESET_TOKEN_EXPIRED("PASSWORD_RESET_TOKEN_EXPIRED", "Password reset token has expired", 400),
     INVALID_ROLE("INVALID_ROLE", "The specified user role is invalid", 400),
-    USER_DEACTIVATED("USER_DEACTIVATED", "User account is deactivated", 403);
+    USER_DEACTIVATED("USER_DEACTIVATED", "User account is deactivated", 403),
+    UNAUTHORIZED_ROLE_ASSIGNMENT("UNAUTHORIZED_ROLE_ASSIGNMENT","User not allow to set this role",403);
 
     private final String code;
     private final String message;
