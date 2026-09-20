@@ -8,13 +8,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginUser {
-    @NotEmpty
-    private String tenantKey;
 
     @NotEmpty
     @JsonAlias({"email", "username", "userName"})

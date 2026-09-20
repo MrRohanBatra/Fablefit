@@ -138,4 +138,11 @@ public class UserServiceImpl implements UserService {
     public List<UserResponse> getAllUsers(UUID tenantId) {
         return userRepository.findByTenantId(tenantId).stream().map(m->modelMapper.map(m, UserResponse.class)).toList();
     }
+
+    @Override
+    public UserResponse getUser(UUID userUuid, UUID tenantUuid) {
+        User user = userRepository.findByIdAndTenantId(userUuid, tenantUuid)
+                .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
+        return modelMapper.map(user, UserResponse.class);
+    }
 }

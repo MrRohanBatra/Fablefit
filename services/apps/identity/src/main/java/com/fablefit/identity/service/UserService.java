@@ -28,4 +28,6 @@ public interface UserService {
     UserResponse updateUser(UpdateUser updateUser, String userPublicId, UUID tenantId);
 
     List<UserResponse> getAllUsers(UUID tenantId);
+
+    UserResponse getUser(UUID userUuid,UUID tenantUuid);
 }
