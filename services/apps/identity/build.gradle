@@ -18,6 +18,7 @@ dependencies {
     implementation libs.springdoc.openapi
     implementation libs.modelMapper
     implementation project(':libs:exception-handler')
+    implementation project(':libs:common')
     runtimeOnly libs.postgresql
     compileOnly libs.lombok
     annotationProcessor libs.lombok

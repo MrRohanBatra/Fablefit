@@ -1,6 +1,6 @@
 package com.fablefit.identity.entity;
 
-import com.fablefit.identity.utils.PublicIdPrefix;
+import com.fablefit.common.publicid.PublicIdPrefix;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

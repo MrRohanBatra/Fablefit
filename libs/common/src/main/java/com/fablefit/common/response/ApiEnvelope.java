@@ -1,4 +1,4 @@
-package com.fablefit.identity.utils;
+package com.fablefit.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -19,6 +19,7 @@ public class ApiEnvelope<T> {
 
     private String message;
     private T data;
+
     @Builder.Default
     private MetaObject meta = new MetaObject();
 

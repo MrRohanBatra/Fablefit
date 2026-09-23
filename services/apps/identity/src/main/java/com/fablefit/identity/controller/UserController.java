@@ -19,7 +19,7 @@ import com.fablefit.identity.dto.request.UpdateUser;
 import com.fablefit.identity.dto.request.UpdateUserRole;
 import com.fablefit.identity.dto.response.UserResponse;
 import com.fablefit.identity.service.UserService;
-import com.fablefit.identity.utils.ApiEnvelope;
+import com.fablefit.common.response.ApiEnvelope;
 import com.fablefit.identity.utils.AuthContext;
 
 import jakarta.validation.Valid;

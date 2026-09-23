@@ -1,9 +1,8 @@
-package com.fablefit.identity.utils;
+package com.fablefit.common.response;
 
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fablefit.identity.config.AppInfo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +19,7 @@ public class MetaObject {
     @Builder.Default
     private Instant timestamp = Instant.now();
 
-    @Builder.Default
-    private String version = AppInfo.getVersion();
+    private String version;
 
     private String requestId;
 }

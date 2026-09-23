@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,7 @@ import com.fablefit.identity.exception.AuthErrorCode;
 import com.fablefit.identity.service.JwtService;
 import com.fablefit.identity.service.TenantService;
 import com.fablefit.identity.service.UserService;
-import com.fablefit.identity.utils.ApiEnvelope;
+import com.fablefit.common.response.ApiEnvelope;
 import com.fablefit.identity.utils.AuthContext;
 import com.fablefit.exceptionhandler.ApplicationException;
 

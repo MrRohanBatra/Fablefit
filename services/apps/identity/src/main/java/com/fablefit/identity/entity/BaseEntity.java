@@ -3,7 +3,7 @@ package com.fablefit.identity.entity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.fablefit.identity.utils.PublicIdGenerator;
+import com.fablefit.common.publicid.PublicIdGenerator;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
