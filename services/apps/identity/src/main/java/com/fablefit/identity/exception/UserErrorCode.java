@@ -1,6 +1,6 @@
 package com.fablefit.identity.exception;
 
-import com.rohan.exceptionhandler.ErrorCode;
+import com.fablefit.exceptionhandler.ErrorCode;
 
 import lombok.AllArgsConstructor;
 

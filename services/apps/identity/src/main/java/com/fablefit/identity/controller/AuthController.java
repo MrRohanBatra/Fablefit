@@ -23,7 +23,7 @@ import com.fablefit.identity.service.TenantService;
 import com.fablefit.identity.service.UserService;
 import com.fablefit.identity.utils.ApiEnvelope;
 import com.fablefit.identity.utils.AuthContext;
-import com.rohan.exceptionhandler.ApplicationException;
+import com.fablefit.exceptionhandler.ApplicationException;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

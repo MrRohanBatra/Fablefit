@@ -17,7 +17,7 @@ import com.fablefit.identity.exception.TenantErrorCode;
 import com.fablefit.identity.repository.TenantRepository;
 import com.fablefit.identity.service.TenantService;
 import com.fablefit.identity.service.UserService;
-import com.rohan.exceptionhandler.ApplicationException;
+import com.fablefit.exceptionhandler.ApplicationException;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,17 +1,26 @@
+# Gradle
 .gradle/
+**/.gradle/
 **/build/
+
+# Java
+*.class
+**/bin/
+**/out/
+
+# Local environment
 .env
+.env.*
+!.env.example
+**/*.pem
+**/src/main/resources/certs/
+
+# IDEs
+.idea/
+**/.idea/
+.vscode/
+*.iml
+
+# OS and logs
 .DS_Store
 *.log
-bin/
-**/bin/
-*.class
-**/out/
-**/.idea/
-*.iml
-.env
-.DS_Store
-
-.vscode/
-
-**/*.pem

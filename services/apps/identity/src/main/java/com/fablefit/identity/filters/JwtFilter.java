@@ -9,7 +9,7 @@ import com.fablefit.identity.repository.TenantRepository;
 import com.fablefit.identity.repository.UserRepository;
 import com.fablefit.identity.service.JwtService;
 import com.fablefit.identity.utils.AuthContext;
-import com.rohan.exceptionhandler.ApplicationException;
+import com.fablefit.exceptionhandler.ApplicationException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

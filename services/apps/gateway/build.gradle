@@ -16,6 +16,7 @@ dependencies {
     implementation libs.spring.boot.starter.actuator
     implementation libs.spring.boot.starter.validation
     implementation libs.springdoc.openapi
+    implementation project(':libs:exception-handler')
     compileOnly libs.lombok
     annotationProcessor libs.lombok
     testImplementation libs.spring.boot.starter.test

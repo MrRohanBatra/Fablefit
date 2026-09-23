@@ -22,7 +22,7 @@ import com.fablefit.identity.enums.Role;
 import com.fablefit.identity.exception.UserErrorCode;
 import com.fablefit.identity.repository.UserRepository;
 import com.fablefit.identity.service.UserService;
-import com.rohan.exceptionhandler.ApplicationException;
+import com.fablefit.exceptionhandler.ApplicationException;
 
 import lombok.RequiredArgsConstructor;
 
